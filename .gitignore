@@ -10,3 +10,7 @@ planning/
 
 **/Thumbs.db
 **/*.nppp
+
+#grunt dependencies
+node_modules/
+dist/

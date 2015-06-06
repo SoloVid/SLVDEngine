@@ -21,7 +21,7 @@ console.log("loaded Action");
 Action.handle = function(person) {
 	if(person.canAct)
 	{
-		if(person.act == null)
+		if(person.act === undefined)
 		{
 			Action.use(person);
 		}
@@ -30,7 +30,7 @@ Action.handle = function(person) {
 			Action.update(person);
 		}
 	}
-}
+};
 
 //Randomly deploy person's action based on person's action set and associated probabilities
 Action.use = function(person, act) {
@@ -68,7 +68,7 @@ Action.use = function(person, act) {
 		person.act = act;
 		Action[act].use(person);
 	}
-}
+};
 
 Action.update = function(person) {
 	Action[person.act].update(person);
@@ -97,17 +97,17 @@ Action.see = function(person) {
 
 function baseAction() { }
 
-baseAction.prototype.canUse = function() { return false; }
-baseAction.prototype.use = function() { }
-baseAction.prototype.update = function(person) { person.actCountdown--; }
-baseAction.prototype.see = function(person) { /*renderBoardCStd(person);*/ }
-baseAction.prototype.allowMove = function() { return true; }
+baseAction.prototype.canUse = function() { return false; };
+baseAction.prototype.use = function() { };
+baseAction.prototype.update = function(person) { person.actCountdown--; };
+baseAction.prototype.see = function(person) { /*renderBoardCStd(person);*/ };
+baseAction.prototype.allowMove = function() { return true; };
 
 Action["slash"] = new baseAction();
 Action["slash"].constructor = function() { };
 Action["slash"].canUse = function(person) {
 	return Math.sqrt(Math.pow(player[currentPlayer].x - person.x, 2) + Math.pow(player[currentPlayer].y - person.y, 2)) < 40 && person.canSeePlayer();
-}
+};
 Action["slash"].use = function(person) {
 //	person.act = "slash";
 	person.actCountdown = 4;
