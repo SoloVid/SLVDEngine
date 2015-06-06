@@ -1,0 +1,12 @@
+Archive/
+files/audio/**
+files/code/**
+files/images/**
+files/levels/**
+files/main/**
+files/templates/**
+Unused/
+planning/
+
+**/Thumbs.db
+**/*.nppp
