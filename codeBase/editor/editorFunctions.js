@@ -77,7 +77,7 @@ function loadFile()
 			xhr = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 
-		xhr.onreadystatechange = function(){ if(xhr.readyState == 4) loadFile2(xhr.responseText);};
+		xhr.onreadystatechange = function(){ (function() { if(xhr.readyState == 4) loadFile2(xhr.responseText); }());};
 		xhr.open("GET", "files/levels/" + filename);
 		xhr.send();
 	}
@@ -107,14 +107,14 @@ function loadFile2(data)
 	var NPC = levelXML.getElementsByTagName("NPC");
 	for(var i = 0; i < NPC.length; i++)
 	{
-		createObject("NPC", true);
+		createObject("NPC", true, i);
 		openXMLEditor(NPC[i]);
 		$("#saveChanges").click();
 	}
 	var BO = levelXML.getElementsByTagName("boardObj");
 	for(var i = 0; i < BO.length; i++)
 	{
-		createObject("boardObj", true);
+		createObject("boardObj", true, i);
 		openXMLEditor(BO[i]);
 		$("#saveChanges").click();
 	}
@@ -359,11 +359,11 @@ function openXMLEditor(node, disableTemplate)
 
 function updateObject(templateData, type, index)
 {
-	if(type == undefined) type = typeSelected;
-	if(index == undefined) index = indexSelected;
+	if(type === undefined) type = typeSelected;
+	if(index === undefined) index = indexSelected;
 
 	XMLNode = levelXML.getElementsByTagName(type)[index];
-	HTMLNode = document.getElementById("layers").getElementsByClassName(type)[index];
+	HTMLNode = document.getElementById(type + index);
 	HTMLImg = HTMLNode.getElementsByTagName("img")[0];
 	
 	var code = "";
@@ -522,9 +522,16 @@ function createLayer(back, skipXML)
 	}*/
 }
 
-function createObject(type, skipXML, node)
+function createObject(type, skipXML, index)
 {
+	if(!index)
+	{
+		index = 0;
+		while(document.getElementById(type + index)) { index++; }
+	}
+	
 	var NPCContainer = document.createElement("div");
+	NPCContainer.id = type + index;
 	$(NPCContainer).addClass("draggable");
 	$(NPCContainer).addClass(type);	
 	NPCContainer.style.position = "absolute";
