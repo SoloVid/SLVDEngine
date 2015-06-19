@@ -58,7 +58,7 @@ function cookieSet(cname, cvalue, exdays) {
 
 //Deal damage from, to
 function damage(attacker, victim) {
-	if(victim.onHit == null)
+	if(victim.onHit === undefined)
 	{
 		if(attacker.hp)
 		{
@@ -67,10 +67,6 @@ function damage(attacker, victim) {
 			var atk = (attacker.hp/attacker.strg)*(attacker.strg/* - attacker.weight*/) + 20;//attacker.atk;
 			var def = (victim.hp/victim.strg)*(victim.strg/* - attacker.weight*/) + 20;//attacker.def;
 			victim.hp -= atk - ((atk/(Math.PI/2))*Math.atan(Math.pow(def,0.7)/(atk/10)));//(attacker.hp/100)*(attacker.strg/victim.strg)*40;
-		}
-		else
-		{
-			victim.hp -= attacker.atk; //TODO: factor in armor defense
 		}
 	}
 	else// if(victim.hp != null)
@@ -365,6 +361,12 @@ function getNPCByName(name) {
 	return NPC[name];
 }
 
+function getPixel(x, y, data) {
+	var i = pixCoordToIndex(x, y, data);
+	
+	return data.data.slice(i, i + 4);
+}
+
 function getScriptAlt(url, callback) {
       var head = document.getElementsByTagName("head")[0];
       var script = document.createElement("script");
@@ -455,6 +457,14 @@ function pixCoordToIndex(x,y,dat) {
 //random integer between 1 and num
 function randomInt(num) {
 	return Math.floor((Math.random() * num) + 1);
+}
+
+function randomSeed() {
+	var limit = (new Date()).getTime() % 1000000;
+	for(var i = 0; i < limit; i++)
+	{
+		Math.random();
+	}
 }
 
 //Like enterLevelByName() with coordinates

@@ -3,6 +3,8 @@ console.log("globals.js");
 //implied SAVE object from load.js
 var SAVE = {};
 
+var seeB, see, buffer, bufferCtx, snapShot, snapShotCtx;
+
 var player = [];
 var NPC = [] //Universal, absolute list of NPC objects
 var boardNPC = []; //List of NPC objects on current board
@@ -29,8 +31,8 @@ SAVE.timeDays = 0;
 var keys = 0; //number of keys down
 var key; //value used in onkey____ functions
 var dKeys = 0; //Number of directions pressed
-var keyDown = []; //1 if down, null if up
-var keyFirstDown = []; //set to 1 when key is initially pressed, manually set to null
+var keyDown = {}; //1 if down, null if up
+var keyFirstDown = {}; //set to 1 when key is initially pressed, manually set to null
 
 var currentPlayer = 0;
 var cTeam; //For TRPG, either player or boardNPC

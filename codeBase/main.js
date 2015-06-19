@@ -2,17 +2,14 @@
 //$.getScript("files/main/initialize.js");
 alert("got script");
 
-for(var index in player)
-{
-	player[index].oppTeam = boardNPC;
-}
-
 //Engine code
 
 see.font="20px Arial";
 see.fillText("If this message persists for more than a few seconds,", 10, 30);
 see.fillText("this game will not run on your browser.", 10, 60);
 see.font="30px Arial";
+
+randomSeed();
 
 //*-*-*-*-*-*-*-*-*-*-*-*Main Loop
 resumeFunc = startUp; //in initialize.js
@@ -185,21 +182,14 @@ setInterval(function(){
 			see.drawImage(opMenu.background, 0, 0);
 			//Draw cursor
 			see.drawImage(opMenu.cursor, opMenu.point[opMenu.currentPoint].x, opMenu.point[opMenu.currentPoint].y);
-			if(keyFirstDown[13] == 1 || keyFirstDown[32] == 1) //Select (ENTER of SPACE)
+			if(keyFirstDown["enter"] || keyFirstDown["space"]) //Select
 			{
-				keyFirstDown[13] = null;
-				keyFirstDown[32] = null;
+				delete keyFirstDown["enter"];
+				delete keyFirstDown["space"];
 				opMenu.chosenPoint = opMenu.currentPoint;
 				resumeCue = resumeFunc(resumeCue);
 			}
-			keyFirstDown[37] = null;
-			keyFirstDown[38] = null;
-			keyFirstDown[39] = null;
-			keyFirstDown[40] = null;
-			keyFirstDown[65] = null;
-			keyFirstDown[87] = null;
-			keyFirstDown[68] = null;
-			keyFirstDown[83] = null;
+			keyFirstDown = {};
 			
 			break;
 		}
@@ -215,12 +205,12 @@ setInterval(function(){
 		}
 		case "wait":
 		{
-			if(countdown <= 0 && (keyFirstDown[13] == 1 || keyFirstDown[32] == 1))
+			if(countdown <= 0 && (keyFirstDown["enter"] || keyFirstDown["space"]))
 			{
 				console.log("waited");
-				keyFirstDown[13] = null;
-				keyFirstDown[32] = null;
-				if(resumeCue == 0 || resumeCue == null) process = currentLevel.type;
+				delete keyFirstDown["enter"];
+				delete keyFirstDown["space"];
+				if(!resumeCue) process = currentLevel.type;
 				else resumeCue = resumeFunc(resumeCue);
 			}
 			else countdown--;
@@ -249,26 +239,30 @@ setInterval(function(){
 
 
 //Main (master) functions
-
-document.onkeydown = function(e) //Sets variables useful for determining what keys are down at any time.
-{
+//Sets variables useful for determining what keys are down at any time.
+document.onkeydown = function(e) {
 	//Prevent scrolling with arrows
     if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 
 	keys++;
-	key = e.keyCode;
+	key = e.key.toLowerCase();
+	
+	if(key == " ")
+	{
+		key = "space";
+	}
 	//alert(key);
 
-	if(key == 81)
+	if(key == "t")
 	{
 		alert("saving...");
 		//alert("test second alert");
 		fileSave("testFile");
 		alert("saved!");
 	}
-	else if(key == 82)
+	else if(key == "y")
 	{
 	/*	var seen = [];
 		
@@ -280,31 +274,34 @@ document.onkeydown = function(e) //Sets variables useful for determining what ke
 		alert(player[currentPlayer].x + ", " + player[currentPlayer].y + ", " + player[currentPlayer].layer);
 	}
 
-	if(keyDown[key] == null)
+	if(keyDown[key] === undefined)
 	{
-		keyFirstDown[key] = 1;
+		keyFirstDown[key] = true;
 	}
-	keyDown[key] = 1;
+	keyDown[key] = true;
 }
 
-document.onkeyup = function(e) //The clean-up of the above function.
-{
+//The clean-up of the above function.
+document.onkeyup = function(e) {
 	keys--;
-	key = e.keyCode;
-	keyFirstDown[key] = null;
-	keyDown[key] = null;
+	key = e.key.toLowerCase();
+	delete keyFirstDown[key];
+	delete keyDown[key];
 }
 
-function orientScreen() //Set wX and wY (references for relative image drawing) based on current player's (or in some cases NPC's) position.
-{
+//Set wX and wY (references for relative image drawing) based on current player's (or in some cases NPC's) position.
+function orientScreen() {
+	var person = cTeam[currentPlayer];
+	var x = person.x + person.offX;
+	var y = person.y + person.offY;
   if(currentLevel.layerImg[0].width <= SCREENX) {
 	wX = (currentLevel.layerImg[0].width - SCREENX)/2;
   }
-  else if (cTeam[currentPlayer].x + SCREENX/2 >= currentLevel.layerImg[0].width) {
+  else if (x + SCREENX/2 >= currentLevel.layerImg[0].width) {
     wX = currentLevel.layerImg[0].width - SCREENX;
   }
-  else if (cTeam[currentPlayer].x >= SCREENX/2) {
-    wX = cTeam[currentPlayer].x - (SCREENX/2/* - 20*/);
+  else if (x >= SCREENX/2) {
+    wX = x - (SCREENX/2);
   }
   else {
     wX = 0;
@@ -313,19 +310,19 @@ function orientScreen() //Set wX and wY (references for relative image drawing) 
   if(currentLevel.layerImg[0].height <= SCREENY) {
 	wY = (currentLevel.layerImg[0].height - SCREENY)/2;
   }
-  else if (cTeam[currentPlayer].y + SCREENY/2 >= currentLevel.layerImg[0].height) {
+  else if (y + SCREENY/2 >= currentLevel.layerImg[0].height) {
     wY = currentLevel.layerImg[0].height - SCREENY;
   }
-  else if (cTeam[currentPlayer].y >= SCREENY/2) {
-    wY = cTeam[currentPlayer].y - (SCREENY/2/* - 40*/);
+  else if (y >= SCREENY/2) {
+    wY = y - (SCREENY/2);
   }
   else {
     wY = 0;
   }
 }
 
-function restartBoardC() //Sort all board characters into the array boardC in order of y location (in order to properly render sprite overlap).
-{
+//Sort all board characters into the array boardC in order of y location (in order to properly render sprite overlap).
+function restartBoardC() {
 	boardC.length = 0;
 	for(var index = 0; index < boardNPC.length; index++)
 	{
@@ -341,8 +338,8 @@ function restartBoardC() //Sort all board characters into the array boardC in or
 	}
 }
 
-function sortBoardC() //Sort the array boardC in order of y location (in order to properly render sprite overlap).
-{
+//Sort the array boardC in order of y location (in order to properly render sprite overlap).
+function sortBoardC() {
 	if(boardC.length == 0) restartBoardC();
 	else
 	{
@@ -360,10 +357,9 @@ function sortBoardC() //Sort the array boardC in order of y location (in order t
 	}
 }
 
-function insertBoardC(element)
-{
+function insertBoardC(element) {
 	var index = 0;
-	while(element.y > boardC[index].y)
+	while(index < boardC.length && element.y > boardC[index].y)
 	{
 		index++;
 	}
@@ -382,8 +378,7 @@ function insertBoardC(element)
 	}*/
 }
 
-function deleteBoardC(element)
-{
+function deleteBoardC(element) {
 	for(var index = 0; index < boardC.length; index++)
 	{
 		if(element == boardC[index])
@@ -394,69 +389,44 @@ function deleteBoardC(element)
 	}
 }
 
-function figurePlayerDirection() //Based on keys down (ASDW and arrows), set current player's direction. Used in zeldaPlayerMotion().
-{
+//Based on keys down (ASDW and arrows), set current player's direction. Used in zeldaPlayerMotion().
+function figurePlayerDirection() {
 	dKeys = 0;
-	if(keyDown[37] == 1 || keyDown[38] == 1 || keyDown[39] == 1 || keyDown[40] == 1 || keyDown[65] == 1 || keyDown[87] == 1 || keyDown[68] == 1 || keyDown[83] == 1) { player[currentPlayer].dir = 0; };
-	if(keyDown[37] == 1 || keyDown[65] == 1) //West
+	var dir = 0;
+	if(keyDown['a'] || keyDown['left']) //West
 	{
 		//How many directional keys down
 		dKeys++;
 		//Average in the new direction to the current direction
-		player[currentPlayer].dir = ((player[currentPlayer].dir*(dKeys - 1)) + 2)/dKeys;
+		dir = ((dir*(dKeys - 1)) + 2)/dKeys;
 	}
-	if(keyDown[38] == 1 || keyDown[87] == 1) //North
+	if(keyDown['w'] || keyDown['up']) //North
 	{
 		dKeys++;
-		player[currentPlayer].dir = ((player[currentPlayer].dir*(dKeys - 1)) + 1)/dKeys;
+		dir = ((dir*(dKeys - 1)) + 1)/dKeys;
 	}
-	if(keyDown[39] == 1 || keyDown[68] == 1) //East
+	if(keyDown['d'] || keyDown['right']) //East
 	{
 		dKeys++;
-		player[currentPlayer].dir = ((player[currentPlayer].dir*(dKeys - 1)) + 0)/dKeys;
+		dir = ((dir*(dKeys - 1)) + 0)/dKeys;
 	}
-	if(keyDown[40] == 1 || keyDown[83] == 1) //South
+	if(keyDown['s'] || keyDown['down']) //South
 	{
 		dKeys++;
-		player[currentPlayer].dir = ((player[currentPlayer].dir*(dKeys - 1)) + 3)/dKeys;
+		dir = ((dir*(dKeys - 1)) + 3)/dKeys;
 	}
-	if((keyDown[39] == 1 || keyDown[68] == 1) && (keyDown[40] == 1 || keyDown[83] == 1)) //Southeast
+	if((keyDown['s'] || keyDown['down']) && (keyDown['d'] || keyDown['right'])) //Southeast
 	{
-		player[currentPlayer].dir += 2;
+		dir += 2;
+	}
+
+	if(dKeys)
+	{
+		player[currentPlayer].dir = dir;
 	}
 }
 
-function renderSpriteStd(c, col, ctx)
-{
-	if(col == null)
-	{
-		col = determineColumn(c.dir);
-	}
-	if(ctx == null)
-	{
-		ctx = see;
-	}
-	
-	//BoardC is displayed partially transparent depending on health (<= 50% transparent)
-	ctx.globalAlpha = (c.hp + c.strg)/(2*c.strg);
-	
-	//Squeeze character if acting
-	if(c.act != null) var tSqueeze = 4;
-	else var tSqueeze = 0;
-	
-	var col = determineColumn(c.dir); //in functions.js
-	var tImg = c.img;
-	var sx = c.xres*col;
-	var sy = c.yres*c.frame;
-	var x = (c.x - (((c.xres)/2) - 8)) - wX;
-	var y = (c.y - (c.yres - 8)) - wY + tSqueeze;
-	ctx.drawImage(tImg, sx, sy, c.xres, c.yres, x, y, c.xres, c.yres - tSqueeze);
-	
-	ctx.globalAlpha = 1;
-}
-
-function renderBoardState()//(actionsEnabled)
-{
+function renderBoardState() {
 	orientScreen();
 	var lightedThing = [];
 	
@@ -482,7 +452,9 @@ function renderBoardState()//(actionsEnabled)
 			{
 				for(var second = 0; second < cTeam[currentPlayer].squares.length; second++)
 				{
-					see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
+					see.fillStyle = "rgba(0, 100, 255, .5)";
+					see.fillRect(cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
+					//see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
 				}
 			}
 		}
@@ -493,54 +465,7 @@ function renderBoardState()//(actionsEnabled)
 			var cSprite = boardC[second];
 			if(cSprite.layer == index) //ensure proper layering
 			{
-				//if(actionsEnabled) Action.resolve(cSprite); //in action.js
-				
-				Motion.see(cSprite);
-				Action.see(cSprite);
-				Status.see(cSprite);
-				
-				//Normal rendering
-				if((cSprite.status == "hurt" && frameClock != 1) || cSprite.status != "hurt")
-				{
-					Motion.see(cSprite);
-					Action.see(cSprite);
-					Status.see(cSprite);
-				
-					/*if(!Action.see(cSprite)) //<--Implicit invocation of Action.see to render sprite
-					{
-						renderBoardCStd(cSprite);
-					}*/
-				
-					//renderBoardCStd(cSprite);
-					/*//BoardC is displayed partially transparent depending on health (<= 50% transparent)
-					see.globalAlpha = (cSprite.hp + cSprite.strg)/(2*cSprite.strg);
-					
-					//Squeeze character if acting
-					if(cSprite.act != null) var tSqueeze = 4;
-					else var tSqueeze = 0;
-					var col = determineColumn(cSprite.dir); //in functions.js
-					var tImg = cSprite.img;
-					var sx = cSprite.xres*col;
-					var sy = cSprite.yres*cSprite.frame;
-					var x = (cSprite.x - (((cSprite.xres)/2) - 8)) - wX;
-					var y = (cSprite.y - (cSprite.yres - 8)) - wY + tSqueeze;
-					see.drawImage(tImg, sx, sy, cSprite.xres, cSprite.yres, x, y, cSprite.xres, cSprite.yres - tSqueeze);*/
-					
-					//Action.see(cSprite); //in action.js
-						
-					//see.globalAlpha = 1;
-					
-					//Display held item
-					if(cSprite.holding != null && Math.round(cSprite.dir) != 1)
-					{
-						see.drawImage(cSprite.holding, (cSprite.holding.width/4)*col, 0, (cSprite.holding.width/4), 32, (cSprite.x - (((cSprite.xres)/2) - 8)) - wX + 16*Math.round(Math.cos(cSprite.dir*Math.PI/2)), (cSprite.y - (cSprite.yres - 18)) - wY - 5*Math.round(Math.sin(cSprite.dir*Math.PI/2)), 32, 32);	
-					}
-				}
-				else if(cSprite.status == "hurt" && frameClock == 1) //Blink hurt boardC
-				{
-					cSprite.statusCountdown--;
-					if(cSprite.statusCountdown <= 0) cSprite.status = null;
-				}
+				cSprite.see(see);
 				
 				//Determine if boardC is lighted
 				if(cSprite.isLight)
@@ -548,6 +473,7 @@ function renderBoardState()//(actionsEnabled)
 					lightedThing[lightedThing.length] = cSprite;
 				}
 				
+				cSprite.resetStance();
 				cSprite.resetCans();
 			}
 		}
@@ -596,4 +522,7 @@ function renderBoardState()//(actionsEnabled)
 	see.fillText(player[currentPlayer].name + ": " + player[currentPlayer].hp + " HP | " + player[currentPlayer].strg + " Strength | " + player[currentPlayer].spd + " Agility", 10, 20);
 
 	Time.renderClock(see); //in time.js
+	
+	//Save screen into snapShot
+	snapShotCtx.drawImage(seeB, 0, 0);
 }
