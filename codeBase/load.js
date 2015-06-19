@@ -1,20 +1,7 @@
-//alert("start");
-
-/*var testFunc = "";
-testFunc += "someFunc(); anotherFunc(); waitForEngine(); somethingelse(); var set = something + else; waitForEngine(); finishUp();";
-
-var testObj = evalObj(getTXT("test.txt"));
-
-//testObj["talk"] = function() { alert("talk"); };
-
-alert(testObj.x + ", " + testObj.y);
-testObj.talk(0);
-testObj.talk(1);*/
-
 gen = document.getElementById("bod");
 
 //<canvas class="center" id="seenCanvas" width="640" height="480" style="border:1px solid #d3d3d3;">
-seeB = document.getElementById("seenCanvas");
+seeB = document.createElement("canvas");//document.getElementById("seenCanvas");
 seeB.setAttribute("class", "center");
 seeB.setAttribute("width", SCREENX);
 seeB.setAttribute("height", SCREENY);

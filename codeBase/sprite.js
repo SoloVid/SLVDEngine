@@ -8,48 +8,264 @@ function Sprite(name, spriteSheet)
 }
 Sprite.prototype.xres = 32;
 Sprite.prototype.yres = 64;
+
+//The Sprite's base is the collision area of the Sprite
+Sprite.prototype.baseLength = 16;
+Sprite.prototype.baseX = 16;
+Sprite.prototype.baseY = 8;
+//Standard offset of the base is 0--that is, x=0 is centered and y=0 is at bottom
+Sprite.prototype.baseOffX = 0;
+Sprite.prototype.baseOffY = 0;
+
+Sprite.prototype.omniDir = false;
+Sprite.prototype.rotate = 0;
+
 Sprite.prototype.lvl;
-Sprite.prototype.team;
+Sprite.prototype.team = null;
 Sprite.prototype.x = 100;
 Sprite.prototype.y = 100;
+Sprite.prototype.offX = 0;
+Sprite.prototype.offY = 0;
 Sprite.prototype.layer = 0;
-//	Sprite.prototype.inAir = null;
-Sprite.prototype.mvmt = 1; //0 - still; 1 - random moving; 2 - back and forth; 4 - square
-//	Sprite.prototype.speech; //0/"" or message
+//Sprite.prototype.inAir = null;
+//Sprite.prototype.mvmt = 1; //0 - still; 1 - random moving; 2 - back and forth; 4 - square
+//Sprite.prototype.speech; //0/"" or message
 Sprite.prototype.dmnr = 1; //0 - peaceful; 1 - excitable; 2 - aggressive
 Sprite.prototype.dir = 3;
 Sprite.prototype.steps = 0;// = 5;
 Sprite.prototype.wait;// = 0;
-//	Sprite.prototype.act;
+
+Sprite.prototype.act = [];
+Sprite.prototype.act.push = function(item) {
+	if(this.act.length == 0) {
+		this.act = [];
+	}
+	Array.push.call(this.act, item);
+};
+Sprite.prototype.act.splice = function(index, length) {
+	Array.splice.call(this.act, index, length);
+	if(this.act.length <= 0)
+	{
+		delete this.act;
+	}
+};
 Sprite.prototype.actSet = [];
 Sprite.prototype.rcvr = 0;
-Sprite.prototype.moveSet = [];
+Sprite.prototype.getAct = function(index) {
+	return this.act[index];
+};
+Sprite.prototype.getActTime = function(index) {
+	return this.act[index][1];
+}
+Sprite.prototype.getActOpt = function(index) {
+	return this.act[index][0];
+};
+Sprite.prototype.getActOptProb = function(index) {
+	return this.act[index][1];
+};
+Sprite.prototype.handleAction = function() {
+	if(this.canAct)
+	{
+		//Start new action
+		var newAct = this.pickAction();
+		if(newAct !== null)
+		{
+			this.act.push(newAct);
+			newAct.use(this);
+		}
+		
+		//Handle persistent actions
+		for(var i = 0; i < this.act.length; i++)
+		{
+			var currentAct = person.getAct(i);
+			currentAct.update(this);
+			if(currentAct.time <= 0)
+			{
+				person.act.splice(i, 1);
+				if(process == "TRPG")
+				{
+					TRPGNextTurn(); //in TRPG.js
+				}
+			}
+		}
+	}
+};
+Sprite.prototype.pickAction = function() {
+	var actSet = [];
+	var rand;
+	var totProb = 0;
+	//Create a list of useable actions
+	for(var i = 0; i < this.actSet.length; i++)
+	{
+		var actOpt = this.getActOpt(i);
+		if(actOpt.canUse(this))
+		{
+			var typeTaken = false;
+			for(var j = 0; j < this.act.length; j++)
+			{
+				if(actOpt.type == this.getAct(j).type)
+				{
+					typeTaken = true;
+					j = this.act.length;
+				}
+			}
+			if(!typeTaken)
+			{
+				actSet.push(actOpt);
+				totProb += actOpt.getProbability();
+			}
+		}
+	}
+
+	//In case of one (will normally work unless "zero probability" of default actions)
+	if(actSet.length > 0 && totProb <= 0)
+	{
+		return actSet[i];
+	}
+	
+	//Pick random action based on probabilities
+	var rand = randomInt(totProb);
+	var partProb = 0;
+	for(var i = 0; i < actSet.length; i++)
+	{
+		partProb += actSet[i].getProbability();
+		if(rand <= partProb)
+		{
+			return actSet[i];
+		}
+	}
+	return null;
+};
+Sprite.prototype.requestAction = function(action) {
+	if(this.canAct)
+	{
+		var typeTaken = false;
+		for(var j = 0; j < this.act.length; j++)
+		{
+			if(action.type == this.getAct(j).type)
+			{
+				typeTaken = true;
+				j = this.act.length;
+			}
+		}
+		if(!typeTaken)
+		{
+			action.use(this);
+		}
+	}
+};
+Sprite.prototype.seeAction = function() {
+	for(var i = 0; i < this.act.length; i++)
+	{
+		this.act[i].see(this);
+	}	
+};
+
 Sprite.prototype.status = [];
-Sprite.prototype.pushy = 1;
+Sprite.prototype.handleStatus = function() {
+	if(this.status.length > 0)
+	{
+		for(var i = 0; i < this.status.length; i++)
+		{
+			var currentStatus = this.status[i];
+			currentStatus.apply(this);
+			currentStatus.time--;
+			if(currentStatus.time <= 0)
+			{
+				this.status.splice(i, 1);
+			}
+		}
+	}
+};
+Sprite.prototype.seeStatus = function() {
+	for(var i = 0; i < this.status.length; i++)
+	{
+		this.status[i].see(this);
+	}
+};
+
+//Sprite.prototype.moveSet = [];
+
+Sprite.prototype.keyFunc = {};
+
+Sprite.prototype.pushy = true;
+
 Sprite.prototype.frame = 0;
+
+Sprite.prototype.stance = 0;
+Sprite.prototype.defaultStance = function() {
+	this.stance = determineColumn(this.dir);
+};
+Sprite.prototype.getStance = function() {
+	return this.stance;
+};
+Sprite.prototype.requestStance = function(col) {
+	this.stance = col;
+};
+Sprite.prototype.resetStance = function() {
+	delete this.stance;
+};
+
 Sprite.prototype.hp = 100;
 Sprite.prototype.strg = 5;
 Sprite.prototype.spd = 2;
 
-Sprite.prototype.path = {};
-Sprite.prototype.path.x = [];
-Sprite.prototype.path.y = [];
+Sprite.prototype.path = [];
+Sprite.prototype.addPointToPath = function(x, y) {
+	if(this.path.x.length === 0)
+	{
+		this.path = [];
+	}
+	this.path.unshift({x: x, y: y});
+};
 
 Sprite.prototype.canAct = true;
-Sprite.prototype.canMove = true;
+//Sprite.prototype.canMove = true;
 Sprite.prototype.canSeeAct = true;
-Sprite.prototype.canSeeMove = true;
+//Sprite.prototype.canSeeMove = true;
+Sprite.prototype.canSeeStatus = true;
+Sprite.prototype.canSee = true;
 
-Sprite.prototype.preventAction = function() { this.canAct = false; }
-Sprite.prototype.preventMotion = function() { this.canMove = false; }
-Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; }
-Sprite.prototype.preventMotionSee = function() { this.canSeeMove = false; }
-Sprite.prototype.resetCans = function() { delete this.canAct; delete this.canMove; delete this.canSeeAct; delete this.canSeeMove; }
+Sprite.prototype.getHp = function() {
+	return this.hp;
+};
+Sprite.prototype.getMaxHp = function() {
+	return 100;
+};
+Sprite.prototype.getPosition = function() {
+	var pos = {};
+	pos.x = this.x;
+	pos.y = this.y;
+	pos.layer = this.layer;
+	return pos;
+};	
+Sprite.prototype.getShownPosition = function() {
+	var pos = {};
+	pos.x = this.x;
+	pos.y = this.y;
+	pos.layer = this.layer;
+	return pos;
+};
+Sprite.prototype.getShownX = function() {
+	return this.x;
+};
+Sprite.prototype.getShownY = function() {
+	return this.y;
+};
+Sprite.prototype.getSpeed = function() {
+	return this.spd;
+};
+Sprite.prototype.getStrength = function() {
+	return this.strg;
+};
 
-//Sprite.prototype.dart = {};
+Sprite.prototype.preventAction = function() { this.canAct = false; };
+Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; };
+Sprite.prototype.preventStatusSee = function() { this.canSeeStatus = false; };
+Sprite.prototype.preventRender = function() { this.canSee = false; };
+Sprite.prototype.resetCans = function() { delete this.canSee; delete this.canAct; delete this.canSeeAct; delete this.canSeeStatus; };
 
-//**********?
-Sprite.prototype.oppTeam = player;
+Sprite.prototype.dart = {};
 
 //Checks if the a Sprite's location is valid (based on current location and layer func data)
 Sprite.prototype.canBeHere = function(allowInAir) {
@@ -66,58 +282,62 @@ Sprite.prototype.canBeHere = function(allowInAir) {
 		}
 	}
 	return 1;
-}
+};
 
 Sprite.prototype.canSeePlayer = function() {
 	var tDir = dirFromTo(this.x, this.y, player[currentPlayer].x, player[currentPlayer].y);
 	return (Math.abs(tDir - this.dir) < 1 || Math.abs(tDir - this.dir) > 3)
-}
+};
 
+Sprite.prototype.damage = function(amount) {
+	this.hp -= amount;
+};
+
+//All of the "give" functions are intended to be passed a "new" object
 Sprite.prototype.giveAction = function(action) {
 	if(this.actSet.length == 0)
 	{
 		this.actSet = [];
 	}
 	
-	this.actSet.push(action);
-}
+	var actA;
 
-Sprite.prototype.giveMotion = function(motion) {
-	if(this.moveSet.length == 0)
+	if((typeof action) == "string")
 	{
-		this.moveSet = [];
+		action = new Action[action];
 	}
 	
-	this.moveSet.push(motion);
-}
-
+	this.actSet.push(actA);
+};
 Sprite.prototype.giveStatus = function(status) {
-	//intensity = intensity || 0;
-	
 	if(this.status.length == 0)
 	{
 		this.status = [];
 	}
 	
-	/*var status = {
-		name: name;
-		time: time;
-		amp: intensity;
-	};*/
+	if((typeof status) == "string")
+	{
+		status = new Status[status];
+	}
 	
 	this.status.push(status); 
-}
+};
 
-Sprite.prototype.hasStatus(name) {
+Sprite.prototype.hasStatus = function(status) {
+	if((typeof status) == "string")
+	{
+		status = Status[status];
+	}
+
 	for(var i = 0; i < this.status.length; i++)
 	{
-		if(this.status[i] instanceof Status[name])
+		if(this.status[i] instanceof status)
 		{
 			return true;
 		}
 	}
 	return false;
-}
+};
 
 //Based in time.js, this function provides simple interface for setting a timed sequence of movement events for Sprites 
 Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute, second) {
@@ -202,23 +422,66 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 			}
 		}
 	}
-}
+};
+
+Sprite.prototype.see = function(ctx) {
+	if(!ctx)
+	{
+		ctx = see;
+	}
+	
+	bufferCtx.clearRect(0, 0, SCREENX, SCREENY);
+	
+	bufferCtx.setTransform(1, 0, 0, 1, 0, 0);
+	
+	bufferCtx.translate(SCREENX/2, SCREENY/2);
+	
+	bufferCtx.rotate(this.rotate);
+	
+	//BoardC is displayed partially transparent depending on health (<= 50% transparent)
+	//bufferCtx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
+		
+	var col = this.getStance(); //in functions.js
+	var tImg = this.img;
+	var sx = this.xres*col;
+	var sy = this.yres*this.frame;
+	var pos = this.getShownPosition();
+	var x = -this.xres/2 - this.baseOffX;
+	var y = -this.yres + this.baseLength/2 - this.baseOffY;
+	bufferCtx.drawImage(tImg, sx, sy, this.xres, this.yres, x, y, this.xres, this.yres);
+	
+	bufferCtx.globalAlpha = 1;	
+	
+	this.seeAction();
+	this.seeStatus();
+	
+	bufferCtx.rotate(-this.rotate);
+	
+	bufferCtx.translate(-SCREENX/2, -SCREENY/2);
+	
+//	bufferCtx.setTransform(1, 0, 0, 1, 0, 0);
+	
+//	bufferCtx.fillStyle = "rgba(255, 0, 0, 1)";
+//	bufferCtx.fillRect(0, 0, SCREENX, SCREENY);
+	
+//	ctx.drawImage(buffer, 0, 0);
+//Todo: Factor in offset
+	ctx.drawImage(buffer, this.x - wX - SCREENX/2 + this.offX - player[currentPlayer].offX, this.y - wY - SCREENY/2 + this.offY - player[currentPlayer].offY);
+	
+	delete this.rotate;
+};
 
 Sprite.prototype.updateFrame = function() {
 	//Only update on frame tick
 	if(frameClock == 1)
 	{
 		this.frame++;
-		if(this.img.height <= this.frame*yres)
+		if(this.img.height <= this.frame*this.yres)
 		{
 			this.frame = 0;
 		}
-		/*if (this.frame >= 4)
-		{
-			this.frame = 0;
-		}*/
 	}
-}
+};
 
 //(x1, y1, x2, y2, ...)
 Sprite.prototype.walkPath = function() {
@@ -233,9 +496,10 @@ Sprite.prototype.walkPath = function() {
 	}
 	else
 	{
-		
+		this.x = arguments[arguments.length - 2];
+		this.y = arguments[arguments.length - 1];
 	}
-}
+};
 
 //zeldaStep but with input direction
 Sprite.prototype.zeldaBump = function(distance, direction) {
@@ -247,11 +511,65 @@ Sprite.prototype.zeldaBump = function(distance, direction) {
 	this.zeldaStep(distance);
 	//Revert direction;
 	this.dir = tDir;
+};
+
+Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
+	var pixel;
+	var coords = {};	
+
+	coords[axis] = isPositive ? this[axis] + this.baseLength/2 - 1 : this[axis] - this.baseLength/2;
+	
+	//Loop through width of base
+	for(var i = -this.baseLength/2; i < this.baseLength/2; i++)
+	{
+		coords[altAxis] = this[altAxis] + i;
+		pixel = getPixel(coords.x, coords.y, currentLevel.layerFuncData[this.layer]);
+		if(pixel[0] == 255) //If pixel on func map has R=255
+		{
+			//Don't worry if Y=255 (open air) and person is inAir
+			if(this.inAir == 1 && pixel[1] == 255) { }
+			else //Otherwise, stop person
+			{
+				return true;
+			}
+		}
+		else if(pixel[0] == 100 && pixel[1] == 0) //If R=255 & G=0
+		{
+			//Prepare function
+			resumeFunc = currentLevel.boardProgram[pixel[2]];
+			resumeCue = resumeFunc(0);
+		}		
+	}
+	
+	//Check for collision with people
+	for(var i = 0; i < boardC.length; i++)
+	{
+		if(this.team != boardC.team)
+		{
+			var collisionDist = this.baseLength + boardC[i].baseLength;
+			if(Math.abs(this.y - boardC[i].y) < collisionDist)
+			{
+				if(Math.abs(this.x - boardC[i].x) < collisionDist)
+				{
+					if(this.pushy && boardC[i].pushy /*&& boardC[i].pushed != 1*/)
+					{
+//??????????????What's up with this .pushed?
+						//boardC[i].pushed = 1;
+						boardC[i].zeldaBump(this.spd/2, this.dir);
+						//delete boardC.pushed;
+					}
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
 }
 
 Sprite.prototype.zeldaLockOnPlayer = function() {
 	this.zeldaLockOnPoint(player[currentPlayer].x, player[currentPlayer].y);
-}
+};
 	
 Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	this.dir = dirFromTo(this.x, this.y, qx, qy);
@@ -268,187 +586,65 @@ Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	{
 		this.dir += 4;
 	}*/
-}
+};
 
 //*********Advances Sprite person up to distance distance as far as is legal. Includes pushing other Sprites out of the way? Returns -1 if stopped before distance?
 Sprite.prototype.zeldaStep = function(distance) {
+	var stopped = false;
+	var stoppedTemp = false;
+	var out = false;
 	var ret = 1; //value to return at end
 	var dy = -(Math.round(distance*Math.sin((this.dir)*(Math.PI/2)))); //Total y distance to travel
 	var dx = Math.round(distance*Math.cos((this.dir)*(Math.PI/2))); //Total x distance to travel
-//***************y and x are nearly identical. They should be consolidated.
 	//Handle y movement
-	for(var ind = 0; ind < Math.abs(dy); ind++)
+	for(var i = 0; i < Math.abs(dy); i++)
 	{
 		this.y += (dy/Math.abs(dy));
 		//Check if out of bounds
 		if(this.y >= currentLevel.layerImg[0].height || this.y < 0)
 		{
-			var out = 1;
-			this.y -= (dy/Math.abs(dy));
+			out = true;
 		}
 		else
 		{
-			//Loop through 16 pixel wide base
-			for(var sec = 0; sec < 16; sec++)
-			{
-				if(dy > 0) //If moving down
-				{
-					//Get index of pixel at bottom of base
-					var i = pixCoordToIndex(this.x + sec, this.y + 7, currentLevel.layerFuncData[this.layer]);		
-				}
-				else if(dy < 0) //If moving up
-				{
-					//Get index of pixel at top of base
-					var i = pixCoordToIndex(this.x + sec, this.y, currentLevel.layerFuncData[this.layer]);
-				}
-				if(currentLevel.layerFuncData[this.layer].data[i] == 255) //If pixel on func map has R=255
-				{
-					//Don't worry if Y=255 (open air) and person is inAir
-					if(this.inAir == 1 && currentLevel.layerFuncData[this.layer].data[i + 1] == 255) { }
-					else //Otherwise, stop person
-					{
-						var stopped = 1;
-						this.y -= (dy/Math.abs(dy));
-						sec = 17;
-						ind = Math.abs(dy) + 1;
-					}
-				}
-				else if(currentLevel.layerFuncData[this.layer].data[i] == 100 && currentLevel.layerFuncData[this.layer].data[i + 1] == 0) //If R=255
-				{
-					//Prepare function
-					resumeFunc = currentLevel.boardProgram[currentLevel.layerFuncData[this.layer].data[i + 2]];
-					resumeCue = resumeFunc(0);
-				}
-			}
-			if(stopped != 1 && this.oppTeam != null)
-			{
-				//Check for collision with people
-				for(var sec = 0; sec < this.oppTeam.length; sec++)
-				{
-					if(Math.abs(this.y - this.oppTeam[sec].y) < 8)
-					{
-						if(Math.abs(this.x - this.oppTeam[sec].x) < 16)
-						{
-							if(this.pushy == 1 && this.oppTeam[sec].pushy == 1 && this.oppTeam[sec].pushed != 1)
-							{
-	//??????????????What's up with this .pushed?
-								this.oppTeam[sec].pushed = 1;
-								this.oppTeam[sec].zeldaBump(this.spd/2, this.dir);
-								delete this.oppTeam[sec].pushed;
-							}
-							var stopped = 1;
-							this.y -= (dy/Math.abs(dy));
-							sec = 17;
-							ind = Math.abs(dy) + 1;
-						}
-					}
-				}
-			}
+			stoppedTemp = this.zeldaCheckStep("y", "x", dy > 0);
+		}
+		
+		if(stoppedTemp || out)
+		{
+			this.y -= 2*(dy/Math.abs(dy));
+			i = Math.abs(dy);
 		}
 	}
-/*	???????????????????Why is this here twice?
-	var dir = this.dir;
-	if(stopped == 1 && out != 1)
-	{
-		if(dir < 1 || dir > 3) //case 0:
-		{
-			var j = pixCoordToIndex(this.x + 16, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
-		}
-		if(dir > 0 && dir < 2) //case 1:
-		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
-		}
-		if(dir > 1 && dir < 3) //case 2:
-		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x - 1, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
-		}
-		if(dir > 2 && dir < 4) //case 3:
-		{
-			var j = pixCoordToIndex(this.x - 1, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
-		}
-	}*/
+	stopped = stoppedTemp;
 	//Handle x movement;
-	for(var ind = 0; ind < Math.abs(dx); ind++)
+	for(var i = 0; i < Math.abs(dx); i++)
 	{
 		this.x += (dx/Math.abs(dx));
 		if(this.x >= currentLevel.layerImg[0].width || this.x < 0)
 		{
-			var out = 1;
-			this.x -= (dx/Math.abs(dx));
+			out = true;
 		}
 		else
 		{
-			//Check collision with map
-			for(var sec = 0; sec < 8; sec++)
-			{
-				if(dx > 0)
-				{
-					var i = pixCoordToIndex(this.x + 15, this.y + sec, currentLevel.layerFuncData[this.layer]);		
-				}
-				else if(dx < 0)
-				{
-					var i = pixCoordToIndex(this.x, this.y + sec, currentLevel.layerFuncData[this.layer]);
-				}
-				if(currentLevel.layerFuncData[this.layer].data[i] == 255)
-				{
-					if(this.inAir == 1 && currentLevel.layerFuncData[this.layer].data[i + 1] == 255) { }
-					else
-					{
-						var stopped = 1;
-						this.x -= (dx/Math.abs(dx));
-						sec = 17;
-						ind = Math.abs(dx) + 1;
-					}
-				}
-				else if(currentLevel.layerFuncData[this.layer].data[i] == 100 && currentLevel.layerFuncData[this.layer].data[i + 1] == 0)
-				{
-					resumeFunc = currentLevel.boardProgram[currentLevel.layerFuncData[this.layer].data[i + 2]];
-					resumeCue = resumeFunc(0);
-				}
-			}
-			if(stopped != 1 && this.oppTeam != null)
-			{
-				//Check for collision with people
-				for(var sec = 0; sec < this.oppTeam.length; sec++)
-				{
-					if(Math.abs(this.x - this.oppTeam[sec].x) < 16)
-					{
-						if(Math.abs(this.y - this.oppTeam[sec].y) < 8)
-						{
-							if(this.pushy == 1 && this.oppTeam[sec].pushy == 1 && this.oppTeam[sec].pushed != 1)
-							{
-	//??????????????What's up with this .pushed?
-								this.oppTeam[sec].pushed = 1;
-								this.oppTeam[sec].zeldaBump(this.spd/2, this.dir);
-								delete this.oppTeam[sec].pushed;
-							}
-							var stopped = 1;
-							this.x -= (dx/Math.abs(dx));
-							sec = 17;
-							ind = Math.abs(dx) + 1;
-						}
-					}
-				}
-			}
+			stoppedTemp = this.zeldaCheckStep("x", "y", dx > 0);
+		}
+		
+		if(stoppedTemp || out)
+		{
+			this.x -= (dx/Math.abs(dx));
+			i = Math.abs(dx);
 		}
 	}
+	stopped = stoppedTemp || stopped;
 	var dir = this.dir;
 	//If stopped, help person out by sliding around corner
-	if(stopped == 1 && out != 1)
+	if(stopped && !out )
 	{
 		ret = -1;
+		for(var i = 0; i < 1; i++)
+		{
+		
 		if(dir < 1 || dir > 3) //case 0:
 		{
 			var j = pixCoordToIndex(this.x + 16, this.y - 1, currentLevel.layerFuncData[this.layer]);
@@ -476,13 +672,14 @@ Sprite.prototype.zeldaStep = function(distance) {
 			var k = pixCoordToIndex(this.x + 16, this.y + 8, currentLevel.layerFuncData[this.layer]);
 			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
 			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
+		}
 		}
 	}
 	else if(out == 1)
 	{
 		ret = -1;
 	}
-	var stopped = 0;
-	var out = 0;
+	stopped = false;
+	out = false;
 	return ret;
-}
+};

@@ -30,7 +30,6 @@ Motion.use = function(person) {
 }
 
 function baseMotion() { }
-
 baseMotion.prototype.canUse = function() { return true; }
 baseMotion.prototype.use = function() { }
 baseMotion.prototype.see = function(person) { renderSpriteStd(person); }
@@ -87,25 +86,20 @@ Motion["chase"].use = function(person) {
 function pathMotion(person, spd) //Move a person along their set path at given speed.
 {
 	//document.getElementById("info").innerHTML = "path to " + person.path.x[0] + ", " + person.path.y[0];
-	var dist = Math.sqrt(Math.pow(person.x - person.path.x[0], 2) + Math.pow(person.y - person.path.y[0], 2))
+	var dist = Math.sqrt(Math.pow(person.x - person.path[0].x, 2) + Math.pow(person.y - person.path[0].y, 2))
 	if(dist == 0)
 	{
-		var index = 0;
-		while(person.path.x[index] != null)
+		person.path.shift();
+
+		if(person == cTeam[currentPlayer] && person.path.length == 0)
 		{
-			person.path.x[index] = person.path.x[index + 1];
-			person.path.y[index] = person.path.y[index + 1];
-			index++;
-		}
-		if(cTeam[currentPlayer].path.x[0] == null)
-		{
-			if(resumeCue == 0 || resumeCue == null)	{ }
+			if(!resumeCue)	{ }
 			else { resumeCue = resumeFunc(resumeCue); }
 		}
 	}
 	else
 	{
-		zeldaLockOnPoint(person, person.path.x[0], person.path.y[0]);
+		person.zeldaLockOnPoint(person.path[0].x, person.path[0].y);
 		var jump;
 //		if(Math.round(dist) < spd) { jump = Math.round(dist); }
 		if(dist < spd) { jump = dist; }

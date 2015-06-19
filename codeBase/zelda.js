@@ -9,62 +9,34 @@ function zeldaNPCMotion() //Function for all board NPC's movement in Zelda mode.
 		//Facilitate death
 		while(index < boardNPC.length && boardNPC[index].hp <= 0)
 		{
-			boardNPC[index].lvl = null;//"dead";
+			boardNPC[index].lvl = null;
 			deleteBoardC(boardNPC[index]);
 			boardNPC.splice(index, 1);
-//			console.log("boardNPC " + index + " removed. Array now " + boardNPC);
 		}
 				
 		//If at invalid index (bc death ran to end of boardNPC array), don't continue
 		if(index >= boardNPC.length) return;
-/*		else if(boardNPC[index].status == "stunned")
-		{
-			boardNPC[index].statusCountdown--;
-			if(boardNPC[index].statusCountdown <= 0)
-			{
-				delete boardNPC[index].status;
-			}
-		}*/
 		else
 		{
 			var cNPC = boardNPC[index];
-			/*if(cNPC.statusCountdown > 0)
-			{
-				cNPC.statusCountdown--;
-				if(cNPC.statusCountdown <= 0)
-				{
-					delete cNPC.status;
-				}
-			}*/
 		
 			var dist = Math.sqrt(Math.pow(boardNPC[index].x - player[currentPlayer].x, 2) + Math.pow(boardNPC[index].y - player[currentPlayer].y, 2));
-			if(dist > 800) { } //If totally beyond screen, don't handle
-			else if(boardNPC[index].path.x[0] != null) //Handle path motion
+			if(boardNPC[index].path.length > 0) //Handle path motion
 			{
 				boardNPC[index].updateFrame();
 				pathMotion(boardNPC[index], boardNPC[index].spd);
 			}
+			else if(dist > 800) { } //If totally beyond screen, don't handle
 			else
 			{
-				Status.handle(cNPC); //in status.js
-				Action.handle(cNPC); //in action.js
-				Motion.handle(cNPC); //in motion.js
+				//Set stance to default based on direction
+				cNPC.defaultStance();
 				
-/*				if(boardNPC[index].rcvr > 0) //Recovering
-				{
-					boardNPC[index].rcvr--;
-				}
-				else if(boardNPC[index].act == null) //Ready for new action
-				{
-					Action.use(boardNPC[index]); //in action.js
-				}
-				else //Continue action
-				{
-					Action.update(boardNPC[index]); //in action.js
-				}
-				
-				//Facillitate motion
-				Motion.use(boardNPC[index]); //in motion.js*/
+				cNPC.handleStatus();
+				cNPC.handleAction();
+				//Status.handle(cNPC); //in status.js
+				//Action.handle(cNPC); //in action.js
+				//Motion.handle(cNPC); //in motion.js
 			}
 			
 /*			else if(boardNPC[index].mvmt != 0 && boardNPC[index].path.x[0] == null) //If mover and no path
@@ -188,7 +160,7 @@ function zeldaNPCMotion() //Function for all board NPC's movement in Zelda mode.
 			}*/
 		}
 		//Move projectile
-		if(index < boardNPC.length && boardNPC[index].dart.img != null && boardNPC[index].dart.layer != null)
+/*		if(index < boardNPC.length && boardNPC[index].dart.img != null && boardNPC[index].dart.layer != null)
 		{
 			var moved = zeldaStep(boardNPC[index].dart, boardNPC[index].dart.spd);
 			for(var second = 0; second < player.length; second++)
@@ -211,26 +183,29 @@ function zeldaNPCMotion() //Function for all board NPC's movement in Zelda mode.
 				boardNPC[index].dart.frame = 0;
 				deleteBoardC(boardNPC[index].dart);
 			}
-		}
+		}*/
 	}
 }
 
 function zeldaPlayerMotion() //Function for current player's motion and other key handlings in Zelda mode.
 {
-	if(keyFirstDown[13] == 1 || keyFirstDown[32] == 1) //ENTER and SPACE
+	var person = player[currentPlayer];
+
+	if(keyFirstDown['enter'] || keyFirstDown['space'])
 	{
-		for(var index = 0; index < boardC.length; index++) //Future: change these boardNPCs to boardCs
+		for(var index = 0; index < boardC.length; index++)
 		{
-			if(Math.abs(player[currentPlayer].x - boardC[index].x) < 20 && Math.abs(player[currentPlayer].y - boardC[index].y) < 12 && boardC[index].program != null)
+			if(Math.abs(person.x - boardC[index].x) < 20 && Math.abs(person.y - boardC[index].y) < 12 && boardC[index].program != null)
 			{
 				resumeFunc = boardC[index].program;
 				resumeCue = boardC[index].program(0);
 			}
 		}
+		delete keyFirstDown['enter'];
+		delete keyFirstDown['space'];
 	}
-	if(keyFirstDown[75] == 1 && player[currentPlayer].act == null && player[currentPlayer].inAir == null) //K
+	if(keyFirstDown['k'] && person.act.length === 0 && !person.inAir)
 	{ 
-		delete player[currentPlayer].pet;
 		var prevPlayer = currentPlayer;
 		currentPlayer = (currentPlayer + 1)%player.length;
 		//Only switch between players on this map
@@ -238,54 +213,50 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			currentPlayer = (currentPlayer + 1)%player.length;
 		}
-		player[currentPlayer].x = player[prevPlayer].x;
-		player[currentPlayer].y = player[prevPlayer].y;
-		player[currentPlayer].layer = player[prevPlayer].layer;
-		player[currentPlayer].dir = player[prevPlayer].dir;
+		person = player[currentPlayer];
+		person.x = player[prevPlayer].x;
+		person.y = player[prevPlayer].y;
+		person.layer = player[prevPlayer].layer;
+		person.dir = player[prevPlayer].dir;
 		deleteBoardC(player[prevPlayer]);
-		insertBoardC(player[currentPlayer]);
-		keyFirstDown[75] = null;
+		insertBoardC(person);
+		delete keyFirstDown['k'];
 	}
-	if(player[currentPlayer].rcvr == 0)
+	
+	person.defaultStance();
+	
+	for(var key in keyFirstDown)
 	{
-		if(keyFirstDown[73] == 1) //I
+		if(key in person.keyFunc)
 		{
-			Action.use(player[currentPlayer], player[currentPlayer].iFunc);
-//			player[currentPlayer].iFunction();
-			keyFirstDown[73] = null;
-		}
-		if(keyFirstDown[74] == 1) //J
-		{
-			Action.use(player[currentPlayer], player[currentPlayer].jFunc);
-//			Action.act.slash(player[currentPlayer]);
-			/*player[currentPlayer].act = "slash";
-			player[currentPlayer].actCountdown = 4;*/
-			keyFirstDown[74] = null;
-		}
-		if(keyFirstDown[76] == 1) //L
-		{
-			Action.use(player[currentPlayer], player[currentPlayer].lFunc);
-//			player[currentPlayer].lFunction();
-			keyFirstDown[76] = null;
+			resumeFunc = person.keyFunc[key];
+			resumeCue = resumeFunc(0);
+			delete keyFirstDown[key];
 		}
 	}
-	else
+	
+	//Handle persistent actions
+	for(var i = 0; i < person.act.length; i++)
 	{
-		Action.update(player[currentPlayer]);
-//		player[currentPlayer].rcvr--;
+		var currentAct = person.getAct(i);
+		currentAct.update(person);
+		if(currentAct.time <= 0)
+		{
+			person.act.splice(i, 1);
+			if(process == "TRPG")
+			{
+				TRPGNextTurn(); //in TRPG.js
+			}
+		}
 	}
-
-	if(player[currentPlayer].hp <= 0)
+	
+	if(person.hp <= 0)
 	{
 		resumeFunc = die;
 		resumeCue = die(1);
 		return;
 	}
-//alert("something");
-	//These are the aspects of Sasha and Somahl's specials each loop
-/*	if(player[currentPlayer].inAir == 1)
-	{*/
-		if(player[currentPlayer].act == "jumping")
+/*		if(player[currentPlayer].act == "jumping")
 		{
 			//actionCountdown goes from 32 to -32 before this is not needed 
 			//First (>0), move north using upper layer collisions to emulate jumping graphic
@@ -333,57 +304,6 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 				delete player[currentPlayer].inAir;
 			}
 			player[currentPlayer].actCountdown -= 4;
-
-//Soon to be obsolete			
-/*			if(player[currentPlayer].actCountdown <= 0 || Math.abs(player[currentPlayer].ix - player[currentPlayer].x) > 40 || Math.abs(player[currentPlayer].iy - (player[currentPlayer].y + 64)) > 40)
-			{
-				var noLand = null;
-				var rev = null;
-				for(var ind = 0; ind < 8; ind++)
-				{
-					for(var sec = 0; sec < 16; sec++)
-					{
-						var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + ind, currentLevel.layerFuncData[player[currentPlayer].layer]);
-						if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i] == 255)
-						{
-							var noLand = 1;
-						}
-					}
-				}
-				if(noLand == 1)
-				{
-					for(var ind = 0; ind < 8; ind++)
-					{
-						for(var sec = 0; sec < 16; sec++)
-						{
-							var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + 64 + ind, currentLevel.layerFuncData[player[currentPlayer].layer - 1]);
-							if(currentLevel.layerFuncData[player[currentPlayer].layer - 1].data[i] == 255)
-							{
-								var rev = 1;
-							}
-						}
-					}
-				}
-				if(rev == 1)
-				{
-					player[currentPlayer].path.x[0] = player[currentPlayer].ix;
-					player[currentPlayer].path.y[0] = player[currentPlayer].iy;
-				}
-				else if(noLand == 1)
-				{
-					player[currentPlayer].path.x[0] = player[currentPlayer].x;
-					player[currentPlayer].path.y[0] = player[currentPlayer].y + 64;
-				}
-				if(noLand == 1)
-				{
-					player[currentPlayer].layer--;
-				}
-				player[currentPlayer].inAir = null;
-			}
-			else
-			{
-				player[currentPlayer].actCountdown--;
-			}*/
 		}
 		else if(player[currentPlayer].act == "homing")
 		{
@@ -409,36 +329,33 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 				delete player[currentPlayer].act;
 			}
 //			pathMotion(player[currentPlayer], 32);
-		}
+		}*/
 //	}
-	if(player[currentPlayer].path.x[0] == null)
+	if(person.path.length === 0)
 	{
 		figurePlayerDirection();
-		if (player[currentPlayer].dir >= 4)
+		if (person.dir >= 4)
 		{
-			player[currentPlayer].dir -= 4;
+			person.dir -= 4;
 		}
 		if (dKeys == 0)
 		{
-			player[currentPlayer].frame = 0;
+			person.frame = 0;
 		}
-		else if (frameClock == 1)
+		else
 		{
-			player[currentPlayer].frame++;
-			if (player[currentPlayer].frame >= 4)
-			{
-				player[currentPlayer].frame = 0;
-			}
+			person.updateFrame();
 		}
-		if(dKeys != 0 && player[currentPlayer].act != "slash") //If pressing direction(s), step
+		if(dKeys != 0) //If pressing direction(s), step
 		{
-			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
-			zeldaStep(player[currentPlayer], player[currentPlayer].spd);
-			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
+//			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
+			if(person.zeldaStep(person.spd) < 0) console.log("stopped");
+//			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
 		}
-		for(var ind = 0; ind < 8; ind++)
+		var limit = person.baseLength/2;
+		for(var ind = -limit; ind < limit; ind++)
 		{
-			for(var sec = 0; sec < 16; sec++)
+			for(var sec = -limit; sec < limit; sec++)
 			{
 				var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + ind, currentLevel.layerFuncData[player[currentPlayer].layer]);
 				if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i] == 100)
@@ -462,10 +379,10 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 							resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
 						}	
 					}
-/*					else //Just run program if on
+					else //Just run program if on
 					{
 						resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
-					}*/
+					}
 					ind = 9;
 					sec = 17;
 				}
@@ -476,15 +393,12 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	}
 	else
 	{
-		if(frameClock == 1)
-		{
-			player[currentPlayer].frame = (player[currentPlayer].frame + 1)%4;
-		}
-		pathMotion(player[currentPlayer], player[currentPlayer].spd);
+		person.updateFrame();
+		pathMotion(person, person.spd);
 	}
 
 	//Pet motion
-	if(player[currentPlayer].pet != null) //If pet is in use
+/*	if(player[currentPlayer].pet != null) //If pet is in use
 	{
 		if(player[currentPlayer].pet.status == "active") //If pet is in active state
 		{
@@ -553,10 +467,10 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 				delete player[currentPlayer].pet;
 			}
 		}
-	}
+	}*/
 	
 	//Projectile motion
-	if(player[currentPlayer].dart.img != null && player[currentPlayer].dart.layer != null)
+/*	if(player[currentPlayer].dart.img != null && player[currentPlayer].dart.layer != null)
 	{
 		//Move projectile
 		var moved = zeldaStep(player[currentPlayer].dart, player[currentPlayer].dart.spd);
@@ -585,5 +499,5 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			player[currentPlayer].dart.frame = (player[currentPlayer].dart.frame + 1)%4;
 		}
-	}
+	}*/
 }

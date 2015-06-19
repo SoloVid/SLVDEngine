@@ -49,7 +49,7 @@ function handleMenu() {
 	var bestPoint = iPoint;
 	var bestdx = 1000; //Distance from prevPoint to bestPoint
 	var bestdy = 1000;
-	if(keyFirstDown[37] == 1 || keyFirstDown[65] == 1) //Left
+	if(keyFirstDown['a'] || keyFirstDown['left']) //Left
 	{
 		do //While index point does not equal original point
 		{
@@ -85,7 +85,7 @@ function handleMenu() {
 		} while(iPoint != prevPoint);
 		opMenu.currentPoint = bestPoint;
 	}
-	else if(keyFirstDown[38] == 1 || keyFirstDown[87] == 1) //Up
+	else if(keyFirstDown['w'] || keyFirstDown['up']) //Up
 	{
 		do //While index point does not equal original point
 		{
@@ -122,7 +122,7 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 		//		opMenu.currentPoint = (opMenu.point.length + opMenu.currentPoint - 1)%opMenu.point.length;
 	}
-	else if(keyFirstDown[39] == 1 || keyFirstDown[68] == 1) //Right
+	else if(keyFirstDown['d'] || keyFirstDown['right']) //Right
 	{
 		do //While index point does not equal original point
 		{
@@ -159,7 +159,7 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 		//opMenu.currentPoint = (opMenu.currentPoint + 1)%opMenu.point.length;
 	}
-	else if(keyFirstDown[40] == 1 || keyFirstDown[83] == 1) //Down
+	else if(keyFirstDown['s'] || keyFirstDown['down']) //Down
 	{
 		do //While index point does not equal original point
 		{
@@ -196,14 +196,6 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 //		opMenu.currentPoint = (opMenu.currentPoint + 1)%opMenu.point.length;
 	}
-/*	keyFirstDown[37] = null;
-	keyFirstDown[38] = null;
-	keyFirstDown[39] = null;
-	keyFirstDown[40] = null;
-	keyFirstDown[65] = null;
-	keyFirstDown[87] = null;
-	keyFirstDown[68] = null;
-	keyFirstDown[83] = null;*/
 }
 
 //File selection menu
