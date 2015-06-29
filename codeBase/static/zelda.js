@@ -1,66 +1,149 @@
-function zeldaNPCMotion() //Function for all board NPC's movement in Zelda mode.
+function zeldaNPCMotion() //Function for all non-player boardC's movement in Zelda mode.
 {
 	if(process != "zelda")
 	{
 		return -1;
 	}
-	for(var index = 0; index < boardNPC.length; index++)
+	for(var index = 0; index < boardC.length; index++)
 	{
-		//Facilitate death
-		while(index < boardNPC.length && boardNPC[index].hp <= 0)
+		if(boardC[index] != player[currentPlayer])
 		{
-			boardNPC[index].lvl = null;
-			deleteBoardC(boardNPC[index]);
-			boardNPC.splice(index, 1);
-		}
-				
-		//If at invalid index (bc death ran to end of boardNPC array), don't continue
-		if(index >= boardNPC.length) return;
-		else
-		{
-			var cNPC = boardNPC[index];
-		
-			var dist = Math.sqrt(Math.pow(boardNPC[index].x - player[currentPlayer].x, 2) + Math.pow(boardNPC[index].y - player[currentPlayer].y, 2));
-			if(boardNPC[index].path.length > 0) //Handle path motion
+			//Facilitate death
+			while(index < boardC.length && boardC[index].hp <= 0)
 			{
-				boardNPC[index].updateFrame();
-				pathMotion(boardNPC[index], boardNPC[index].spd);
+				boardC[index].lvl = null;
+				deleteBoardC(boardC[index]);
+				boardC.splice(index, 1);
 			}
-			else if(dist > 800) { } //If totally beyond screen, don't handle
+					
+			//If at invalid index (bc death ran to end of boardC array), don't continue
+			if(index >= boardC.length) return;
 			else
 			{
-				//Set stance to default based on direction
-				cNPC.defaultStance();
-				
-				cNPC.handleStatus();
-				cNPC.handleAction();
-				//Status.handle(cNPC); //in status.js
-				//Action.handle(cNPC); //in action.js
-				//Motion.handle(cNPC); //in motion.js
-			}
+				var cNPC = boardC[index];
 			
-/*			else if(boardNPC[index].mvmt != 0 && boardNPC[index].path.x[0] == null) //If mover and no path
-			{
-				if(dist < 256 && boardNPC[index].dmnr == 2 && boardNPC[index].layer == player[currentPlayer].layer)
+				var dist = Math.sqrt(Math.pow(boardC[index].x - player[currentPlayer].x, 2) + Math.pow(boardC[index].y - player[currentPlayer].y, 2));
+				if(boardC[index].path.length > 0) //Handle path motion
 				{
-					var tDirection = boardNPC[index].dir;
-					zeldaLockOnPlayer(boardNPC[index]);
-					if(Math.abs(tDirection - boardNPC[index].dir) < 1 || Math.abs(tDirection - boardNPC[index].dir) > 3)
+					boardC[index].updateFrame();
+					boardC[index].pathMotion(boardC[index].spd);
+				}
+				else if(dist > 800) { } //If totally beyond screen, don't handle
+				else
+				{
+					//Set stance to default based on direction
+					cNPC.defaultStance();
+					
+					cNPC.handleStatus();
+					cNPC.handleAction();
+				}
+				
+	/*			else if(boardNPC[index].mvmt != 0 && boardNPC[index].path.x[0] == null) //If mover and no path
+				{
+					if(dist < 256 && boardNPC[index].dmnr == 2 && boardNPC[index].layer == player[currentPlayer].layer)
 					{
-						updateFrame(boardNPC[index]);
-						if(boardNPC[index].act != "slash") zeldaStep(boardNPC[index], boardNPC[index].spd);
-						boardNPC[index].steps = 0;
-						if(boardNPC[index].dart.img != null && boardNPC[index].rcvr == 0)
+						var tDirection = boardNPC[index].dir;
+						zeldaLockOnPlayer(boardNPC[index]);
+						if(Math.abs(tDirection - boardNPC[index].dir) < 1 || Math.abs(tDirection - boardNPC[index].dir) > 3)
 						{
-							if(boardNPC[index].dart.layer == null)
+							updateFrame(boardNPC[index]);
+							if(boardNPC[index].act != "slash") zeldaStep(boardNPC[index], boardNPC[index].spd);
+							boardNPC[index].steps = 0;
+							if(boardNPC[index].dart.img != null && boardNPC[index].rcvr == 0)
+							{
+								if(boardNPC[index].dart.layer == null)
+								{
+									boardNPC[index].dart.x = boardNPC[index].x;
+									boardNPC[index].dart.y = boardNPC[index].y - 24;
+									boardNPC[index].dart.layer = boardNPC[index].layer;
+									boardNPC[index].dart.dir = Math.round(boardNPC[index].dir);
+								}
+							}	
+							else if(dist < 20 && boardNPC[index].rcvr == 0 && boardNPC[index].act != "slash")
+							{
+								Action.act.slash(boardNPC[index]);
+							}
+							else if(boardNPC[index].rcvr != 0)
+							{
+								boardNPC[index].rcvr--;
+								if(boardNPC[index].rcvr < 0)
+								{
+									boardNPC[index].rcvr = 0;
+								}
+							}
+							var skip = 1;
+						}
+						else
+						{
+							boardNPC[index].dir = tDirection;
+							var skip = null;
+						}
+					}
+					else var skip = null;
+					if(skip != 1)
+					{
+						if(boardNPC[index].steps != 0)
+						{
+							updateFrame(boardNPC[index]);
+							zeldaStep(boardNPC[index], boardNPC[index].spd);
+							boardNPC[index].steps--;
+							if(boardNPC[index].steps == 0)
+							{
+								boardNPC[index].wait = randomInt(4) + 28;
+							}
+						}
+						else if(boardNPC[index].wait != 0 && boardNPC[index].wait != null)
+						{
+							boardNPC[index].wait--;
+							boardNPC[index].frame = 0;
+						}
+						else if(boardNPC[index].steps == 0)
+						{
+							if(boardNPC[index].mvmt == 1) //Random
+							{
+								boardNPC[index].dir = randomInt(4) - 1;
+								boardNPC[index].steps = randomInt(16) + 16;
+							}
+							else if(boardNPC[index].mvmt == 2) //Back and forth
+							{
+								boardNPC[index].dir = Math.round((boardNPC[index].dir + 2)%4);
+								boardNPC[index].steps = 64;
+							}
+							else if(boardNPC[index].mvmt == 4) //Square
+							{
+								boardNPC[index].dir = Math.round((boardNPC[index].dir + 1)%4);
+								boardNPC[index].steps = 64;
+							}
+						}
+					}
+				}
+				else if(boardNPC[index].path.x[0] != null) //If path
+				{
+					if(frameClock == 1)
+					{
+						boardNPC[index].frame = (boardNPC[index].frame + 1)%4;
+					}
+					pathMotion(boardNPC[index], boardNPC[index].spd);
+				}
+				else if(boardNPC[index].mvmt == 0) //If stationary
+				{
+					zeldaLockOnPlayer(boardNPC[index]);
+					if(boardNPC[index].dmnr == 2)
+					{
+						if(boardNPC[index].dart.img != null && dist < 256 && boardNPC[index].rcvr == 0)
+						{
+							if((boardNPC[index].dart.layer == null || Math.abs(boardNPC[index].dart.x - boardNPC[index].x) > 700 || Math.abs(boardNPC[index].dart.y - boardNPC[index].y) > 500) && boardNPC[index].rcvr == 0)
 							{
 								boardNPC[index].dart.x = boardNPC[index].x;
 								boardNPC[index].dart.y = boardNPC[index].y - 24;
 								boardNPC[index].dart.layer = boardNPC[index].layer;
 								boardNPC[index].dart.dir = Math.round(boardNPC[index].dir);
+								boardNPC[index].rcvr = 16 - boardNPC[index].spd;
+								
+								insertBoardC(boardNPC[index].dart);
 							}
-						}	
-						else if(dist < 20 && boardNPC[index].rcvr == 0 && boardNPC[index].act != "slash")
+						}
+						if(dist < 20 && boardNPC[index].rcvr == 0 && boardNPC[index].act != "slash")
 						{
 							Action.act.slash(boardNPC[index]);
 						}
@@ -72,118 +155,36 @@ function zeldaNPCMotion() //Function for all board NPC's movement in Zelda mode.
 								boardNPC[index].rcvr = 0;
 							}
 						}
-						var skip = 1;
 					}
-					else
-					{
-						boardNPC[index].dir = tDirection;
-						var skip = null;
-					}
-				}
-				else var skip = null;
-				if(skip != 1)
-				{
-					if(boardNPC[index].steps != 0)
-					{
-						updateFrame(boardNPC[index]);
-						zeldaStep(boardNPC[index], boardNPC[index].spd);
-						boardNPC[index].steps--;
-						if(boardNPC[index].steps == 0)
-						{
-							boardNPC[index].wait = randomInt(4) + 28;
-						}
-					}
-					else if(boardNPC[index].wait != 0 && boardNPC[index].wait != null)
-					{
-						boardNPC[index].wait--;
-						boardNPC[index].frame = 0;
-					}
-					else if(boardNPC[index].steps == 0)
-					{
-						if(boardNPC[index].mvmt == 1) //Random
-						{
-							boardNPC[index].dir = randomInt(4) - 1;
-							boardNPC[index].steps = randomInt(16) + 16;
-						}
-						else if(boardNPC[index].mvmt == 2) //Back and forth
-						{
-							boardNPC[index].dir = Math.round((boardNPC[index].dir + 2)%4);
-							boardNPC[index].steps = 64;
-						}
-						else if(boardNPC[index].mvmt == 4) //Square
-						{
-							boardNPC[index].dir = Math.round((boardNPC[index].dir + 1)%4);
-							boardNPC[index].steps = 64;
-						}
-					}
-				}
+				}*/
 			}
-			else if(boardNPC[index].path.x[0] != null) //If path
+			//Move projectile
+	/*		if(index < boardNPC.length && boardNPC[index].dart.img != null && boardNPC[index].dart.layer != null)
 			{
-				if(frameClock == 1)
+				var moved = zeldaStep(boardNPC[index].dart, boardNPC[index].dart.spd);
+				for(var second = 0; second < player.length; second++)
 				{
-					boardNPC[index].frame = (boardNPC[index].frame + 1)%4;
+					if((Math.abs(boardNPC[index].dart.y - (player[second].y - 24)) < 32) && (Math.abs(boardNPC[index].dart.x - player[second].x) < 16))
+					{
+						damage(boardNPC[index].dart, player[second]); //damage hit opponent
+						boardNPC[index].dart.layer = null; //remove image
+						boardNPC[index].dart.frame = 0; //reset frame
+						deleteBoardC(boardNPC[index].dart);
+						player[second].status = "hurt"; //"hurt" opponent
+						player[second].statusCountdown = 4; //"hurt" blinks
+						second = player.length; //break out of loop
+					}
 				}
-				pathMotion(boardNPC[index], boardNPC[index].spd);
-			}
-			else if(boardNPC[index].mvmt == 0) //If stationary
-			{
-				zeldaLockOnPlayer(boardNPC[index]);
-				if(boardNPC[index].dmnr == 2)
+				//If hit terrain
+				if(moved == -1)
 				{
-					if(boardNPC[index].dart.img != null && dist < 256 && boardNPC[index].rcvr == 0)
-					{
-						if((boardNPC[index].dart.layer == null || Math.abs(boardNPC[index].dart.x - boardNPC[index].x) > 700 || Math.abs(boardNPC[index].dart.y - boardNPC[index].y) > 500) && boardNPC[index].rcvr == 0)
-						{
-							boardNPC[index].dart.x = boardNPC[index].x;
-							boardNPC[index].dart.y = boardNPC[index].y - 24;
-							boardNPC[index].dart.layer = boardNPC[index].layer;
-							boardNPC[index].dart.dir = Math.round(boardNPC[index].dir);
-							boardNPC[index].rcvr = 16 - boardNPC[index].spd;
-							
-							insertBoardC(boardNPC[index].dart);
-						}
-					}
-					if(dist < 20 && boardNPC[index].rcvr == 0 && boardNPC[index].act != "slash")
-					{
-						Action.act.slash(boardNPC[index]);
-					}
-					else if(boardNPC[index].rcvr != 0)
-					{
-						boardNPC[index].rcvr--;
-						if(boardNPC[index].rcvr < 0)
-						{
-							boardNPC[index].rcvr = 0;
-						}
-					}
+					boardNPC[index].dart.layer = null;
+					boardNPC[index].dart.frame = 0;
+					deleteBoardC(boardNPC[index].dart);
 				}
 			}*/
+
 		}
-		//Move projectile
-/*		if(index < boardNPC.length && boardNPC[index].dart.img != null && boardNPC[index].dart.layer != null)
-		{
-			var moved = zeldaStep(boardNPC[index].dart, boardNPC[index].dart.spd);
-			for(var second = 0; second < player.length; second++)
-			{
-				if((Math.abs(boardNPC[index].dart.y - (player[second].y - 24)) < 32) && (Math.abs(boardNPC[index].dart.x - player[second].x) < 16))
-				{
-					damage(boardNPC[index].dart, player[second]); //damage hit opponent
-					boardNPC[index].dart.layer = null; //remove image
-					boardNPC[index].dart.frame = 0; //reset frame
-					deleteBoardC(boardNPC[index].dart);
-					player[second].status = "hurt"; //"hurt" opponent
-					player[second].statusCountdown = 4; //"hurt" blinks
-					second = player.length; //break out of loop
-				}
-			}
-			//If hit terrain
-			if(moved == -1)
-			{
-				boardNPC[index].dart.layer = null;
-				boardNPC[index].dart.frame = 0;
-				deleteBoardC(boardNPC[index].dart);
-			}
-		}*/
 	}
 }
 
@@ -346,10 +347,10 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			person.updateFrame();
 		}
-		if(dKeys != 0) //If pressing direction(s), step
+		if(dKeys) //If pressing direction(s), step
 		{
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
-			if(person.zeldaStep(person.spd) < 0) console.log("stopped");
+			if(person.zeldaStep(person.spd) < 0) {}//console.log("stopped");
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
 		}
 		var limit = person.baseLength/2;
@@ -394,7 +395,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	else
 	{
 		person.updateFrame();
-		pathMotion(person, person.spd);
+		person.pathMotion(person.spd);
 	}
 
 	//Pet motion

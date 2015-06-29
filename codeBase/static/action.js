@@ -24,7 +24,7 @@ baseAction.prototype.time = 0;
 baseAction.prototype.prob = 1;
 baseAction.prototype.type = "attack";
 baseAction.prototype.getProbability = function() { return this.prob; };
-baseAction.prototype.canUse = function(person) { return false; };
+baseAction.prototype.canUse = function(person) { return true; };
 baseAction.prototype.use = function(person) { };
 baseAction.prototype.update = function(person) { this.time--; };
 baseAction.prototype.see = function(person) { };
@@ -42,6 +42,7 @@ Action["slash"].prototype.canUse = function(person) {
 	return Math.sqrt(Math.pow(player[currentPlayer].x - person.x, 2) + Math.pow(player[currentPlayer].y - person.y, 2)) < 40 && person.canSeePlayer();
 };
 Action["slash"].prototype.use = function(person) {
+	this.time = 4;
 	for(var third = 0; third < boardC.length; third++)
 	{
 		if(boardC[third].team != person.team)

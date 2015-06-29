@@ -43,3 +43,5 @@ function unallyTeams(team1, team2) {
 	team1.removeAlly(team2);
 	team2.removeAlly(team1);
 }
+
+Teams["neutral"] = new Team("neutral");

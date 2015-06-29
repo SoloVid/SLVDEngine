@@ -1,4 +1,4 @@
-function Sprite(name, spriteSheet)
+function Sprite(name, spriteSheet, team)
 {
 	this.name = name;
 	this.img = spriteSheet;
@@ -6,6 +6,8 @@ function Sprite(name, spriteSheet)
 //	this.dart = {};
 //	this.dart.prototype = this;
 }
+var SpriteTemplate = {};
+
 Sprite.prototype.xres = 32;
 Sprite.prototype.yres = 64;
 
@@ -21,7 +23,7 @@ Sprite.prototype.omniDir = false;
 Sprite.prototype.rotate = 0;
 
 Sprite.prototype.lvl;
-Sprite.prototype.team = null;
+Sprite.prototype.team = "neutral";
 Sprite.prototype.x = 100;
 Sprite.prototype.y = 100;
 Sprite.prototype.offX = 0;
@@ -36,14 +38,14 @@ Sprite.prototype.steps = 0;// = 5;
 Sprite.prototype.wait;// = 0;
 
 Sprite.prototype.act = [];
-Sprite.prototype.act.push = function(item) {
+Sprite.prototype.pushAct = function(item) {
 	if(this.act.length == 0) {
 		this.act = [];
 	}
-	Array.push.call(this.act, item);
+	this.act.push(item);
 };
-Sprite.prototype.act.splice = function(index, length) {
-	Array.splice.call(this.act, index, length);
+Sprite.prototype.spliceAct = function(index, length) {
+	this.act.splice(index, length);
 	if(this.act.length <= 0)
 	{
 		delete this.act;
@@ -58,10 +60,10 @@ Sprite.prototype.getActTime = function(index) {
 	return this.act[index][1];
 }
 Sprite.prototype.getActOpt = function(index) {
-	return this.act[index][0];
+	return this.actSet[index];
 };
 Sprite.prototype.getActOptProb = function(index) {
-	return this.act[index][1];
+	return this.actSet[index].prob;
 };
 Sprite.prototype.handleAction = function() {
 	if(this.canAct)
@@ -70,18 +72,18 @@ Sprite.prototype.handleAction = function() {
 		var newAct = this.pickAction();
 		if(newAct !== null)
 		{
-			this.act.push(newAct);
+			this.pushAct(newAct);
 			newAct.use(this);
 		}
 		
 		//Handle persistent actions
 		for(var i = 0; i < this.act.length; i++)
 		{
-			var currentAct = person.getAct(i);
+			var currentAct = this.getAct(i);
 			currentAct.update(this);
 			if(currentAct.time <= 0)
 			{
-				person.act.splice(i, 1);
+				this.spliceAct(i, 1);
 				if(process == "TRPG")
 				{
 					TRPGNextTurn(); //in TRPG.js
@@ -150,6 +152,7 @@ Sprite.prototype.requestAction = function(action) {
 		}
 		if(!typeTaken)
 		{
+			this.pushAct(action);
 			action.use(this);
 		}
 	}
@@ -194,7 +197,14 @@ Sprite.prototype.frame = 0;
 
 Sprite.prototype.stance = 0;
 Sprite.prototype.defaultStance = function() {
-	this.stance = determineColumn(this.dir);
+	if(!this.omniDir)
+	{
+		this.stance = determineColumn(this.dir);
+	}
+	else
+	{
+		this.stance = 0;
+	}
 };
 Sprite.prototype.getStance = function() {
 	return this.stance;
@@ -229,6 +239,18 @@ Sprite.prototype.canSee = true;
 Sprite.prototype.getHp = function() {
 	return this.hp;
 };
+Sprite.prototype.getImage = function() {
+	if(this.img)
+	{
+		if(!(this.img in image))
+		{
+			image[this.img] = new Image();
+			image[this.img].src = "files/images/" + this.img.replace(/\"/g, "");
+		}
+		//this.img = image[this.img];
+	}
+	return image[this.img];
+}
 Sprite.prototype.getMaxHp = function() {
 	return 100;
 };
@@ -258,6 +280,9 @@ Sprite.prototype.getSpeed = function() {
 Sprite.prototype.getStrength = function() {
 	return this.strg;
 };
+Sprite.prototype.getTeam = function() {
+	return Teams[this.team];
+}
 
 Sprite.prototype.preventAction = function() { this.canAct = false; };
 Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; };
@@ -294,20 +319,37 @@ Sprite.prototype.damage = function(amount) {
 };
 
 //All of the "give" functions are intended to be passed a "new" object
-Sprite.prototype.giveAction = function(action) {
+Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 	if(this.actSet.length == 0)
 	{
 		this.actSet = [];
 	}
 	
-	var actA;
-
 	if((typeof action) == "string")
 	{
 		action = new Action[action];
 	}
 	
-	this.actSet.push(actA);
+	this.actSet.push(action);
+	
+	if(keyFuncHandle !== undefined)
+	{
+		var tempKeyFunc = {};
+		
+		for(var i in this.keyFunc)
+		{
+			tempKeyFunc[i] = this.keyFunc;
+		}
+		
+		tempKeyFunc[keyFuncHandle] = (function(person, act) {
+			//console.log("assigned " + person + " with " + act + " on " + keyFuncHandle);
+			return function() {
+				act.use(person);
+			}
+		} (this, action));
+		
+		this.keyFunc = tempKeyFunc;
+	}
 };
 Sprite.prototype.giveStatus = function(status) {
 	if(this.status.length == 0)
@@ -337,6 +379,31 @@ Sprite.prototype.hasStatus = function(status) {
 		}
 	}
 	return false;
+};
+
+//Move a person along their set path at given speed.
+Sprite.prototype.pathMotion = function(spd) {
+	var dist = Math.sqrt(Math.pow(this.x - this.path[0].x, 2) + Math.pow(this.y - this.path[0].y, 2))
+	if(dist == 0)
+	{
+		this.path.shift();
+
+		if(this == cTeam[currentPlayer] && this.path.length == 0)
+		{
+			if(!resumeCue)	{ }
+			else { resumeCue = resumeFunc(resumeCue); }
+		}
+	}
+	else
+	{
+		this.zeldaLockOnPoint(this.path[0].x, this.path[0].y);
+		var jump;
+//		if(Math.round(dist) < spd) { jump = Math.round(dist); }
+		if(dist < spd) { jump = dist; }
+		else { jump = spd; }
+		this.y -= Math.round(jump*Math.sin((this.dir)*(Math.PI/2)));
+		this.x += Math.round(jump*Math.cos((this.dir)*(Math.PI/2)));	
+	}
 };
 
 //Based in time.js, this function provides simple interface for setting a timed sequence of movement events for Sprites 
@@ -442,7 +509,7 @@ Sprite.prototype.see = function(ctx) {
 	//bufferCtx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
 		
 	var col = this.getStance(); //in functions.js
-	var tImg = this.img;
+	var tImg = this.getImage();
 	var sx = this.xres*col;
 	var sy = this.yres*this.frame;
 	var pos = this.getShownPosition();
@@ -476,7 +543,7 @@ Sprite.prototype.updateFrame = function() {
 	if(frameClock == 1)
 	{
 		this.frame++;
-		if(this.img.height <= this.frame*this.yres)
+		if(this.getImage().height <= this.frame*this.yres)
 		{
 			this.frame = 0;
 		}
@@ -490,8 +557,7 @@ Sprite.prototype.walkPath = function() {
 		var spd = this.spd;
 		for(var i = 0; i < arguments.length; i += 2)
 		{
-			this.path.x.push(arguments[i]);
-			this.path.y.push(arguments[i + 1]);
+			this.addPointToPath(arguments[i], arguments[i + 1]);
 		}
 	}
 	else
@@ -544,7 +610,7 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	//Check for collision with people
 	for(var i = 0; i < boardC.length; i++)
 	{
-		if(this.team != boardC.team)
+		if(this.team != boardC[i].team)
 		{
 			var collisionDist = this.baseLength + boardC[i].baseLength;
 			if(Math.abs(this.y - boardC[i].y) < collisionDist)
@@ -612,7 +678,7 @@ Sprite.prototype.zeldaStep = function(distance) {
 		
 		if(stoppedTemp || out)
 		{
-			this.y -= 2*(dy/Math.abs(dy));
+			this.y -= (dy/Math.abs(dy));
 			i = Math.abs(dy);
 		}
 	}

@@ -83,13 +83,8 @@ $(document).mousemove(function(event)
 		var thisType = follower.className;
 		var regex = /[\s]*draggable[\s]*/;
 		thisType = thisType.replace(regex, "");
-//	console.log(thisType);
-		var elementList = document.getElementById("layers").getElementsByClassName(thisType);
-		var i = 0;
-		while(elementList[i] != follower)
-		{
-			i++;
-		}	
+		
+		var i = /[\d]+/.exec(follower.id)[0];
 
 		//Update XML
 		var oldXML = levelXML.getElementsByTagName(thisType)[i].textContent;
@@ -319,7 +314,8 @@ $("#saveChanges").click(function(event)
 
 		if($("#template").val())
 		{		
-			try
+			updateObjectNew($("#template").val(), typeSelected, indexSelected);
+			/*try
 			{
 	var xhr;
 	if (window.XMLHttpRequest) {
@@ -331,27 +327,15 @@ $("#saveChanges").click(function(event)
 	xhr.onreadystatechange = (function() { var t = typeSelected; var i = indexSelected; var x = xhr; return function(){ if(x.readyState == 4) updateObject(x.responseText, t, i);} })();
 	xhr.open("GET","files/templates/" + $("#template").val());
 	xhr.send();
-
-//	updateObjectRequest($("#template").val(), typeSelected, indexSelected);
-				/*var xhr;
-				if (window.XMLHttpRequest) {
-					xhr = new XMLHttpRequest();
-				} else if (window.ActiveXObject) {
-					xhr = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-
-				xhr.onreadystatechange = function(){ if(xhr.readyState == 4) updateObject(xhr.responseText);};
-				xhr.open("GET","files/templates/" + $("#template").val());
-				xhr.send();*/
 			}
 			catch(e)
 			{
 				updateObject();
-			}
+			}*/
 		}
 		else
 		{
-			updateObject();
+			updateObjectNew();
 		}
 
 /*		if($("#template").val() != "")

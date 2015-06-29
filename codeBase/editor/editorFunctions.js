@@ -429,6 +429,99 @@ function updateObject(templateData, type, index)
 	drawVectors();
 }
 
+function updateObjectNew(template, type, index)
+{
+	var t = modelSpriteTemplate[template] || new Sprite();
+
+	if(type === undefined) type = typeSelected;
+	if(index === undefined) index = indexSelected;
+
+	XMLNode = levelXML.getElementsByTagName(type)[index];
+	HTMLNode = document.getElementById(type + index);
+	HTMLImg = HTMLNode.getElementsByTagName("img")[0];
+
+	var code = XMLNode.textContent;
+	
+	console.log(code);
+	
+	var dRegex = /[\d]+/;
+	
+	var img, x, y, layer, xres, yres, dir;
+	
+	try {
+		if(t.img) {
+			img = "files/images/" + t.img;
+		}
+		else {
+			img = code.match(/img[\s]*=[\s]*"[^"]+";/)[0];
+			img = "files/images/" + img.match(/"(.*?)"/)[1];
+		}
+	}
+	catch(e) { img = subImg; }
+	
+	try {
+		x = code.match(/x[\s]*=[\s]*[\d]+;/)[0];
+		x = Number(x.match(dRegex)[0]);
+		
+		y = code.match(/y[\s]*=[\s]*[\d]+;/)[0];
+		y = Number(y.match(dRegex)[0]);
+		
+		layer = code.match(/layer[\s]*=[\s]*[\d]+;/)[0];
+		layer = Number(layer.match(dRegex)[0]);
+	}
+	catch(e) { alert("You need to have x, y, and layer assigned!"); return; }
+
+	try {
+		if(t.xres) {
+			xres = t.xres;
+		}
+		else {
+			xres = code.match(/xres[\s]*=[\s]*[\d]+;/)[0];
+			xres = Number(xres.match(dRegex)[0]);
+		}
+
+		if(t.yres) {
+			yres = t.yres;
+		}
+		else {
+			yres = code.match(/yres[\s]*=[\s]*[\d]+;/)[0];
+			yres = Number(yres.match(dRegex)[0]);
+		}
+	}
+	catch(e) { var xres = 32; var yres = 32; }
+
+	try {
+		if(t.dir) {
+			dir = t.dir;
+		}
+		else {
+			dir = code.match(/dir[\s]*=[\s]*[\d]+;/)[0];
+			dir = Number(dir.match(dRegex)[0]);	
+		}
+	}
+	catch(e) { var dir = 3; }
+	
+	document.getElementById("layers").getElementsByClassName("layerDisplay")[layer].appendChild(HTMLNode);		
+	
+	HTMLImg.src = img;
+	
+	//(boardC[second].x - (((boardC[second].xres)/2) - 8)) - wX, (boardC[second].y - (boardC[second].yres - 8)) - wY + tSqueeze
+	
+	var x = x - xres/2 - t.baseOffX - t.offX;
+	var y = y - yres + t.baseLength/2 - t.baseOffY - t.offY;
+	
+	HTMLNode.style.left = x + "px";
+	HTMLNode.style.top = y + "px";
+	
+	HTMLNode.style.width = xres + "px";
+	HTMLNode.style.height = yres + "px";
+	
+	HTMLImg.style.left = (-(xres*determineColumn(t.dir))) + "px";
+	
+	generateLayerMenu();
+	drawVectors();
+}
+
 function updateObjectRequest(fil, type, index)
 {
 	var xhr;
@@ -442,6 +535,7 @@ function updateObjectRequest(fil, type, index)
 	xhr.open("GET","files/templates/" + $("#template").val());
 	xhr.send();
 }
+
 function createLevel(name, type)
 {
 	if(name == null)
@@ -453,7 +547,7 @@ function createLevel(name, type)
 		type = prompt("Type: (zelda or TRPG)");
 	}
 	
-	var XML = (new DOMParser()).parseFromString("<level></level>", "text/xml");
+	var XML = (new DOMParser()).parseFromString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><level></level>", "text/xml");
 	
 	var nameNode = XML.createElement("name");
 	nameNode.textContent = name;
@@ -563,7 +657,7 @@ function createObject(type, skipXML, index)
 	{
 		var XMLNPC = levelXML.createElement(type);
 		
-		XMLNPC.textContent = "x = " + x + "; y = " + y + "; layer = " + layer + "; dir = 3; xres = " + xres + "; yres = " + yres + "; img = \"" + defImg + "\";";
+		XMLNPC.textContent = "x = " + x + "; y = " + y + "; layer = " + layer + "; dir = 3;";
 		
 		levelXML.getElementsByTagName(type + "s")[0].appendChild(XMLNPC);
 	
@@ -591,12 +685,12 @@ function determineColumn(direction) {
 	else if(dir == 1) { return 1; } 
 	else if(dir == 2) { return 3; }
 	else if(dir == 3) { return 0; }
-	else return direction;
+	else { return dir; }
 }
 
 function exportLevel(XML)
 {
-	var prettyXML = vkbeautify.xml('<?xml version="1.0" encoding="UTF-8"?>' + (new XMLSerializer()).serializeToString(XML), "\t");
+	var prettyXML = vkbeautify.xml(/*'<?xml version="1.0" encoding="UTF-8"?>' + */(new XMLSerializer()).serializeToString(XML), "\t");
 	console.log(prettyXML);
 	return prettyXML;
 }

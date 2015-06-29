@@ -22,94 +22,89 @@ snapShotCtx = snapShot.getContext("2d");
 var holder = document.getElementById("holderCanvas")
 
 //Initialize
-
-//Generate game objects
-var master = getXML("files/main/master.xml");
-
-var image = new Array();
-for(var index = 0; index < master.getElementsByTagName("image").length; index++) //Load all images referenced in master.xml outside of levels
-{
-	image[index] = new Image();
-	image[index].src = "files/images/" + master.getElementsByTagName("image")[index].childNodes[0].nodeValue;
-	image[master.getElementsByTagName("image")[index].childNodes[0].nodeValue] = image[index];
-}
-
-var audio = new Array();
-for(var index = 0; index < master.getElementsByTagName("music").length; index++) //Load all audio
-{
-	audio[index] = audioCreate("files/audio/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
-	audio[index].loop = true
-	audio[master.getElementsByTagName("music")[index].childNodes[0].nodeValue] = audio[index];
-}
-for(var second = index; second < master.getElementsByTagName("soundeffect") + index; second++)
-{
-	audio[second] = audioCreate("files/audio/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
-	audio[second].loop = false;
-	audio[master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue] = audio[second];
-}
-
-var level = [];
-
-for(var index = 0; index < master.getElementsByTagName("level").length; index++) //Load all levels into objects from their xmls which are referenced in master.xml
-{
-	//Create level holder
-	level[index] = new Object();
-	//Get file name
-	level[index].file = master.getElementsByTagName("level")[index].childNodes[0].nodeValue;
-	//Save accessible xml
-	level[index].filedata = getXML("files/levels/" + level[index].file);
-	//Get the name of level
-	level[index].name = level[index].filedata.getElementsByTagName("name")[0].childNodes[0].nodeValue;
-	//Get the images for level
-	level[index].layerImg = new Array();
-	level[index].layerFuncData = new Array();
-	level[index].type = level[index].filedata.getElementsByTagName("type")[0].childNodes[0].nodeValue; //level type
-	for(var second = 0; second < level[index].filedata.getElementsByTagName("background").length; second++)
+SLVD.getXML("files/main/master.xml").then(function(master) {
+	for(var index = 0; index < master.getElementsByTagName("image").length; index++) //Load all images referenced in master.xml outside of levels
 	{
-		if(level[index].filedata.getElementsByTagName("background")[second].childNodes[0].nodeValue == "level_General_Blank.png")
-		{
-			level[index].layerImg[second] = image["level_General_Blank.png"];
+		image[index] = new Image();
+		image[index].src = "files/images/" + master.getElementsByTagName("image")[index].childNodes[0].nodeValue;
+		image[master.getElementsByTagName("image")[index].childNodes[0].nodeValue] = image[index];
+	}
+	
+	for(var index = 0; index < master.getElementsByTagName("music").length; index++) //Load all audio
+	{
+		audio[index] = audioCreate("files/audio/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
+		audio[index].loop = true
+		audio[master.getElementsByTagName("music")[index].childNodes[0].nodeValue] = audio[index];
+	}
+	for(var second = index; second < master.getElementsByTagName("soundeffect") + index; second++)
+	{
+		audio[second] = audioCreate("files/audio/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
+		audio[second].loop = false;
+		audio[master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue] = audio[second];
+	}
+	
+	function loadOneLevel(index) {
+		if(index >= master.getElementsByTagName("level").length) {
+			return SLVD.promise.as();
 		}
-		else
+	
+		//Create level holder
+		level[index] = {};
+		//Get file name
+		level[index].file = master.getElementsByTagName("level")[index].childNodes[0].nodeValue;
+		//Save accessible xml
+		return SLVD.getXML("files/levels/" + level[index].file).then(function(data) {
+			level[index].filedata = data;
+			//Get the name of level
+			level[index].name = data.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+			//Get the images for level
+			level[index].layerImg = [];
+			level[index].layerFuncData = [];
+			level[index].type = data.getElementsByTagName("type")[0].childNodes[0].nodeValue; //level type
+			for(var second = 0; second < data.getElementsByTagName("background").length; second++)
+			{
+				if(data.getElementsByTagName("background")[second].childNodes[0].nodeValue == "level_General_Blank.png")
+				{
+					level[index].layerImg[second] = image["level_General_Blank.png"];
+				}
+				else
+				{
+					level[index].layerImg[second] = new Image();
+					level[index].layerImg[second].src = "files/images/" + data.getElementsByTagName("background")[second].childNodes[0].nodeValue;
+				}
+			}
+			//Initialize board programs. These programs are stored in <boardProgram> nodes which are placed into a generated script to declare functions for the level objects.
+			level[index].boardProgram = [];
+			for(var second = 0; second < data.getElementsByTagName("boardProgram").length; second++)
+			{
+				var content = data.getElementsByTagName("boardProgram")[second].childNodes[0].nodeValue;
+				var inline = "level[" + index + "].boardProgram[" + second + "] = function(cue) {" + evalFunc(content) + " };";
+				eval(inline);
+			}
+			for(var second = 0; second < data.getElementsByTagName("NPC").length; second++)
+			{
+				var current = NPC.length;
+
+				var template = data.getElementsByTagName("NPC")[second].getAttribute("template")
+				var NPCCode = data.getElementsByTagName("NPC")[second].textContent;
+				
+				NPC[current] = SLVD.evalObj(template, NPCCode);
+				NPC[current].lvl = level[index].name;
+			}	
+			
+			return loadOneLevel(index + 1);
+		});
+	}
+	
+	//Begin recursion
+	loadOneLevel(0).then(function(data) {
+		//Generate lookup for NPC
+		for(var i = 0; i < NPC.length; i++)
 		{
-			level[index].layerImg[second] = new Image();
-			level[index].layerImg[second].src = "files/images/" + level[index].filedata.getElementsByTagName("background")[second].childNodes[0].nodeValue;
+			NPC[NPC[i].name] = NPC[i];
 		}
-	}
-	//Initialize board programs. These programs are stored in <boardProgram> nodes which are placed into a generated script to declare functions for the level objects.
-	level[index].boardProgram = new Array();
-	for(var second = 0; second < level[index].filedata.getElementsByTagName("boardProgram").length; second++)
-	{
-		var content = level[index].filedata.getElementsByTagName("boardProgram")[second].childNodes[0].nodeValue;
-		//var line = content.split(";");
-		//alert(line[0]);
-		var inline = "level[" + index + "].boardProgram[" + second + "] = function(cue) {" + evalFunc(content) + " };";
-		eval(inline);
-/*		var node = document.createTextNode(inline);
-		scrip.appendChild(node);*/
-	}
-	for(var second = 0; second < level[index].filedata.getElementsByTagName("NPC").length; second++)
-	{
-		var current = NPC.length;
-		
-		var NPCCode = "";
-		
-		var template = level[index].filedata.getElementsByTagName("NPC")[second].getAttribute("template")
-		if(template != "" && template != null) NPCCode += getTXT("files/templates/" + template);
-		NPCCode += level[index].filedata.getElementsByTagName("NPC")[second].textContent;
-		
-		NPC[current] = evalObj(NPCCode);
-		NPC[current].lvl = level[index].name;
-	}
-}
-
-//Generate lookup for NPC
-for(var i = 0; i < NPC.length; i++)
-{
-	NPC[NPC[i].name] = NPC[i];
-}
-
-//gen.appendChild(scrip);
+	});
+});
 
 function loadUpdate() { //Used in main interval of engine
 	//var loading is the index of both image and level being checked

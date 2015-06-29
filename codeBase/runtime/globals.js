@@ -1,15 +1,20 @@
 console.log("globals.js");
 
+var SLVD = {};
+var SLVDEngine = {};
+
 //implied SAVE object from load.js
 var SAVE = {};
 
 var seeB, see, buffer, bufferCtx, snapShot, snapShotCtx;
+var image = [];
+var audio = [];
+var level = [];
 
 var player = [];
 var NPC = [] //Universal, absolute list of NPC objects
-var boardNPC = []; //List of NPC objects on current board
-var boardObj = [];
 var boardC = []; //NPCs and players, for drawing purposes
+var Teams = {};
 
 var process = "loading"; //Input of master setInterval switch-case
 var opMenu;// = new menu();
@@ -36,8 +41,6 @@ var keyFirstDown = {}; //set to 1 when key is initially pressed, manually set to
 
 var currentPlayer = 0;
 var cTeam; //For TRPG, either player or boardNPC
-
-var otherkey;
 
 var loading = 0;
 var loadCheck = [];

@@ -1,3 +1,46 @@
+//Promises for SLVDEngine
+SLVD.promise = function() { };
+SLVD.promise.prototype.then = function(callBack) {
+	if(this.data) {
+		return callBack(this.data);
+	}
+	else {
+		this.callBack = callBack;
+		
+		this.babyPromise = new SLVD.promise();
+		
+		return this.babyPromise;
+	}
+};
+SLVD.promise.prototype.resolve = function(data) {
+	if(this.callBack) {
+		var tPromise = this.callBack(data);
+		
+		if(this.babyPromise) {
+			if(!(tPromise instanceof SLVD.promise)) {
+				this.babyPromise.resolve(tPromise);
+			}
+			else if(tPromise.data) {
+				this.babyPromise.resolve(tPromise.data);
+			}
+			else {
+				tPromise.callBack = this.babyPromise.callBack;
+				if(this.babyPromise.babyPromise) {
+				tPromise.babyPromise = this.babyPromise.babyPromise;
+				}
+			}
+		}
+	}
+	else {
+		this.data = data;
+	}
+};
+SLVD.promise.as = function(data) {
+	var promise = new SLVD.promise();
+	promise.resolve(data);
+	return promise;
+};
+
 //Create an audio element
 function audioCreate(source, iden) {
 	var aud = document.createElement("audio");
@@ -86,11 +129,12 @@ function delay(seconds) {
 
 //Determine column in spritesheet to use based on direction
 function determineColumn(direction) {
-	var dir = Math.round(direction)%4;
+	var dir = Math.floor(direction);//%4;
 	if(dir == 0) { return 2; }
 	else if(dir == 1) { return 1; } 
 	else if(dir == 2) { return 3; }
 	else if(dir == 3) { return 0; }
+	else { return dir; }
 }
 
 //Get direction from one point to another (both in Maven orientation)
@@ -128,8 +172,6 @@ function enterLevelByName(nam) {
 		}
 	}
 
-	delete player[currentPlayer].pet;
-
 	for(var index = 0; index < level.length; index++)
 	{
 		if(level[index].name == nam)
@@ -139,7 +181,11 @@ function enterLevelByName(nam) {
 		}
 	}
 	process = currentLevel.type;
-	if(process == "zelda") cTeam = player;
+	if(process == "zelda") 
+	{
+		cTeam = player;
+		insertBoardC(player[currentPlayer]);
+	}
 	else if(process == "TRPG")
 	{
 		cTeam = player;
@@ -147,45 +193,51 @@ function enterLevelByName(nam) {
 		TRPGNextTurn();
 	}
 
-	boardNPC.length = 0;
+	//Figure out which NPCs are onboard
 	for(var index = 0; index < NPC.length; index++)
 	{
 		if(NPC[index].lvl == currentLevel.name)
 		{
-			if(NPC[index].oppTeam == player) boardNPC[boardNPC.length] = NPC[index];
-			else if(NPC[index].oppTeam == boardNPC) player[player.length] = NPC[index];
+			insertBoardC(NPC[index]);
 		}
 	}
 	
 	//Pull board objects from file
-	boardObj.length = 0;
 	for(var index = 0; index < currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
 	{
-		var ObjCode = "";
 		
 		var template = currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
-		if(template != "" && template != null) ObjCode += getTXT("files/templates/" + template);
-		ObjCode += currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
+		var objCode = currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
 		
-		boardObj[current] = evalObj(ObjCode);
-		boardObj[current].lvl = currentLevel.name;
+		insertBoardC(SLVDEngine.evalObj(template, objCode));
+		//boardObj[current].lvl = currentLevel.name;
+	}
+}
 
-
-		/*boardObj[current] = new Object;
-		var lin = currentLevel.filedata.getElementsByTagName("boardObj")[index].childNodes[0].nodeValue.split(";");
-		for(var second = 0; second < lin.length; second++)
-		{
-			var side = lin[second].split("=");
-			boardObj[current][side[0].trim()] = eval(side[1].trim());
-		}*/
+SLVDEngine.evalObj = function(template, code) {
+	var obj;
+	if(template)
+	{
+		obj = new SpriteTemplate[template]();
+	}
+	else
+	{
+		obj = new Sprite(null, null);
 	}
 	
-	boardC.length = 0;
-	//restartBoardC();
-	//alert("entering level");
-	//alert(currentLevel.name);
-	//alert(player[currentPlayer].layer);
-}
+	eval(code);
+
+	if(obj.img)
+	{
+		if(!(obj.img in image))
+		{
+			image[obj.img] = new Image();
+			image[obj.img].src = "files/images/" + obj.img.replace(/\"/g, "");
+		}
+		//obj.img = image[obj.img];
+	}
+	return obj;
+};
 
 //Return object from JSON-ish string
 function evalObj(code) {
@@ -396,6 +448,42 @@ function getScriptAlt(url, callback) {
       return undefined;
    }
 
+//Get XML DOM from file; returns SLVD promise
+SLVD.getXML = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseXML); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
+};  
+
+//Get text from file; returns SLVD promise
+SLVD.getTXT = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseText); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
+};
+   
 //Create object for XML file. (Locally only works in Firefox)
 function getXML(fil) {
 	if (window.XMLHttpRequest)
@@ -431,7 +519,7 @@ function getTXT(fil) {
 
 //Disguised HTTP GET request
 function include(fil) {
-	$.getScript("files/code/" + fil);
+	//$.getScript("files/code/" + fil);
 }
 
 function includeScripts() {

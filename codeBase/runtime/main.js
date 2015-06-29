@@ -30,10 +30,7 @@ setInterval(function(){
 			
 			zeldaPlayerMotion();
 			zeldaNPCMotion();
-			for(var i = 0; i < boardObj.length; i++)
-			{
-				boardObj[i].updateFrame();
-			}
+			
 			if(boardC.length == 0) restartBoardC();
 			else sortBoardC();
 
@@ -210,6 +207,13 @@ setInterval(function(){
 				console.log("waited");
 				delete keyFirstDown["enter"];
 				delete keyFirstDown["space"];
+				if(SLVDEngine.mainPromise) {
+					SLVDEngine.mainPromise.resolve("enter");
+				}
+				else {
+					process = currentLevel.type;
+				}
+				
 				if(!resumeCue) process = currentLevel.type;
 				else resumeCue = resumeFunc(resumeCue);
 			}
@@ -324,17 +328,29 @@ function orientScreen() {
 //Sort all board characters into the array boardC in order of y location (in order to properly render sprite overlap).
 function restartBoardC() {
 	boardC.length = 0;
-	for(var index = 0; index < boardNPC.length; index++)
+	
+	//Figure out which NPCs are onboard
+	for(var index = 0; index < NPC.length; index++)
 	{
-		insertBoardC(boardNPC[index]);
+		if(NPC[index].lvl == currentLevel.name)
+		{
+			insertBoardC(NPC[index]);
+		}
 	}
+	
+	//Pull board objects from file
+	for(var index = 0; index < currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
+	{
+		var template = currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
+		var objCode = currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
+		
+		insertBoardC(SLVDEngine.evalObj(template, objCode));
+		//boardObj[current].lvl = currentLevel.name;
+	}
+
 	for(var index = 0; index < player.length; index++)
 	{
 		if(index == currentPlayer || currentLevel.type == "TRPG") insertBoardC(player[index]);
-	}
-	for(var index = 0; index < boardObj.length; index++)
-	{
-		insertBoardC(boardObj[index]);
 	}
 }
 
