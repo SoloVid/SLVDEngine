@@ -2,11 +2,13 @@ function toPolygon() { console.log("polygon mode"); mode = "polygon"; }
 function toNPC() { mode = "NPC"; }
 function toBoardObj() { mode = "boardObj"; }
 
-function drawVectors()
+function drawVectors(highlightIndex)
 {
 	var XMLLayers = levelXML.getElementsByTagName("layer");
 	
 	var cnvLayers = document.getElementsByClassName("whiteboard");
+	
+	var absoluteVectorIndex = 0;
 	
 	for(var i = 0; i < XMLLayers.length; i++)
 	{
@@ -20,7 +22,14 @@ function drawVectors()
 		
 		for(var j = 0; j < layerVectors.length; j++)
 		{
-			ctx.strokeStyle = layerVectors[j].getAttribute("template");//.getElementsByTagName("color")[0].textContent;
+			if(highlightIndex !== undefined && highlightIndex == absoluteVectorIndex)
+			{
+				ctx.strokeStyle = "#0000FF";
+			}
+			else
+			{
+				ctx.strokeStyle = layerVectors[j].getAttribute("template");//.getElementsByTagName("color")[0].textContent;
+			}
 			ctx.fillStyle = ctx.strokeStyle;
 			
 			var regex = /\([^\)]+\)/g;
@@ -59,6 +68,8 @@ function drawVectors()
 					ctx.fillRect(newX - .5, newY - .5, 1, 1);
 				}
 			}
+			
+			absoluteVectorIndex++;
 		}
 		ctx.translate(-.5, -.5);
 	}
@@ -431,7 +442,7 @@ function updateObject(templateData, type, index)
 
 function updateObjectNew(template, type, index)
 {
-	var t = modelSpriteTemplate[template] || new Sprite();
+	var t = new SpriteTemplate[template]() || new Sprite();
 
 	if(type === undefined) type = typeSelected;
 	if(index === undefined) index = indexSelected;

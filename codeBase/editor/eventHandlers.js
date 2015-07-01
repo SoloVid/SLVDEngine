@@ -76,18 +76,24 @@ $(document).mousemove(function(event)
 		follower.style.left = x + "px";
 		follower.style.top = y + "px";
 		
-		engineX = x + (($(follower).width()/2) - 8);
-		engineY = y + ($(follower).height() - 8);
-		
 		//Locate index of element
 		var thisType = follower.className;
 		var regex = /[\s]*draggable[\s]*/;
 		thisType = thisType.replace(regex, "");
 		
 		var i = /[\d]+/.exec(follower.id)[0];
+		
+		var XMLNode = levelXML.getElementsByTagName(thisType)[i];
+		
+		var template = XMLNode.getAttribute("template");
+		
+		var t = new SpriteTemplate[template]();
 
+		engineX = x + t.xres/2 + t.baseOffX + t.offX;
+		engineY = y + t.yres - t.baseLength/2 + t.baseOffY + t.offY;
+		
 		//Update XML
-		var oldXML = levelXML.getElementsByTagName(thisType)[i].textContent;
+		var oldXML = XMLNode.textContent;
 		regex = /x[\s]*=[\s]*[\d]+;/;
 		var newXML = oldXML.replace(regex, "x = " + engineX + ";");
 		regex = /y[\s]*=[\s]*[\d]+;/;
@@ -166,7 +172,11 @@ $(document.body).on("mousedown", "#layers", function(event)
 	}
 });
 
-$("#layerMenu").on("click", ".layerLabel", function(event)
+$("#layerMenu").on("click", ".layerLabel", function(event) {
+	$(this).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+});
+
+$("#layerMenu").on("dblclick", ".layerLabel", function(event)
 {	
 	var layerList = document.getElementById("layerMenu").getElementsByClassName("layerLabel");
 	
@@ -225,6 +235,24 @@ $("#layerMenu").on("click", ".vector", function(event)
 	}
 	
 	indexSelected = i;
+	
+	drawVectors(indexSelected);
+});
+	
+$("#layerMenu").on("dblclick", ".vector", function(event)
+{
+	typeSelected = "vector";
+	
+	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
+	
+	var i = 0;
+	
+	while(vectorList[i] != this)
+	{
+		i++;
+	}
+	
+	indexSelected = i;
 
 	$("#XMLEditor").show();
 	$("#template").prop('disabled', false);
@@ -233,6 +261,24 @@ $("#layerMenu").on("click", ".vector", function(event)
 });
 
 $("#layerMenu").on("click", ".boardObj", function(event)
+{
+	typeSelected = "boardObj";
+	
+	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
+	
+	var i = 0;
+	
+	while(vectorList[i] != this)
+	{
+		i++;
+	}
+	
+	indexSelected = i;
+	
+	$("#boardObj" + i).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+});
+	
+$("#layerMenu").on("dblclick", ".boardObj", function(event)
 {
 	typeSelected = "boardObj";
 	
@@ -268,7 +314,25 @@ $("#layerMenu").on("click", ".NPC", function(event)
 	
 	indexSelected = i;
 	
+	$("#NPC" + i).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	
 //	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
+});
+
+$("#layerMenu").on("dblclick", ".NPC", function(event)
+{
+	typeSelected = "NPC";
+	
+	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
+	
+	var i = 0;
+	
+	while(vectorList[i] != this)
+	{
+		i++;
+	}
+	
+	indexSelected = i;
 
 	$("#XMLEditor").show();
 	$("#template").prop('disabled', false);
