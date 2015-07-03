@@ -1,10 +1,5 @@
 Archive/
-files/audio/**
-files/code/**
-files/images/**
-files/levels/**
-files/main/**
-files/templates/**
+files/
 Unused/
 planning/
 codeBase/hold/
