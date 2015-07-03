@@ -155,6 +155,10 @@ function resizeBoard(x, y)
 		BOARDX = Number(x);
 		BOARDY = Number(y);
 	}
+
+	$("#layers").css("width", (BOARDX + 220) + "px");
+	$("#layers").css("height", (BOARDY) + "px");
+
 	var c = $(".whiteboard").get();
 	
 	c.forEach(function(canv)
@@ -239,20 +243,7 @@ function generateLayerMenu()
 		var node = implantMenuItem(boardObj[i]);
 		node.setAttribute("class", "boardObj");
 		node.innerHTML = "Object " + i;
-/*		var node = document.createElement("div");
-		node.setAttribute("class", "boardObj");
-		node.innerHTML = "\tObject " + i;
-		
-		var layerLineRegex = /\slayer[\s]*=[\s]*[\d]+;/;
-		var objLayer = boardObj[i].textContent.match(layerLineRegex);
-		
-		var layerValueRegex = /[\d]+/;
-		objLayer = objLayer[0].match(layerValueRegex);
-		
-		objLayer = Number(objLayer[0]);
-		
-		var menuLayer = layerMenu.getElementsByTagName("menuLayer")[objLayer];
-		menuLayer.appendChild(node);*/
+		node.id = "boardObj" + i + "Handle";
 	}
 	
 	var NPC = levelXML.getElementsByTagName("NPC");
@@ -262,6 +253,7 @@ function generateLayerMenu()
 		var node = implantMenuItem(NPC[i]);
 		node.setAttribute("class", "NPC");
 		node.innerHTML = "NPC " + i;
+		node.id = "NPC" + i + "Handle";
 	}
 	
 	var boardProgram = levelXML.getElementsByTagName("boardPrg");
@@ -482,7 +474,10 @@ function createLayer(back, skipXML)
 	layerMenu.insertBefore(layerInfo, layerMenu.getElementsByTagName("br")[0]);*/
 	
 	var layerDisplay = document.createElement("div");
-	layerDisplay.innerHTML = '<div class="layerDisplay" style="position: absolute; overflow: hidden; width: ' + BOARDX + 'px; height: ' + BOARDY + 'px; border: 1px solid black;"><img class="background" src="' + back + '"></img><canvas class="whiteboard" onContextMenu="return false;" width="' + BOARDX/getPixelsPerPixel() + '" height="' + BOARDY/getPixelsPerPixel() + '" style="width:' + BOARDX + 'px; height:' + BOARDY + 'px"></canvas></div>';
+	layerDisplay.className = "layerDisplay";
+	layerDisplay.style.height = BOARDY + "px";
+	layerDisplay.style.width = BOARDX + "px";
+	layerDisplay.innerHTML = '<img class="background" src="' + back + '"></img><canvas class="whiteboard" onContextMenu="return false;" width="' + BOARDX/getPixelsPerPixel() + '" height="' + BOARDY/getPixelsPerPixel() + '" style="width:' + BOARDX + 'px; height:' + BOARDY + 'px"></canvas>';
 	
 	document.getElementById("layers").appendChild(layerDisplay);
 	

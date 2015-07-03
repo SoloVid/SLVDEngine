@@ -34,10 +34,12 @@ var indexSelected;
 
 $("#XMLEditor").hide();
 
+t = new Sprite();
+
 var subImg = document.getElementById("subImg");
 var ctx = subImg.getContext("2d");
 ctx.fillStyle = "#CD96CD";
-ctx.fillRect(0, 0, 256, 256);
+ctx.fillRect(5, 5, t.xres - 10, t.yres - 10);
 subImg = subImg.toDataURL();
 var subImg2 = document.getElementById("subImg2");
 ctx = subImg2.getContext("2d");
@@ -81,8 +83,7 @@ $(".color").click(function()
 	color = this.style.backgroundColor;
 });
 
-$(document).mousemove(function(event)
-{
+$(document).mousemove(function(event) {
 	if(follower != null)
 	{
 		var pos = $(follower).position();
@@ -120,25 +121,25 @@ $(document).mousemove(function(event)
 	mouseY = event.pageY;
 });
 
-$(document.body).on("mouseenter", ".draggable", function(event) {
-	var thisType = this.className;
-	var regex = /[\s]*draggable[\s]*/;
-	thisType = thisType.replace(regex, "");
-	
-	var i = /[\d]+/.exec(this.id)[0];
-	
-	var XMLNode = levelXML.getElementsByTagName(thisType)[i];
-
-	
-});
-
-$(document.body).on("mousedown", ".draggable", function(event)
-{
+$(document.body).on("mousedown", ".draggable", function(event) {
 	follower = this;
 });
+$(document.body).on("dblclick", ".draggable", function(event) {
+	//Locate index of element
+	var thisType = this.className;
+	var regex = /[\s]*draggable[\s]*/;
+	typeSelected = thisType.replace(regex, "");
+	
+	var i = /[\d]+/.exec(this.id)[0];
 
-$(document.body).on("mouseup", ".draggable", function(event)
-{
+	indexSelected = i;
+
+	$("#XMLEditor").show();
+	$("#template").prop('disabled', false);
+	$("#template").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].getAttribute("template"));
+	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);
+});
+$(document.body).on("mouseup", ".draggable", function(event) {
 	follower = null;
 });
 
@@ -199,9 +200,9 @@ $(document.body).on("mousedown", "#layers", function(event)
 	}
 });
 
-$("#layerMenu").on("click", ".layerLabel", function(event) {
+/*$("#layerMenu").on("click", ".layerLabel", function(event) {
 	$(this).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
-});
+});*/
 
 $("#layerMenu").on("dblclick", ".layerLabel", function(event)
 {	
@@ -283,50 +284,29 @@ $("#layerMenu").on("click", ".vector", function(event) {
 	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);
 });
 
+$("#layerMenu").mouseleave(function(event) {
+	drawVectors();
+});
+
 $("#layerMenu").on("mouseenter", ".boardObj", function(event) {
 	typeSelected = "boardObj";
-	
-	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
-	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
-	
-	indexSelected = i;
-	
+
+	var i = /[\d]+/.exec(this.id)[0]
+		
 	$("#boardObj" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 });
 $("#layerMenu").on("mouseleave", ".boardObj", function(event) {
 	typeSelected = "boardObj";
 	
-	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
-	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
-	
-	indexSelected = i;
-	
+	var i = /[\d]+/.exec(this.id)[0]
+		
 	$("#boardObj" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 });	
 $("#layerMenu").on("click", ".boardObj", function(event) {
 	typeSelected = "boardObj";
 	
-	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
-	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
-	
+	var i = /[\d]+/.exec(this.id)[0]
+
 	indexSelected = i;
 
 	$("#XMLEditor").show();
@@ -338,16 +318,7 @@ $("#layerMenu").on("click", ".boardObj", function(event) {
 $("#layerMenu").on("mouseenter", ".NPC", function(event) {
 	typeSelected = "NPC";
 	
-	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
-	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
-	
-	indexSelected = i;
+	var i = /[\d]+/.exec(this.id)[0]
 	
 	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 	
@@ -358,15 +329,8 @@ $("#layerMenu").on("mouseleave", ".NPC", function(event) {
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
 	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
-	
-	indexSelected = i;
-	
+	var i = /[\d]+/.exec(this.id)[0]
+
 	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 	
 //	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
@@ -374,14 +338,7 @@ $("#layerMenu").on("mouseleave", ".NPC", function(event) {
 $("#layerMenu").on("click", ".NPC", function(event) {
 	typeSelected = "NPC";
 	
-	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
-	
-	var i = 0;
-	
-	while(vectorList[i] != this)
-	{
-		i++;
-	}
+	var i = /[\d]+/.exec(this.id)[0]
 	
 	indexSelected = i;
 
