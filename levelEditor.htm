@@ -52,6 +52,7 @@
 				left: 0px;
 				top: 0;
 				cursor: crosshair;
+				padding-right: 300px;
 			}
 			.whiteboard
 			{
@@ -111,7 +112,8 @@
 	<body>
 		<div id="navmenu">
 		<ul>
-			<li><a href="javascript:loadFile();">Load Level</a>
+			<li><a href="javascript:clickFileChooser();">Load Level</a>
+				<input name="fileChooser" id="fileChooser" type="file" style="display:none">
 			</li>
 			<li><a href="javascript:downloadFile();">Download File</a>
 			</li>

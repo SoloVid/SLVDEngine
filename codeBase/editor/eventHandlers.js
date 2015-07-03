@@ -27,7 +27,7 @@ $(document).keypress(function(event)
 var BOARDX = 100, BOARDY = 100;
 var PPP = 1; //pixels per pixel
 
-var mode = "polygon";
+var mode = "NPC";
 
 var typeSelected;
 var indexSelected;
@@ -40,7 +40,7 @@ ctx.fillStyle = "#CD96CD";
 ctx.fillRect(0, 0, 256, 256);
 subImg = subImg.toDataURL();
 var subImg2 = document.getElementById("subImg2");
- ctx = subImg2.getContext("2d");
+ctx = subImg2.getContext("2d");
 ctx.fillStyle = "rgba(0, 0, 0, 0)";
 ctx.fillRect(0, 0, 320, 320);
 subImg2 = subImg2.toDataURL();
@@ -55,6 +55,21 @@ var mouseDown = false;
 var follower = null;
 
 var pathInProgress = false;
+
+$("#fileChooser").change(function(evt) {
+	cEvent = evt; //Set for r.onload
+	var f = evt.target.files[0]; 
+	if (f) {
+	  var r = new FileReader();
+	  r.onload = function(e) { 
+		var contents = e.target.result;
+		loadFile2(contents);
+	  }
+	  r.readAsText(f);
+	} else { 
+	  alert("Failed to load file");
+	}
+});
 
 $(".option").click(function()
 {
@@ -87,7 +102,7 @@ $(document).mousemove(function(event)
 		
 		var template = XMLNode.getAttribute("template");
 		
-		var t = new SpriteTemplate[template]();
+		var t = loadSpriteFromTemplate(template);
 
 		engineX = x + t.xres/2 + t.baseOffX + t.offX;
 		engineY = y + t.yres - t.baseLength/2 + t.baseOffY + t.offY;
@@ -374,50 +389,20 @@ $("#saveChanges").click(function(event)
 	//Update graphics
 	if(typeSelected == "NPC" || typeSelected == "boardObj")
 	{
-//		updateObject();
-
 		if($("#template").val())
 		{		
-			updateObjectNew($("#template").val(), typeSelected, indexSelected);
-			/*try
-			{
-	var xhr;
-	if (window.XMLHttpRequest) {
-		xhr = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-
-	xhr.onreadystatechange = (function() { var t = typeSelected; var i = indexSelected; var x = xhr; return function(){ if(x.readyState == 4) updateObject(x.responseText, t, i);} })();
-	xhr.open("GET","files/templates/" + $("#template").val());
-	xhr.send();
-			}
-			catch(e)
-			{
-				updateObject();
-			}*/
+			updateObject($("#template").val(), typeSelected, indexSelected);
 		}
 		else
 		{
-			updateObjectNew();
+			updateObject();
 		}
-
-/*		if($("#template").val() != "")
-		{
-			$.get("index.html", function(data){ console.log("Data1: " + data); });
-			$.get("test.txt", function(data){ console.log("Data2: " + data); });
-			console.log("getting file");
-		}*/
 	}
 	else
 	{
 		generateLayerMenu();
 		drawVectors();
 	}
-	
-	//Redraw menu
-/*	generateLayerMenu();
-	drawVectors();*/
 });
 
 $("#deleteThing").click(function(event)

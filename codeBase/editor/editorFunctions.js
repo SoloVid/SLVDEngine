@@ -75,27 +75,8 @@ function drawVectors(highlightIndex)
 	}
 }
 
-function loadFile()
-{
-	var filename = prompt("Level filename:", "");
-	
-	try
-	{
-		var xhr;
-		if (window.XMLHttpRequest) {
-			xhr = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			xhr = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		xhr.onreadystatechange = function(){ (function() { if(xhr.readyState == 4) loadFile2(xhr.responseText); }());};
-		xhr.open("GET", "files/levels/" + filename);
-		xhr.send();
-	}
-	catch(e)
-	{
-		alert("This browser does not support local file access. Either try using a different browser or live with only creating new levels.");
-	}
+function clickFileChooser() {
+	$("#fileChooser").click();
 }
 
 function loadFile2(data)
@@ -368,81 +349,9 @@ function openXMLEditor(node, disableTemplate)
 	$("#hardCode").val(node.textContent);
 }
 
-function updateObject(templateData, type, index)
+function updateObject(template, type, index)
 {
-	if(type === undefined) type = typeSelected;
-	if(index === undefined) index = indexSelected;
-
-	XMLNode = levelXML.getElementsByTagName(type)[index];
-	HTMLNode = document.getElementById(type + index);
-	HTMLImg = HTMLNode.getElementsByTagName("img")[0];
-	
-	var code = "";
-	
-	if(templateData != null)
-	{
-		code += templateData;
-	}
-	code += " " + XMLNode.textContent;
-	
-	console.log(code);
-	
-	var dRegex = /[\d]+/;
-	
-	try {
-		var img = code.match(/img[\s]*=[\s]*"[^"]+";/)[0];
-		img = "files/images/" + img.match(/"(.*?)"/)[1];
-	}
-	catch(e) { var img = subImg; }
-	
-	try {
-		var x = code.match(/x[\s]*=[\s]*[\d]+;/)[0];
-		x = Number(x.match(dRegex)[0]);
-		
-		var y = code.match(/y[\s]*=[\s]*[\d]+;/)[0];
-		y = Number(y.match(dRegex)[0]);
-		
-		var layer = code.match(/layer[\s]*=[\s]*[\d]+;/)[0];
-		layer = Number(layer.match(dRegex)[0]);
-	}
-	catch(e) { alert("You need to have x, y, and layer assigned!"); return; }
-
-	try {
-		var xres = code.match(/xres[\s]*=[\s]*[\d]+;/)[0];
-		xres = Number(xres.match(dRegex)[0]);
-
-		var yres = code.match(/yres[\s]*=[\s]*[\d]+;/)[0];
-		yres = Number(yres.match(dRegex)[0]);
-	}
-	catch(e) { var xres = 32; var yres = 32; }
-
-	try {
-		var dir = code.match(/dir[\s]*=[\s]*[\d]+;/)[0];
-		dir = Number(dir.match(dRegex)[0]);	
-	}
-	catch(e) { var dir = 3; }
-	
-	document.getElementById("layers").getElementsByClassName("layerDisplay")[layer].appendChild(HTMLNode);		
-	
-	HTMLImg.src = img;
-	
-	//(boardC[second].x - (((boardC[second].xres)/2) - 8)) - wX, (boardC[second].y - (boardC[second].yres - 8)) - wY + tSqueeze
-	
-	HTMLNode.style.left = (x - ((xres/2) - 8)) + "px";
-	HTMLNode.style.top = (y - (yres - 8)) + "px";
-	
-	HTMLNode.style.width = xres + "px";
-	HTMLNode.style.height = yres + "px";
-	
-	HTMLImg.style.left = (-(xres*determineColumn(dir))) + "px";
-	
-	generateLayerMenu();
-	drawVectors();
-}
-
-function updateObjectNew(template, type, index)
-{
-	var t = new SpriteTemplate[template]() || new Sprite();
+	var t = loadSpriteFromTemplate(template);//new SpriteTemplate[template]() || new Sprite();
 
 	if(type === undefined) type = typeSelected;
 	if(index === undefined) index = indexSelected;
@@ -531,20 +440,6 @@ function updateObjectNew(template, type, index)
 	
 	generateLayerMenu();
 	drawVectors();
-}
-
-function updateObjectRequest(fil, type, index)
-{
-	var xhr;
-	if (window.XMLHttpRequest) {
-		xhr = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-
-	xhr.onreadystatechange = (function() { var t = type; var i = index; return function(){ if(xhr.readyState == 4) updateObject(xhr.responseText, type, index);} })();
-	xhr.open("GET","files/templates/" + $("#template").val());
-	xhr.send();
 }
 
 function createLevel(name, type)
@@ -690,18 +585,22 @@ function createProgram()
 	openXMLEditor(prg, true);
 }
 
-function determineColumn(direction) {
-	var dir = Math.round(direction);//%4;
-	if(dir == 0) { return 2; }
-	else if(dir == 1) { return 1; } 
-	else if(dir == 2) { return 3; }
-	else if(dir == 3) { return 0; }
-	else { return dir; }
-}
-
 function exportLevel(XML)
 {
 	var prettyXML = vkbeautify.xml(/*'<?xml version="1.0" encoding="UTF-8"?>' + */(new XMLSerializer()).serializeToString(XML), "\t");
 	console.log(prettyXML);
 	return prettyXML;
+}
+
+function loadSpriteFromTemplate(templateName) {
+	if(!templateName) {
+		return new Sprite();
+	}
+	else if(!(templateName in SpriteTemplate)) {
+		alert("Invalid sprite template!");
+		return new Sprite();
+	}
+	else {
+		return new SpriteTemplate[templateName]();
+	}
 }
