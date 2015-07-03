@@ -120,6 +120,18 @@ $(document).mousemove(function(event)
 	mouseY = event.pageY;
 });
 
+$(document.body).on("mouseenter", ".draggable", function(event) {
+	var thisType = this.className;
+	var regex = /[\s]*draggable[\s]*/;
+	thisType = thisType.replace(regex, "");
+	
+	var i = /[\d]+/.exec(this.id)[0];
+	
+	var XMLNode = levelXML.getElementsByTagName(thisType)[i];
+
+	
+});
+
 $(document.body).on("mousedown", ".draggable", function(event)
 {
 	follower = this;
@@ -213,8 +225,7 @@ $("#layerMenu").on("dblclick", ".layerLabel", function(event)
 	document.getElementsByClassName("background")[i].src = "files/images/" + levelXML.getElementsByTagName("background")[i].textContent;
 });
 
-$("#layerMenu").on("click", ":checkbox", function(event)
-{
+$("#layerMenu").on("click", ":checkbox", function(event) {
 	var layerList = document.getElementById("layerMenu").getElementsByTagName("input");
 	
 	var i = 0;
@@ -236,8 +247,7 @@ $("#layerMenu").on("click", ":checkbox", function(event)
 	}
 });
 
-$("#layerMenu").on("click", ".vector", function(event)
-{
+$("#layerMenu").on("mouseenter", ".vector", function(event) {
 	typeSelected = "vector";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
@@ -253,9 +263,7 @@ $("#layerMenu").on("click", ".vector", function(event)
 	
 	drawVectors(indexSelected);
 });
-	
-$("#layerMenu").on("dblclick", ".vector", function(event)
-{
+$("#layerMenu").on("click", ".vector", function(event) {
 	typeSelected = "vector";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
@@ -275,8 +283,7 @@ $("#layerMenu").on("dblclick", ".vector", function(event)
 	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);
 });
 
-$("#layerMenu").on("click", ".boardObj", function(event)
-{
+$("#layerMenu").on("mouseenter", ".boardObj", function(event) {
 	typeSelected = "boardObj";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
@@ -290,11 +297,25 @@ $("#layerMenu").on("click", ".boardObj", function(event)
 	
 	indexSelected = i;
 	
-	$("#boardObj" + i).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	$("#boardObj" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 });
+$("#layerMenu").on("mouseleave", ".boardObj", function(event) {
+	typeSelected = "boardObj";
 	
-$("#layerMenu").on("dblclick", ".boardObj", function(event)
-{
+	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
+	
+	var i = 0;
+	
+	while(vectorList[i] != this)
+	{
+		i++;
+	}
+	
+	indexSelected = i;
+	
+	$("#boardObj" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+});	
+$("#layerMenu").on("click", ".boardObj", function(event) {
 	typeSelected = "boardObj";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
@@ -314,8 +335,7 @@ $("#layerMenu").on("dblclick", ".boardObj", function(event)
 	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);
 });
 
-$("#layerMenu").on("click", ".NPC", function(event)
-{
+$("#layerMenu").on("mouseenter", ".NPC", function(event) {
 	typeSelected = "NPC";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
@@ -329,13 +349,29 @@ $("#layerMenu").on("click", ".NPC", function(event)
 	
 	indexSelected = i;
 	
-	$("#NPC" + i).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 	
 //	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
 });
-
-$("#layerMenu").on("dblclick", ".NPC", function(event)
-{
+$("#layerMenu").on("mouseleave", ".NPC", function(event) {
+	typeSelected = "NPC";
+	
+	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
+	
+	var i = 0;
+	
+	while(vectorList[i] != this)
+	{
+		i++;
+	}
+	
+	indexSelected = i;
+	
+	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	
+//	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
+});
+$("#layerMenu").on("click", ".NPC", function(event) {
 	typeSelected = "NPC";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
