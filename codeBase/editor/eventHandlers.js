@@ -109,10 +109,10 @@ $(document).mousemove(function(event)
 		
 		//Update XML
 		var oldXML = XMLNode.textContent;
-		regex = /x[\s]*=[\s]*[\d]+;/;
-		var newXML = oldXML.replace(regex, "x = " + engineX + ";");
-		regex = /y[\s]*=[\s]*[\d]+;/;
-		newXML = newXML.replace(regex, "y = " + engineY + ";");
+		regex = /obj\.x[\s]*=[\s]*[\d]+;/;
+		var newXML = oldXML.replace(regex, "obj.x = " + engineX + ";");
+		regex = /obj\.y[\s]*=[\s]*[\d]+;/;
+		newXML = newXML.replace(regex, "obj.y = " + engineY + ";");
 		levelXML.getElementsByTagName(thisType)[i].textContent = newXML;
 	}
 

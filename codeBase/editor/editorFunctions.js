@@ -283,7 +283,7 @@ function implantMenuItem(XMLNode)
 	var node = document.createElement("div");
 	node.style.paddingLeft = "10px";
 	
-	var layerLineRegex = /\slayer[\s]*=[\s]*[\d]+;/;
+	var layerLineRegex = /\sobj\.layer[\s]*=[\s]*[\d]+;/;
 	var objLayer = XMLNode.textContent.match(layerLineRegex);
 	
 	var layerValueRegex = /[\d]+/;
@@ -373,53 +373,38 @@ function updateObject(template, type, index)
 			img = "files/images/" + t.img;
 		}
 		else {
-			img = code.match(/img[\s]*=[\s]*"[^"]+";/)[0];
+			img = code.match(/obj\.img[\s]*=[\s]*"[^"]+";/)[0];
 			img = "files/images/" + img.match(/"(.*?)"/)[1];
 		}
 	}
 	catch(e) { img = subImg; }
 	
 	try {
-		x = code.match(/x[\s]*=[\s]*[\d]+;/)[0];
+		x = code.match(/obj\.x[\s]*=[\s]*[\d]+;/)[0];
 		x = Number(x.match(dRegex)[0]);
 		
-		y = code.match(/y[\s]*=[\s]*[\d]+;/)[0];
+		y = code.match(/obj\.y[\s]*=[\s]*[\d]+;/)[0];
 		y = Number(y.match(dRegex)[0]);
 		
-		layer = code.match(/layer[\s]*=[\s]*[\d]+;/)[0];
+		layer = code.match(/obj\.layer[\s]*=[\s]*[\d]+;/)[0];
 		layer = Number(layer.match(dRegex)[0]);
 	}
 	catch(e) { alert("You need to have x, y, and layer assigned!"); return; }
 
 	try {
-		if(t.xres) {
-			xres = t.xres;
-		}
-		else {
-			xres = code.match(/xres[\s]*=[\s]*[\d]+;/)[0];
-			xres = Number(xres.match(dRegex)[0]);
-		}
+		xres = code.match(/obj\.xres[\s]*=[\s]*[\d]+;/)[0];
+		xres = Number(xres.match(dRegex)[0]);
 
-		if(t.yres) {
-			yres = t.yres;
-		}
-		else {
-			yres = code.match(/yres[\s]*=[\s]*[\d]+;/)[0];
-			yres = Number(yres.match(dRegex)[0]);
-		}
+		yres = code.match(/obj\.yres[\s]*=[\s]*[\d]+;/)[0];
+		yres = Number(yres.match(dRegex)[0]);
 	}
-	catch(e) { var xres = 32; var yres = 32; }
+	catch(e) { var xres = t.xres; var yres = t.yres; }
 
 	try {
-		if(t.dir) {
-			dir = t.dir;
-		}
-		else {
-			dir = code.match(/dir[\s]*=[\s]*[\d]+;/)[0];
-			dir = Number(dir.match(dRegex)[0]);	
-		}
+		dir = code.match(/obj\.dir[\s]*=[\s]*[\d]+;/)[0];
+		dir = Number(dir.match(dRegex)[0]);	
 	}
-	catch(e) { var dir = 3; }
+	catch(e) { dir = t.dir; }
 	
 	document.getElementById("layers").getElementsByClassName("layerDisplay")[layer].appendChild(HTMLNode);		
 	
@@ -436,7 +421,7 @@ function updateObject(template, type, index)
 	HTMLNode.style.width = xres + "px";
 	HTMLNode.style.height = yres + "px";
 	
-	HTMLImg.style.left = (-(xres*determineColumn(t.dir))) + "px";
+	HTMLImg.style.left = (-(xres*determineColumn(dir))) + "px";
 	
 	generateLayerMenu();
 	drawVectors();
@@ -563,7 +548,7 @@ function createObject(type, skipXML, index)
 	{
 		var XMLNPC = levelXML.createElement(type);
 		
-		XMLNPC.textContent = "x = " + x + "; y = " + y + "; layer = " + layer + "; dir = 3;";
+		XMLNPC.textContent = "obj.x = " + x + "; obj.y = " + y + "; obj.layer = " + layer + "; obj.dir = 3;";
 		
 		levelXML.getElementsByTagName(type + "s")[0].appendChild(XMLNPC);
 	

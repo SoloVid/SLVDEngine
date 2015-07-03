@@ -1,5 +1,7 @@
 console.log("globals.js");
 
+var t;
+
 var SLVD = {};
 var SLVDEngine = {};
 
