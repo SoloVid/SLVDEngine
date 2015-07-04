@@ -1,7 +1,218 @@
-function showImage(file, duration) {
-	process = "wait";
+SLVDEngine.showImage = function(file, duration, waitForEnterSpace) {
+	//SLVDEngine.process = "wait";
 	see.drawImage(file, 0, 0, SCREENX, SCREENY);
-	countdown = 50*duration;
+	return SLVDEngine.delay(duration).then(function() {
+		if(waitForEnterSpace)
+		{
+			return SLVDEngine.waitForEnterOrSpace();
+		}
+		else
+		{
+			var oneTimePromise = new SLVD.promise();
+			oneTimePromise.resolve();
+			return oneTimePromise;
+			//return SLVD.as();
+		}
+	});
+}
+
+SLVDEngine.menu = function() {
+	this.point = [];
+};
+
+SLVDEngine.menu.prototype.cursor;
+SLVDEngine.menu.prototype.point = [];
+
+SLVDEngine.menu.prototype.addPoint = function(x, y) {
+	var index = this.point.length;
+	this.point[index] = { x: x, y: y };
+};
+
+SLVDEngine.menu.prototype.runMenu = function() {
+	this.currentPoint = 0;
+	delete this.chosenPoint;
+	SLVDEngine.process = "menu";
+	SLVDEngine.currentMenu = this;
+	return SLVDEngine.setupMainPromise();
+};
+
+SLVDEngine.menu.prototype.killPoints = function() {
+	this.point.length = 0;
+	this.update = null;
+};
+
+SLVDEngine.menu.prototype.update = function() {}; //Customizable function; run every frame
+
+SLVDEngine.menu.prototype.handleMenu = function() {
+	/*This menu system navigates on a grid even though points are listed linearly.
+	/*Basically, the code finds the closest point (in the direction of the key press 
+	to the current point that is within a 90 degree viewing angle from the point in that direction.*/
+	//Draw menu background
+//	see.drawImage(this.background, 0, 0);
+	//Draw cursor
+//	see.drawImage(this.cursor, this.point[this.currentPoint].x, this.point[this.currentPoint].y);
+	var prevPoint = this.currentPoint;
+	var iPoint = prevPoint;
+	var bestPoint = iPoint;
+	var bestdx = 1000; //Distance from prevPoint to bestPoint
+	var bestdy = 1000;
+	if(SLVDEngine.keyFirstDown == "a" || SLVDEngine.keyFirstDown == "left") //Left
+	{
+		do //While index point does not equal original point
+		{
+			var isLeft = this.point[iPoint].x < this.point[prevPoint].x;
+			if(isLeft)
+			{
+				var isUnderUpperBound = this.point[iPoint].y <= -this.point[iPoint].x + this.point[prevPoint].x + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y >= this.point[iPoint].x - this.point[prevPoint].x + this.point[prevPoint].y;
+			}
+			else
+			{
+				var isUnderUpperBound = this.point[iPoint].y <= -this.point[iPoint].x + (this.point[prevPoint].x + SCREENX) + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y >= this.point[iPoint].x - (this.point[prevPoint].x + SCREENX) + this.point[prevPoint].y;
+			}
+			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
+			{
+				var testdx = this.point[prevPoint].x - this.point[iPoint].x;
+				if(!isLeft) testdx += SCREENX;
+				var testdy = Math.abs(this.point[prevPoint].y - this.point[iPoint].y);
+				if(testdx <= bestdx)
+				{
+					var setNewBest = true;
+					if(testdx == bestdx && testdy > bestdy) setNewBest = false;
+					if(setNewBest)
+					{
+						bestdx = testdx;
+						bestdy = testdy;
+						bestPoint = iPoint;
+					}	
+				}
+			}
+			iPoint = (this.point.length + iPoint - 1)%this.point.length;
+		} while(iPoint != prevPoint);
+		this.currentPoint = bestPoint;
+	}
+	else if(SLVDEngine.keyFirstDown == "w" || SLVDEngine.keyFirstDown == "up") //Up
+	{
+		do //While index point does not equal original point
+		{
+			var isUp = this.point[iPoint].y < this.point[prevPoint].y;
+			if(isUp)
+			{
+				var isAboveLowerBound = this.point[iPoint].x <= -this.point[iPoint].y + this.point[prevPoint].y + this.point[prevPoint].x;
+				var isUnderUpperBound = this.point[iPoint].x >= this.point[iPoint].y - this.point[prevPoint].y + this.point[prevPoint].x;
+			}
+			else
+			{
+				var isAboveLowerBound = this.point[iPoint].x <= -this.point[iPoint].y + (this.point[prevPoint].y + SCREENY) + this.point[prevPoint].x;
+				var isUnderUpperBound = this.point[iPoint].x >= this.point[iPoint].y - (this.point[prevPoint].y + SCREENY) + this.point[prevPoint].x;
+			}
+			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
+			{
+				var testdy = this.point[prevPoint].y - this.point[iPoint].y;
+				if(!isUp) testdy += SCREENY;
+				var testdx = Math.abs(this.point[prevPoint].x - this.point[iPoint].x);
+				if(testdy <= bestdy)
+				{
+					var setNewBest = true;
+					if(testdy == bestdy && testdx > bestdx) setNewBest = false;
+					if(setNewBest)
+					{
+						bestdx = testdx;
+						bestdy = testdy;
+						bestPoint = iPoint;
+					}	
+				}
+			}
+			iPoint = (this.point.length + iPoint - 1)%this.point.length;
+		} while(iPoint != prevPoint);
+		this.currentPoint = bestPoint;
+		//		this.currentPoint = (this.point.length + this.currentPoint - 1)%this.point.length;
+	}
+	else if(SLVDEngine.keyFirstDown == "d" || SLVDEngine.keyFirstDown == "right") //Right
+	{
+		do //While index point does not equal original point
+		{
+			var isRight = this.point[iPoint].x > this.point[prevPoint].x;
+			if(isRight)
+			{
+				var isUnderUpperBound = this.point[iPoint].y >= -this.point[iPoint].x + this.point[prevPoint].x + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y <= this.point[iPoint].x - this.point[prevPoint].x + this.point[prevPoint].y;
+			}
+			else
+			{
+				var isUnderUpperBound = this.point[iPoint].y >= -this.point[iPoint].x + (this.point[prevPoint].x - SCREENX) + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y <= this.point[iPoint].x - (this.point[prevPoint].x - SCREENX) + this.point[prevPoint].y;
+			}
+			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
+			{
+				var testdx =  this.point[iPoint].x - this.point[prevPoint].x;
+				if(!isRight) testdx += SCREENX;
+				var testdy = Math.abs(this.point[prevPoint].y - this.point[iPoint].y);
+				if(testdx <= bestdx)
+				{
+					var setNewBest = true;
+					if(testdx == bestdx && testdy > bestdy) setNewBest = false;
+					if(setNewBest)
+					{
+						bestdx = testdx;
+						bestdy = testdy;
+						bestPoint = iPoint;
+					}	
+				}
+			}
+			iPoint = (iPoint + 1)%this.point.length;
+		} while(iPoint != prevPoint);
+		this.currentPoint = bestPoint;
+		//this.currentPoint = (this.currentPoint + 1)%this.point.length;
+	}
+	else if(SLVDEngine.keyFirstDown == "s" || SLVDEngine.keyFirstDown == "down") //Down
+	{
+		do //While index point does not equal original point
+		{
+			var isUp = this.point[iPoint].y > this.point[prevPoint].y;
+			if(isUp)
+			{
+				var isUnderUpperBound = this.point[iPoint].x >= -this.point[iPoint].y + this.point[prevPoint].y + this.point[prevPoint].x;
+				var isAboveLowerBound = this.point[iPoint].x <= this.point[iPoint].y - this.point[prevPoint].y + this.point[prevPoint].x;
+			}
+			else
+			{
+				var isUnderUpperBound = this.point[iPoint].x >= -this.point[iPoint].y + (this.point[prevPoint].y - SCREENY) + this.point[prevPoint].x;
+				var isAboveLowerBound = this.point[iPoint].x <= this.point[iPoint].y - (this.point[prevPoint].y - SCREENY) + this.point[prevPoint].x;
+			}
+			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
+			{
+				var testdy = this.point[iPoint].y - this.point[prevPoint].y;
+				if(!isUp) testdy += SCREENY;
+				var testdx = Math.abs(this.point[prevPoint].x - this.point[iPoint].x);
+				if(testdy <= bestdy)
+				{
+					var setNewBest = true;
+					if(testdy == bestdy && testdx > bestdx) setNewBest = false;
+					if(setNewBest)
+					{
+						bestdx = testdx;
+						bestdy = testdy;
+						bestPoint = iPoint;
+					}	
+				}
+			}
+			iPoint = (iPoint + 1)%this.point.length;
+		} while(iPoint != prevPoint);
+		this.currentPoint = bestPoint;
+//		this.currentPoint = (this.currentPoint + 1)%this.point.length;
+	}
+}
+
+function showImage(file, duration) {
+	SLVDEngine.process = "wait";
+	see.drawImage(file, 0, 0, SCREENX, SCREENY);
+	SLVDEngine.countdown = 50*duration;
+	
+	SLVDEngine.mainPromise = new SLVD.promise();
+	
+	return SLVDEngine.mainPromise;
 }
 
 function menu() {
@@ -22,7 +233,7 @@ function menu() {
 	{
 		this.currentPoint = 0;
 		delete this.chosenPoint;
-		process = "menu";
+		SLVDEngine.process = "menu";
 	}
 	
 	this.killPoints = killPoints;
@@ -49,7 +260,7 @@ function handleMenu() {
 	var bestPoint = iPoint;
 	var bestdx = 1000; //Distance from prevPoint to bestPoint
 	var bestdy = 1000;
-	if(keyFirstDown['a'] || keyFirstDown['left']) //Left
+	if(SLVDEngine.keyFirstDown == "a" || SLVDEngine.keyFirstDown == "left") //Left
 	{
 		do //While index point does not equal original point
 		{
@@ -85,7 +296,7 @@ function handleMenu() {
 		} while(iPoint != prevPoint);
 		opMenu.currentPoint = bestPoint;
 	}
-	else if(keyFirstDown['w'] || keyFirstDown['up']) //Up
+	else if(SLVDEngine.keyFirstDown == "w" || SLVDEngine.keyFirstDown == "up") //Up
 	{
 		do //While index point does not equal original point
 		{
@@ -122,7 +333,7 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 		//		opMenu.currentPoint = (opMenu.point.length + opMenu.currentPoint - 1)%opMenu.point.length;
 	}
-	else if(keyFirstDown['d'] || keyFirstDown['right']) //Right
+	else if(SLVDEngine.keyFirstDown == "d" || SLVDEngine.keyFirstDown == "right") //Right
 	{
 		do //While index point does not equal original point
 		{
@@ -159,7 +370,7 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 		//opMenu.currentPoint = (opMenu.currentPoint + 1)%opMenu.point.length;
 	}
-	else if(keyFirstDown['s'] || keyFirstDown['down']) //Down
+	else if(SLVDEngine.keyFirstDown == "s" || SLVDEngine.keyFirstDown == "down") //Down
 	{
 		do //While index point does not equal original point
 		{

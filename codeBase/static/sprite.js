@@ -84,7 +84,7 @@ Sprite.prototype.handleAction = function() {
 			if(currentAct.time <= 0)
 			{
 				this.spliceAct(i, 1);
-				if(process == "TRPG")
+				if(SLVDEngine.process == "TRPG")
 				{
 					TRPGNextTurn(); //in TRPG.js
 				}

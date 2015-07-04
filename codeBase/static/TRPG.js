@@ -37,8 +37,8 @@ function TRPGNextTurn() //Function run at the end of a character's turn in TRPG 
 	PF.reformUnitsOnSquareWithout(xPixToTile(cTeam[currentPlayer].x), yPixToTile(cTeam[currentPlayer].y), cTeam, cTeam[currentPlayer]);
 	cTeam[currentPlayer].x = xTileToPix(xPixToTile(cTeam[currentPlayer].x));
 	cTeam[currentPlayer].y = yTileToPix(yPixToTile(cTeam[currentPlayer].y));
-/*	process = "wait";
-	countdown = 8;*/
+/*	SLVDEngine.process = "wait";
+	SLVDEngine.countdown = 8;*/
 }
 
 function TRPGNPCMotion() //Function for a single NPC whose turn it is in TRPG mode.
@@ -55,7 +55,7 @@ function TRPGNPCMotion() //Function for a single NPC whose turn it is in TRPG mo
 		}
 		else if(boardNPC[currentPlayer].path.x[0] != null) //If path is set up, follow path.
 		{
-			if(counter%4 == 0) { boardNPC[currentPlayer].frame = (boardNPC[currentPlayer].frame + 1)%4; }
+			if(SLVDEngine.counter%4 == 0) { boardNPC[currentPlayer].frame = (boardNPC[currentPlayer].frame + 1)%4; }
 			pathMotion(boardNPC[currentPlayer], 8);
 		}
 		else if(boardNPC[currentPlayer].target == null) //If no target (or -1 as "target"), pathfind (the pathfind function returns a target).
@@ -106,7 +106,7 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 	}
 	if(player[currentPlayer].path.x[0] != null)
 	{
-		if(counter%4 == 0) { player[currentPlayer].frame = (player[currentPlayer].frame + 1)%4; }
+		if(SLVDEngine.counter%4 == 0) { player[currentPlayer].frame = (player[currentPlayer].frame + 1)%4; }
 		pathMotion(player[currentPlayer], 8);
 	}
 	else
@@ -114,7 +114,7 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 		if(PF.onSquare(player[currentPlayer]))
 		{
 		//alert("on square");
-			if(keyFirstDown[13] == 1 || keyFirstDown[32] == 1) //ENTER and SPACE
+			if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //ENTER and SPACE
 			{
 /*				alert(NPC[30].x)
 				alert(boardNPC[30].x);*/
@@ -127,30 +127,30 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 					}
 				}
 			}
-			if(keyFirstDown[75] == 1 && player[currentPlayer].act == null && player[currentPlayer].inAir == null) //K
+			if(SLVDEngine.keyFirstDown == "k" && player[currentPlayer].act == null && player[currentPlayer].inAir == null) //K
 			{ 
 				//alert("prepare for next turn");
 				TRPGNextTurn();
-				keyFirstDown[75] = null;
+				delete SLVDEngine.keyFirstDown;
 				return;
 			}
-			if(keyFirstDown[73] == 1) //I
+			if(SLVDEngine.keyFirstDown == "i") //I
 			{
 //				player[currentPlayer].iFunction();
-				keyFirstDown[73] = null;
+				delete SLVDEngine.keyFirstDown;
 			}
-			if(keyFirstDown[74] == 1) //J
+			if(SLVDEngine.keyFirstDown == "j") //J
 			{
 				Action.act.slash(player[currentPlayer]);
 /*				player[currentPlayer].act = "slash";
 				player[currentPlayer].countdown = 16;*/
-				keyFirstDown[74] = null;
+				delete SLVDEngine.keyFirstDown;
 //				TRPGNextTurn();
 			}
-			if(keyFirstDown[76] == 1) //L
+			if(SLVDEngine.keyFirstDown == "l") //L
 			{
 				player[currentPlayer].lFunction();
-				keyFirstDown[76] = null;
+				delete SLVDEngine.keyFirstDown;
 			}
 		}
 		var dx = 0;
@@ -162,22 +162,22 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 		alert(Math.abs(player[currentPlayer].ix - player[currentPlayer].x) + Math.abs(player[currentPlayer].iy - player[currentPlayer].y));*/
 
 		//alert("still in range");
-		if(keyDown[37] == 1 || keyDown[65] == 1) //West
+		if(SLVDEngine.keyDown[37] == 1 || SLVDEngine.keyDown[65] == 1) //West
 		{
 			dx = -32;
 			player[currentPlayer].dir = 2;
 		}
-		else if(keyDown[38] == 1 || keyDown[87] == 1) //North
+		else if(SLVDEngine.keyDown[38] == 1 || SLVDEngine.keyDown[87] == 1) //North
 		{
 			dy = -32;
 			player[currentPlayer].dir = 1;
 		}
-		else if(keyDown[39] == 1 || keyDown[68] == 1) //East
+		else if(SLVDEngine.keyDown[39] == 1 || SLVDEngine.keyDown[68] == 1) //East
 		{
 			dx = 32;
 			player[currentPlayer].dir = 0;
 		}
-		else if(keyDown[40] == 1 || keyDown[83] == 1) //South
+		else if(SLVDEngine.keyDown[40] == 1 || SLVDEngine.keyDown[83] == 1) //South
 		{
 			dy = 32;
 			player[currentPlayer].dir = 3;

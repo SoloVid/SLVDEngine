@@ -1,6 +1,6 @@
 function zeldaNPCMotion() //Function for all non-player boardC's movement in Zelda mode.
 {
-	if(process != "zelda")
+	if(SLVDEngine.process != "zelda")
 	{
 		return -1;
 	}
@@ -192,7 +192,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 {
 	var person = player[currentPlayer];
 
-	if(keyFirstDown['enter'] || keyFirstDown['space'])
+	if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space")
 	{
 		for(var index = 0; index < boardC.length; index++)
 		{
@@ -202,10 +202,9 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 				resumeCue = boardC[index].program(0);
 			}
 		}
-		delete keyFirstDown['enter'];
-		delete keyFirstDown['space'];
+		delete SLVDEngine.keyFirstDown;
 	}
-	if(keyFirstDown['k'] && person.act.length === 0 && !person.inAir)
+	if(SLVDEngine.keyFirstDown == "k" && person.act.length === 0 && !person.inAir)
 	{ 
 		var prevPlayer = currentPlayer;
 		currentPlayer = (currentPlayer + 1)%player.length;
@@ -221,7 +220,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		person.dir = player[prevPlayer].dir;
 		deleteBoardC(player[prevPlayer]);
 		insertBoardC(person);
-		delete keyFirstDown['k'];
+		delete SLVDEngine.keyFirstDown;
 	}
 	
 	person.defaultStance();
@@ -232,7 +231,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			resumeFunc = person.keyFunc[key];
 			resumeCue = resumeFunc(0);
-			delete keyFirstDown[key];
+			delete SLVDEngine.keyFirstDown;
 		}
 	}
 	
@@ -244,7 +243,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		if(currentAct.time <= 0)
 		{
 			person.act.splice(i, 1);
-			if(process == "TRPG")
+			if(SLVDEngine.process == "TRPG")
 			{
 				TRPGNextTurn(); //in TRPG.js
 			}
@@ -373,10 +372,9 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 					}
 					else if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 2)
 					{
-						if(keyFirstDown[13] || keyFirstDown[32]) //require ENTER or SPACE to run program
+						if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //require ENTER or SPACE to run program
 						{
-							keyFirstDown[13] = null;
-							keyFirstDown[32] = null;
+							delete SLVDEngine.keyFirstDown;
 							resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
 						}	
 					}
@@ -436,7 +434,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 					}
 				}
 			}
-			else if(keyDown[73]) //Move toward player if not attacking and I is pressed
+			else if(SLVDEngine.keyDown[73]) //Move toward player if not attacking and I is pressed
 			{
 				zeldaLockOnPoint(player[currentPlayer].pet, player[currentPlayer].x, player[currentPlayer].y);
 				zeldaStep(player[currentPlayer].pet, player[currentPlayer].spd - 2);

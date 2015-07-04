@@ -52,7 +52,7 @@ Action["slash"].prototype.use = function(person) {
 			//Distance < 40
 			var caseZelda = Math.sqrt(Math.pow(boardC[third].x - person.x, 2) + Math.pow(boardC[third].y - person.y, 2)) < 40;
 		
-			if((process == "TRPG" && caseTRPG) || (process == "zelda" && caseZelda))
+			if((SLVDEngine.process == "TRPG" && caseTRPG) || (SLVDEngine.process == "zelda" && caseZelda))
 			{
 				//Determine angle between slasher and opponent (in terms of PI/2)
 				var angle = dirFromTo(person.x, person.y, boardC[third].x, boardC[third].y);

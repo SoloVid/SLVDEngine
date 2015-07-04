@@ -15,8 +15,9 @@ randomSeed();
 resumeFunc = startUp; //in initialize.js
 
 setInterval(function(){
+console.log(SLVDEngine.counter);
 	var a = new Date(); //for speed checking
-	switch(process)
+	switch(SLVDEngine.process)
 	{
 		case "loading":
 		{
@@ -26,7 +27,7 @@ setInterval(function(){
 		case "zelda":
 		{
 			//Advance one second per second (given 20ms main interval)
-			if(counter%FPS == 0) Time.advance(1); //in time.js
+			if(SLVDEngine.counter%FPS == 0) Time.advance(1); //in time.js
 			
 			zeldaPlayerMotion();
 			zeldaNPCMotion();
@@ -34,7 +35,7 @@ setInterval(function(){
 			if(boardC.length == 0) restartBoardC();
 			else sortBoardC();
 
-			if(process != "zelda") break;
+			if(SLVDEngine.process != "zelda") break;
 			
 			//Render board, see below
 			renderBoardState(true);
@@ -151,8 +152,8 @@ setInterval(function(){
 			see.fillRect(0, 0, SCREENX, SCREENY);
 			if(rainy)
 			{
-				see.drawImage(image["rain.png"], -((counter%100)/100)*SCREENX, ((counter%25)/25)*SCREENY - SCREENY);
-				if(counter%8 == randomInt(12))
+				see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SCREENX, ((SLVDEngine.counter%25)/25)*SCREENY - SCREENY);
+				if(SLVDEngine.counter%8 == randomInt(12))
 				{
 					for(var index = 0; index < randomInt(3); index++)
 					{
@@ -160,7 +161,7 @@ setInterval(function(){
 					}
 				}
 			}
-			if(cloudy) see.drawImage(image["stormClouds.png"], counter%1280 - 1280, 0);
+			if(cloudy) see.drawImage(image["stormClouds.png"], SLVDEngine.counter%1280 - 1280, 0);
 			//document.getElementById("info").innerHTML = player[0].dir + ", " + player[0].x + ", " + player[0].y + ", " + dKeys
 			see.fillStyle="#FFFFFF";
 			see.font="12px Verdana";
@@ -171,65 +172,47 @@ setInterval(function(){
 		case "menu":
 		{
 			//alert("start menu");
-			handleMenu(); //in menuFunctions.js
+			SLVDEngine.currentMenu.handleMenu(); //in menuFunctions.js
 			//alert("handled menu");
-			if(opMenu.update != null) opMenu.update(); //in menu object declaration
+			SLVDEngine.currentMenu.update(); //in menu object declaration
 			//alert("ran update check");
 			//Draw menu background
-			see.drawImage(opMenu.background, 0, 0);
+			see.drawImage(SLVDEngine.currentMenu.background, 0, 0);
 			//Draw cursor
-			see.drawImage(opMenu.cursor, opMenu.point[opMenu.currentPoint].x, opMenu.point[opMenu.currentPoint].y);
-			if(keyFirstDown["enter"] || keyFirstDown["space"]) //Select
+			see.drawImage(SLVDEngine.currentMenu.cursor, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].x, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].y);
+			if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //Select
 			{
-				delete keyFirstDown["enter"];
-				delete keyFirstDown["space"];
-				opMenu.chosenPoint = opMenu.currentPoint;
-				resumeCue = resumeFunc(resumeCue);
-			}
-			keyFirstDown = {};
-			
+				delete SLVDEngine.keyFirstDown;
+				SLVDEngine.currentMenu.chosenPoint = SLVDEngine.currentMenu.currentPoint;
+				SLVDEngine.mainPromise.resolve(SLVDEngine.currentMenu.chosenPoint);
+			}			
 			break;
 		}
 		case "delay":
 		{
-			if(countdown <= 0)
+			if(SLVDEngine.countdown <= 0)
 			{
-				if(resumeCue == 0 || resumeCue == null)	process = currentLevel.type;
-				else resumeCue = resumeFunc(resumeCue);
-			}
-			else countdown--;
-			break;
-		}
-		case "wait":
-		{
-			if(countdown <= 0 && (keyFirstDown["enter"] || keyFirstDown["space"]))
-			{
-				console.log("waited");
-				delete keyFirstDown["enter"];
-				delete keyFirstDown["space"];
-				if(SLVDEngine.mainPromise) {
-					SLVDEngine.mainPromise.resolve("enter");
+				if(SLVDEngine.mainPromise) 
+				{
+					SLVDEngine.mainPromise.resolve();
 				}
-				else {
-					process = currentLevel.type;
+				else 
+				{
+					SLVDEngine.process = currentLevel.type;
 				}
-				
-				if(!resumeCue) process = currentLevel.type;
-				else resumeCue = resumeFunc(resumeCue);
 			}
-			else countdown--;
-			
+			else SLVDEngine.countdown--;
 			break;
 		}
 		default: { }
 	}
-	counter++;
-	if(counter == 25600)
+	SLVDEngine.counter++;
+	if(SLVDEngine.counter == 25600)
 	{
-		counter = 0;
+		SLVDEngine.counter = 0;
 	}
-//	document.getElementById("timey").innerHTML = counter;
-	if((counter%8) == 0)
+//	document.getElementById("timey").innerHTML = SLVDEngine.counter;
+	if((SLVDEngine.counter%8) == 0)
 	{
 		frameClock = 1;
 	}
@@ -278,19 +261,33 @@ document.onkeydown = function(e) {
 		alert(player[currentPlayer].x + ", " + player[currentPlayer].y + ", " + player[currentPlayer].layer);
 	}
 
-	if(keyDown[key] === undefined)
+	if(SLVDEngine.keyDown[key] === undefined)
 	{
-		keyFirstDown[key] = true;
+		SLVDEngine.keyFirstDown = key;
 	}
-	keyDown[key] = true;
+	SLVDEngine.keyDown[key] = true;
+	
+	if(SLVDEngine.process == "wait" && SLVDEngine.mainPromise)
+	{
+		SLVDEngine.mainPromise.resolve(key);
+	}
+	else if(SLVDEngine.process == "waitForEnterOrSpace" && (key == "enter" || key == "space"))
+	{
+		SLVDEngine.mainPromise.resolve(key);
+	}
 }
 
 //The clean-up of the above function.
 document.onkeyup = function(e) {
 	keys--;
 	key = e.key.toLowerCase();
-	delete keyFirstDown[key];
-	delete keyDown[key];
+	
+	if(key == SLVDEngine.keyFirstDown)
+	{
+		delete SLVDEngine.keyFirstDown;
+	}
+	
+	delete SLVDEngine.keyDown[key];
 }
 
 //Set wX and wY (references for relative image drawing) based on current player's (or in some cases NPC's) position.
@@ -409,29 +406,29 @@ function deleteBoardC(element) {
 function figurePlayerDirection() {
 	dKeys = 0;
 	var dir = 0;
-	if(keyDown['a'] || keyDown['left']) //West
+	if(SLVDEngine.keyDown['a'] || SLVDEngine.keyDown['left']) //West
 	{
 		//How many directional keys down
 		dKeys++;
 		//Average in the new direction to the current direction
 		dir = ((dir*(dKeys - 1)) + 2)/dKeys;
 	}
-	if(keyDown['w'] || keyDown['up']) //North
+	if(SLVDEngine.keyDown['w'] || SLVDEngine.keyDown['up']) //North
 	{
 		dKeys++;
 		dir = ((dir*(dKeys - 1)) + 1)/dKeys;
 	}
-	if(keyDown['d'] || keyDown['right']) //East
+	if(SLVDEngine.keyDown['d'] || SLVDEngine.keyDown['right']) //East
 	{
 		dKeys++;
 		dir = ((dir*(dKeys - 1)) + 0)/dKeys;
 	}
-	if(keyDown['s'] || keyDown['down']) //South
+	if(SLVDEngine.keyDown['s'] || SLVDEngine.keyDown['down']) //South
 	{
 		dKeys++;
 		dir = ((dir*(dKeys - 1)) + 3)/dKeys;
 	}
-	if((keyDown['s'] || keyDown['down']) && (keyDown['d'] || keyDown['right'])) //Southeast
+	if((SLVDEngine.keyDown['s'] || SLVDEngine.keyDown['down']) && (SLVDEngine.keyDown['d'] || SLVDEngine.keyDown['right'])) //Southeast
 	{
 		dir += 2;
 	}
@@ -461,7 +458,7 @@ function renderBoardState() {
 		//Draw layer based on values found in orientScreen() and altered above
 		see.drawImage(currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
 
-		if(process == "TRPG")
+		if(SLVDEngine.process == "TRPG")
 		{
 			//Draw blue range squares
 			if(index == cTeam[currentPlayer].layer && cTeam[currentPlayer].squares != null)
@@ -497,8 +494,8 @@ function renderBoardState() {
 	}
 	
 	//Weather
-	if(rainy) see.drawImage(image["rain.png"], -((counter%100)/100)*SCREENX, ((counter%25)/25)*SCREENY - SCREENY);
-	if(cloudy) see.drawImage(image["stormClouds.png"], counter%1280 - 1280, 0);
+	if(rainy) see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SCREENX, ((SLVDEngine.counter%25)/25)*SCREENY - SCREENY);
+	if(cloudy) see.drawImage(image["stormClouds.png"], SLVDEngine.counter%1280 - 1280, 0);
 	//Light in dark
 	if(dark > 0)
 	{

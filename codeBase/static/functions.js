@@ -1,7 +1,7 @@
 //Promises for SLVDEngine
-SLVD.promise = function() { };
+SLVD.promise = function() {};
 SLVD.promise.prototype.then = function(callBack) {
-	if(this.data) {
+	if("data" in this) {
 		return callBack(this.data);
 	}
 	else {
@@ -20,7 +20,7 @@ SLVD.promise.prototype.resolve = function(data) {
 			if(!(tPromise instanceof SLVD.promise)) {
 				this.babyPromise.resolve(tPromise);
 			}
-			else if(tPromise.data) {
+			else if("data" in tPromise) {
 				this.babyPromise.resolve(tPromise.data);
 			}
 			else {
@@ -35,10 +35,10 @@ SLVD.promise.prototype.resolve = function(data) {
 		this.data = data;
 	}
 };
-SLVD.promise.as = function(data) {
-	var promise = new SLVD.promise();
-	promise.resolve(data);
-	return promise;
+SLVD.as = function(data) {
+	var prom = new SLVD.promise();
+	prom.resolve(data);
+	return prom;
 };
 
 //Create an audio element
@@ -123,8 +123,8 @@ function damage(attacker, victim) {
 
 //Setup delay process
 function delay(seconds) {
-	process = "delay";
-	countdown = Math.round(seconds*50);
+	SLVDEngine.process = "delay";
+	SLVDEngine.countdown = Math.round(seconds*50);
 }
 
 //Determine column in spritesheet to use based on direction
@@ -180,13 +180,13 @@ function enterLevelByName(nam) {
 			index = level.length + 1;
 		}
 	}
-	process = currentLevel.type;
-	if(process == "zelda") 
+	SLVDEngine.process = currentLevel.type;
+	if(SLVDEngine.process == "zelda") 
 	{
 		cTeam = player;
 		insertBoardC(player[currentPlayer]);
 	}
-	else if(process == "TRPG")
+	else if(SLVDEngine.process == "TRPG")
 	{
 		cTeam = player;
 		currentPlayer = -1;

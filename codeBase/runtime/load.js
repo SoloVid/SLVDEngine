@@ -45,7 +45,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 	
 	function loadOneLevel(index) {
 		if(index >= master.getElementsByTagName("level").length) {
-			return SLVD.promise.as();
+			return SLVD.as();
 		}
 	
 		//Create level holder
@@ -110,7 +110,8 @@ function loadUpdate() { //Used in main interval of engine
 	//var loading is the index of both image and level being checked
 	if(loading >= image.length && loading >= level.length)
 	{
-		resumeCue = startUp(0); //If done loading, startup (in the Setup js file)
+		//If done loading, startup (in the initialize.js file)
+		startUp();
 		return;
 	}
 	if((loading < image.length && image[loading].complete == true) || loading >= image.length) { loadCheck[0] = 1; } //image[loading] corresponds fo loadCheck[0]
