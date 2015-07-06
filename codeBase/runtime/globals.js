@@ -57,5 +57,3 @@ var SCREENX = 640;
 var SCREENY = 480;
 
 var FPS = 50;
-
-var currentLevel;

@@ -184,14 +184,14 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 		}
 		////If not traveling too far and not traveling out of bounds.
 		//If target square is one of predetermined squares
-//		if(/*Math.abs(player[currentPlayer].ix - (player[currentPlayer].x + dx)) + Math.abs(player[currentPlayer].iy - (player[currentPlayer].y + dy)) <= 32*player[currentPlayer].spd && player[currentPlayer].x + dx >= 0 && player[currentPlayer].y + dy >= 0 && player[currentPlayer].x + dx < currentLevel.layerImg[player[currentPlayer].layer].width && player[currentPlayer].y + dy < currentLevel.layerImg[player[currentPlayer].layer].height*/)
+//		if(/*Math.abs(player[currentPlayer].ix - (player[currentPlayer].x + dx)) + Math.abs(player[currentPlayer].iy - (player[currentPlayer].y + dy)) <= 32*player[currentPlayer].spd && player[currentPlayer].x + dx >= 0 && player[currentPlayer].y + dy >= 0 && player[currentPlayer].x + dx < SLVDEngine.currentLevel.layerImg[player[currentPlayer].layer].width && player[currentPlayer].y + dy < SLVDEngine.currentLevel.layerImg[player[currentPlayer].layer].height*/)
 		if(PF.isSquare(player[currentPlayer].x + dx, player[currentPlayer].y + dy, player[currentPlayer]))
 		{
 			//alert("ds done");
 			if(dx != 0 || dy != 0)
 			{
-				var toIndex = pixCoordToIndex(xPixToTile(player[currentPlayer].x + dx), yPixToTile(player[currentPlayer].y + dy), currentLevel.layerFuncData[player[currentPlayer].layer]);
-				var squareType = currentLevel.layerFuncData[player[currentPlayer].layer].data[toIndex];
+				var toIndex = pixCoordToIndex(xPixToTile(player[currentPlayer].x + dx), yPixToTile(player[currentPlayer].y + dy), SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer]);
+				var squareType = SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[toIndex];
 //				var blocked = 0;
 				if(squareType != 255)
 				{
@@ -209,7 +209,7 @@ function TRPGPlayerMotion() //Function for current player's motion and other key
 						player[currentPlayer].path.y[0] = player[currentPlayer].y + dy;
 						if(squareType == 100)
 						{
-							resumeFunc = currentLevel.boardProgram[currentLevel.layerFuncData[player[currentPlayer].layer].data[toIndex + 2]];
+							resumeFunc = SLVDEngine.currentLevel.boardProgram[SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[toIndex + 2]];
 							resumeCue = 1;
 						}
 //					}

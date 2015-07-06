@@ -225,14 +225,10 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	
 	person.defaultStance();
 	
-	for(var key in keyFirstDown)
+	if(SLVDEngine.keyFirstDown && person.keyFunc[SLVDEngine.keyFirstDown])
 	{
-		if(key in person.keyFunc)
-		{
-			resumeFunc = person.keyFunc[key];
-			resumeCue = resumeFunc(0);
-			delete SLVDEngine.keyFirstDown;
-		}
+		console.log("zeldaPlayer... detected keyFirstDown " + SLVDEngine.keyFirstDown);
+		SLVDEngine.mainPromise = person.keyFunc[SLVDEngine.keyFirstDown]();
 	}
 	
 	//Handle persistent actions
@@ -357,30 +353,30 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			for(var sec = -limit; sec < limit; sec++)
 			{
-				var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + ind, currentLevel.layerFuncData[player[currentPlayer].layer]);
-				if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i] == 100)
+				var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + ind, SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer]);
+				if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i] == 100)
 				{
-					player[currentPlayer].onPrg = currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 2];
-					resumeFunc = currentLevel.boardProgram[player[currentPlayer].onPrg];
-					if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 1)
+					player[currentPlayer].onPrg = SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 2];
+					resumeFunc = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg];
+					if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 1)
 					{
 						if(player[currentPlayer].wasOnPrg != player[currentPlayer].onPrg) //ensure program is not run twice
 						{
-							resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+							resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
 						}
 						//alert("program");
 					}
-					else if(currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 2)
+					else if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 2)
 					{
 						if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //require ENTER or SPACE to run program
 						{
 							delete SLVDEngine.keyFirstDown;
-							resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+							resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
 						}	
 					}
 					else //Just run program if on
 					{
-						resumeCue = currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+						resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
 					}
 					ind = 9;
 					sec = 17;

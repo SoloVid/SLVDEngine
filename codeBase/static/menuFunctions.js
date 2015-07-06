@@ -8,10 +8,10 @@ SLVDEngine.showImage = function(file, duration, waitForEnterSpace) {
 		}
 		else
 		{
-			var oneTimePromise = new SLVD.promise();
-			oneTimePromise.resolve();
-			return oneTimePromise;
-			//return SLVD.as();
+			//var oneTimePromise = new SLVD.promise();
+			//oneTimePromise.resolve();
+			//return oneTimePromise;
+			return SLVD.promise.as();
 		}
 	});
 }

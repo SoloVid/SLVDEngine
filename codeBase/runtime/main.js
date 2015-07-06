@@ -15,7 +15,7 @@ randomSeed();
 resumeFunc = startUp; //in initialize.js
 
 setInterval(function(){
-console.log(SLVDEngine.counter);
+//console.log(SLVDEngine.counter);
 	var a = new Date(); //for speed checking
 	switch(SLVDEngine.process)
 	{
@@ -56,10 +56,10 @@ console.log(SLVDEngine.counter);
 			
 			renderBoardState(true);
 			/*orientScreen();
-			for(var index = 0; index < currentLevel.layerImg.length; index++)
+			for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 			{
 				//Draw layer
-				see.drawImage(currentLevel.layerImg[index], wX, wY, SCREENX, SCREENY, 0, 0, SCREENX, SCREENY);
+				see.drawImage(SLVDEngine.currentLevel.layerImg[index], wX, wY, SCREENX, SCREENY, 0, 0, SCREENX, SCREENY);
 				//Draw blue range squares
 				if(index == cTeam[currentPlayer].layer && cTeam[currentPlayer].squares != null)
 				{
@@ -198,7 +198,7 @@ console.log(SLVDEngine.counter);
 				}
 				else 
 				{
-					SLVDEngine.process = currentLevel.type;
+					SLVDEngine.process = SLVDEngine.currentLevel.type;
 				}
 			}
 			else SLVDEngine.countdown--;
@@ -295,11 +295,11 @@ function orientScreen() {
 	var person = cTeam[currentPlayer];
 	var x = person.x + person.offX;
 	var y = person.y + person.offY;
-  if(currentLevel.layerImg[0].width <= SCREENX) {
-	wX = (currentLevel.layerImg[0].width - SCREENX)/2;
+  if(SLVDEngine.currentLevel.layerImg[0].width <= SCREENX) {
+	wX = (SLVDEngine.currentLevel.layerImg[0].width - SCREENX)/2;
   }
-  else if (x + SCREENX/2 >= currentLevel.layerImg[0].width) {
-    wX = currentLevel.layerImg[0].width - SCREENX;
+  else if (x + SCREENX/2 >= SLVDEngine.currentLevel.layerImg[0].width) {
+    wX = SLVDEngine.currentLevel.layerImg[0].width - SCREENX;
   }
   else if (x >= SCREENX/2) {
     wX = x - (SCREENX/2);
@@ -308,11 +308,11 @@ function orientScreen() {
     wX = 0;
   }
   
-  if(currentLevel.layerImg[0].height <= SCREENY) {
-	wY = (currentLevel.layerImg[0].height - SCREENY)/2;
+  if(SLVDEngine.currentLevel.layerImg[0].height <= SCREENY) {
+	wY = (SLVDEngine.currentLevel.layerImg[0].height - SCREENY)/2;
   }
-  else if (y + SCREENY/2 >= currentLevel.layerImg[0].height) {
-    wY = currentLevel.layerImg[0].height - SCREENY;
+  else if (y + SCREENY/2 >= SLVDEngine.currentLevel.layerImg[0].height) {
+    wY = SLVDEngine.currentLevel.layerImg[0].height - SCREENY;
   }
   else if (y >= SCREENY/2) {
     wY = y - (SCREENY/2);
@@ -329,25 +329,25 @@ function restartBoardC() {
 	//Figure out which NPCs are onboard
 	for(var index = 0; index < NPC.length; index++)
 	{
-		if(NPC[index].lvl == currentLevel.name)
+		if(NPC[index].lvl == SLVDEngine.currentLevel.name)
 		{
 			insertBoardC(NPC[index]);
 		}
 	}
 	
 	//Pull board objects from file
-	for(var index = 0; index < currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
+	for(var index = 0; index < SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
 	{
-		var template = currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
-		var objCode = currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
+		var template = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
+		var objCode = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
 		
 		insertBoardC(SLVDEngine.evalObj(template, objCode));
-		//boardObj[current].lvl = currentLevel.name;
+		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
 	}
 
 	for(var index = 0; index < player.length; index++)
 	{
-		if(index == currentPlayer || currentLevel.type == "TRPG") insertBoardC(player[index]);
+		if(index == currentPlayer || SLVDEngine.currentLevel.type == "TRPG") insertBoardC(player[index]);
 	}
 }
 
@@ -448,7 +448,7 @@ function renderBoardState() {
 	see.fillRect(0, 0, SCREENX, SCREENY);
 	
 	//Rendering sequence
-	for(var index = 0; index < currentLevel.layerImg.length; index++)
+	for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 	{
 		//Work out details of smaller-than-screen dimensions
 		if(wX < 0) var xDif = Math.abs(wX);
@@ -456,7 +456,7 @@ function renderBoardState() {
 		if(wY < 0) var yDif = Math.abs(wY);
 		else var yDif = 0;
 		//Draw layer based on values found in orientScreen() and altered above
-		see.drawImage(currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
+		see.drawImage(SLVDEngine.currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
 
 		if(SLVDEngine.process == "TRPG")
 		{

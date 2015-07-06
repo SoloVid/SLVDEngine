@@ -298,10 +298,10 @@ Sprite.prototype.canBeHere = function(allowInAir) {
 	{
 		for(var sec = 0; sec < 16; sec++)
 		{
-			var i = pixCoordToIndex(person.x + sec, person.y + ind, currentLevel.layerFuncData[person.layer]);
-			if(currentLevel.layerFuncData[person.layer].data[i] == 255)
+			var i = pixCoordToIndex(person.x + sec, person.y + ind, SLVDEngine.currentLevel.layerFuncData[person.layer]);
+			if(SLVDEngine.currentLevel.layerFuncData[person.layer].data[i] == 255)
 			{
-				if(allowInAir == 1 && currentLevel.layerFuncData[person.layer].data[i + 1] == 255) { }
+				if(allowInAir == 1 && SLVDEngine.currentLevel.layerFuncData[person.layer].data[i + 1] == 255) { }
 				else return 0;
 			}
 		}
@@ -342,8 +342,9 @@ Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 		}
 		
 		tempKeyFunc[keyFuncHandle] = (function(person, act) {
-			//console.log("assigned " + person + " with " + act + " on " + keyFuncHandle);
+			console.log("assigned " + person + " with " + act + " on " + keyFuncHandle);
 			return function() {
+				console.log("using action");
 				act.use(person);
 			}
 		} (this, action));
@@ -552,7 +553,7 @@ Sprite.prototype.updateFrame = function() {
 
 //(x1, y1, x2, y2, ...)
 Sprite.prototype.walkPath = function() {
-	if(currentLevel == this.level)
+	if(SLVDEngine.currentLevel == this.level)
 	{
 		var spd = this.spd;
 		for(var i = 0; i < arguments.length; i += 2)
@@ -589,7 +590,7 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	for(var i = -this.baseLength/2; i < this.baseLength/2; i++)
 	{
 		coords[altAxis] = this[altAxis] + i;
-		pixel = getPixel(coords.x, coords.y, currentLevel.layerFuncData[this.layer]);
+		pixel = getPixel(coords.x, coords.y, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 		if(pixel[0] == 255) //If pixel on func map has R=255
 		{
 			//Don't worry if Y=255 (open air) and person is inAir
@@ -602,7 +603,7 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 		else if(pixel[0] == 100 && pixel[1] == 0) //If R=255 & G=0
 		{
 			//Prepare function
-			resumeFunc = currentLevel.boardProgram[pixel[2]];
+			resumeFunc = SLVDEngine.currentLevel.boardProgram[pixel[2]];
 			resumeCue = resumeFunc(0);
 		}		
 	}
@@ -667,7 +668,7 @@ Sprite.prototype.zeldaStep = function(distance) {
 	{
 		this.y += (dy/Math.abs(dy));
 		//Check if out of bounds
-		if(this.y >= currentLevel.layerImg[0].height || this.y < 0)
+		if(this.y >= SLVDEngine.currentLevel.layerImg[0].height || this.y < 0)
 		{
 			out = true;
 		}
@@ -687,7 +688,7 @@ Sprite.prototype.zeldaStep = function(distance) {
 	for(var i = 0; i < Math.abs(dx); i++)
 	{
 		this.x += (dx/Math.abs(dx));
-		if(this.x >= currentLevel.layerImg[0].width || this.x < 0)
+		if(this.x >= SLVDEngine.currentLevel.layerImg[0].width || this.x < 0)
 		{
 			out = true;
 		}
@@ -713,31 +714,31 @@ Sprite.prototype.zeldaStep = function(distance) {
 		
 		if(dir < 1 || dir > 3) //case 0:
 		{
-			var j = pixCoordToIndex(this.x + 16, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
+			var j = pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 0 && dir < 2) //case 1:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
+			var j = pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}
 		if(dir > 1 && dir < 3) //case 2:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x - 1, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
+			var j = pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 2 && dir < 4) //case 3:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, currentLevel.layerFuncData[this.layer]);
-			if(currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
-			if(currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
+			var j = pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
+			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}
 		}
 	}

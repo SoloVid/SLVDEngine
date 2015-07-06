@@ -45,7 +45,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 	
 	function loadOneLevel(index) {
 		if(index >= master.getElementsByTagName("level").length) {
-			return SLVD.as();
+			return SLVD.promise.as();
 		}
 	
 		//Create level holder

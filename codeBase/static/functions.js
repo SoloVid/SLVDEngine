@@ -1,5 +1,7 @@
 //Promises for SLVDEngine
-SLVD.promise = function() {};
+SLVD.promise = function() {
+	console.log(this);
+};
 SLVD.promise.prototype.then = function(callBack) {
 	if("data" in this) {
 		return callBack(this.data);
@@ -35,7 +37,7 @@ SLVD.promise.prototype.resolve = function(data) {
 		this.data = data;
 	}
 };
-SLVD.as = function(data) {
+SLVD.promise.as = function(data) {
 	var prom = new SLVD.promise();
 	prom.resolve(data);
 	return prom;
@@ -176,11 +178,11 @@ function enterLevelByName(nam) {
 	{
 		if(level[index].name == nam)
 		{
-			currentLevel = level[index];
+			SLVDEngine.currentLevel = level[index];
 			index = level.length + 1;
 		}
 	}
-	SLVDEngine.process = currentLevel.type;
+	SLVDEngine.process = SLVDEngine.currentLevel.type;
 	if(SLVDEngine.process == "zelda") 
 	{
 		cTeam = player;
@@ -196,21 +198,21 @@ function enterLevelByName(nam) {
 	//Figure out which NPCs are onboard
 	for(var index = 0; index < NPC.length; index++)
 	{
-		if(NPC[index].lvl == currentLevel.name)
+		if(NPC[index].lvl == SLVDEngine.currentLevel.name)
 		{
 			insertBoardC(NPC[index]);
 		}
 	}
 	
 	//Pull board objects from file
-	for(var index = 0; index < currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
+	for(var index = 0; index < SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj").length; index++)
 	{
 		
-		var template = currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
-		var objCode = currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
+		var template = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
+		var objCode = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
 		
 		insertBoardC(SLVDEngine.evalObj(template, objCode));
-		//boardObj[current].lvl = currentLevel.name;
+		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
 	}
 }
 
@@ -365,13 +367,13 @@ function fileLoad(fileName) {
 		}
 	}
 	
-	//localStorage.getItem(GAMEID + "_" + fileName + "_currentLevelName");
+	//localStorage.getItem(GAMEID + "_" + fileName + "_SLVDEngine.currentLevelName");
 	currentPlayer = eval(localStorage.getItem(GAMEID + "_" + fileName + "_currentPlayer"));	
 	var item = localStorage.getItem(GAMEID + "_" + fileName + "_SAVE");
 	SAVE = JSON.parse(item);
 
 	//Return level name
-	return localStorage.getItem(GAMEID + "_" + fileName + "_currentLevelName");
+	return localStorage.getItem(GAMEID + "_" + fileName + "_SLVDEngine.currentLevelName");
 }
 
 //Save current game to localStorage "file" of fileName
@@ -402,8 +404,8 @@ function fileSave(fileName) {
 	}
 	console.log("through loops");
 
-	localStorage.setItem(GAMEID + "_" + fileName + "_currentLevelName", currentLevel.name);
-	console.log("saved level name as " + currentLevel.name);
+	localStorage.setItem(GAMEID + "_" + fileName + "_SLVDEngine.currentLevelName", SLVDEngine.currentLevel.name);
+	console.log("saved level name as " + SLVDEngine.currentLevel.name);
 	localStorage.setItem(GAMEID + "_" + fileName + "_currentPlayer", currentPlayer);
 	localStorage.setItem(GAMEID + "_" + fileName + "_SAVE", JSON.stringify(SAVE));
 	console.log("done");
