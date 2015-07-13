@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level>
+	<name>perform_test</name>
+	<type>zelda</type>
+	<layers>
+		<layer>
+			<background>grantison_map2.png</background>
+			<vectors/>
+		</layer>
+	</layers>
+	<NPCs/>
+	<boardObjs/>
+	<boardPrgs/>
+</level>

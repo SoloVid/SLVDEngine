@@ -1,6 +1,6 @@
 //Include user files
 //$.getScript("files/main/initialize.js");
-alert("got script");
+//alert("got script");
 
 //Engine code
 
@@ -28,17 +28,28 @@ setInterval(function(){
 		{
 			//Advance one second per second (given 20ms main interval)
 			if(SLVDEngine.counter%FPS == 0) Time.advance(1); //in time.js
+			var b = new SLVD.speedCheck("Time.advance", a);
+			b.logUnusual();
 			
 			zeldaPlayerMotion();
+			var c = new SLVD.speedCheck("zeldaPlayerMotion", b.date);
+			c.logUnusual();
+			
 			zeldaNPCMotion();
+			var d = new SLVD.speedCheck("zeldaNPCMotion", c.date);
+			d.logUnusual();
 			
 			if(boardC.length == 0) restartBoardC();
 			else sortBoardC();
+			var e = new SLVD.speedCheck("sortBoardC", d.date);
+			e.logUnusual();
 
 			if(SLVDEngine.process != "zelda") break;
 			
 			//Render board, see below
 			renderBoardState(true);
+			var f = new SLVD.speedCheck("renderBoardState", e.date);
+			f.logUnusual(5);
 			
 			break;
 		}
@@ -225,6 +236,23 @@ setInterval(function(){
 //*-*-*-*-*-*-*-*-*-*-*-*End Main Loop
 
 
+SLVDEngine.keyCodeKey = {
+	65: 'a',
+	83: 's',
+	68: 'd',
+	87: 'w',
+	32: 'space',
+	13: 'enter',
+	37: 'left',
+	40: 'down',
+	39: 'right',
+	38: 'up',
+	74: 'j',
+	75: 'k',
+	76: 'l',
+	73: 'i'
+};
+
 //Main (master) functions
 //Sets variables useful for determining what keys are down at any time.
 document.onkeydown = function(e) {
@@ -234,7 +262,7 @@ document.onkeydown = function(e) {
     }
 
 	keys++;
-	key = e.key.toLowerCase();
+	key = SLVDEngine.keyCodeKey[e.which || e.keyCode];//e.key.toLowerCase();
 	
 	if(key == " ")
 	{
@@ -280,7 +308,7 @@ document.onkeydown = function(e) {
 //The clean-up of the above function.
 document.onkeyup = function(e) {
 	keys--;
-	key = e.key.toLowerCase();
+	key = SLVDEngine.keyCodeKey[e.keyCode];//e.key.toLowerCase();
 	
 	if(key == SLVDEngine.keyFirstDown)
 	{
@@ -478,7 +506,8 @@ function renderBoardState() {
 			var cSprite = boardC[second];
 			if(cSprite.layer == index) //ensure proper layering
 			{
-				cSprite.see(see);
+				//cSprite.see(see);
+				SpriteF.see.call(cSprite, see);
 				
 				//Determine if boardC is lighted
 				if(cSprite.isLight)
@@ -486,8 +515,8 @@ function renderBoardState() {
 					lightedThing[lightedThing.length] = cSprite;
 				}
 				
-				cSprite.resetStance();
-				cSprite.resetCans();
+				SpriteF.resetStance.call(cSprite);
+				SpriteF.resetCans.call(cSprite);
 			}
 		}
 		see.globalAlpha = 1;

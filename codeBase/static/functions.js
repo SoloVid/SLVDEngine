@@ -43,6 +43,24 @@ SLVD.promise.as = function(data) {
 	return prom;
 };
 
+SLVD.speedCheck = function(name, comparison) {
+	this.date = new Date();
+	this.name = name;
+	this.prior = comparison;
+};
+SLVD.speedCheck.prototype.getTime = function() {
+	return this.date.getMilliseconds() - this.prior.getMilliseconds();
+};
+SLVD.speedCheck.prototype.logUnusual = function(allow) {
+	if(!allow)
+	{
+		allow = 1;
+	}
+	if(this.getTime() > allow) {
+		console.log(this.name + " took " + this.getTime() + " milliseconds");
+	}
+};
+
 //Create an audio element
 function audioCreate(source, iden) {
 	var aud = document.createElement("audio");
@@ -418,7 +436,14 @@ function getNPCByName(name) {
 function getPixel(x, y, data) {
 	var i = pixCoordToIndex(x, y, data);
 	
-	return data.data.slice(i, i + 4);
+	var pixArray = [];
+	
+	for(var j = 0; j < 4; j++)
+	{
+		pixArray[j] = data.data[i + j];
+	}
+	
+	return pixArray;//data.data.slice(i, i + 4);
 }
 
 function getScriptAlt(url, callback) {
