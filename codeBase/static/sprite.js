@@ -584,7 +584,7 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	var pixel;
 	var coords = {};	
 
-	coords[axis] = isPositive ? this[axis] + this.baseLength/2 - 1 : this[axis] - this.baseLength/2;
+	coords[axis] = isPositive ? this[axis] + Math.round(this.baseLength/2) - 1 : this[axis] - Math.round(this.baseLength/2);
 	
 	//Loop through width of base
 	for(var i = -this.baseLength/2; i < this.baseLength/2; i++)
@@ -611,16 +611,19 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	//Check for collision with people
 	for(var i = 0; i < boardC.length; i++)
 	{
-		if(this.team != boardC[i].team)
+		if(this.team != boardC[i].team && boardC[i].baseLength > 0)
 		{
 			var collisionDist = this.baseLength + boardC[i].baseLength;
 			if(Math.abs(this.y - boardC[i].y) < collisionDist)
 			{
 				if(Math.abs(this.x - boardC[i].x) < collisionDist)
 				{
-					if(this.pushy && boardC[i].pushy)
+					//The .pushing here ensures that there is no infinite loop of pushing back and forth
+					if(this.pushy && boardC[i].pushy && boardC[i].pushing != this)
 					{
-						boardC[i].zeldaBump(this.spd/2, this.dir);
+						this.pushing = boardC[i];
+						SpriteF.zeldaBump.call(boardC[i], this.spd/2, this.dir);
+						delete this.pushing;
 					}
 					return true;
 				}
