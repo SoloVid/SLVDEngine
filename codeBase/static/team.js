@@ -45,3 +45,5 @@ function unallyTeams(team1, team2) {
 }
 
 Teams["neutral"] = new Team("neutral");
+Teams["heroParty"] = new Team("heroParty");
+Teams["empire"] = new Team("empire");
