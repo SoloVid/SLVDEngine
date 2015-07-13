@@ -14,7 +14,7 @@ randomSeed();
 //*-*-*-*-*-*-*-*-*-*-*-*Main Loop
 resumeFunc = startUp; //in initialize.js
 
-setInterval(function(){
+SLVDEngine.main = function() {
 //console.log(SLVDEngine.counter);
 	var a = new Date(); //for speed checking
 	switch(SLVDEngine.process)
@@ -231,7 +231,7 @@ setInterval(function(){
 	{
 		frameClock = 0;
 	}
-},1000/FPS);
+};
 
 //*-*-*-*-*-*-*-*-*-*-*-*End Main Loop
 
@@ -478,14 +478,8 @@ function renderBoardState() {
 	//Rendering sequence
 	for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 	{
-		//Work out details of smaller-than-screen dimensions
-		if(wX < 0) var xDif = Math.abs(wX);
-		else var xDif = 0;
-		if(wY < 0) var yDif = Math.abs(wY);
-		else var yDif = 0;
-		//Draw layer based on values found in orientScreen() and altered above
-		see.drawImage(SLVDEngine.currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
-
+		snapShotCtx.clearRect(0, 0, SCREENX, SCREENY);
+	
 		if(SLVDEngine.process == "TRPG")
 		{
 			//Draw blue range squares
@@ -507,7 +501,7 @@ function renderBoardState() {
 			if(cSprite.layer == index) //ensure proper layering
 			{
 				//cSprite.see(see);
-				SpriteF.see.call(cSprite, see);
+				SpriteF.see.call(cSprite, snapShotCtx);
 				
 				//Determine if boardC is lighted
 				if(cSprite.isLight)
@@ -519,7 +513,22 @@ function renderBoardState() {
 				SpriteF.resetCans.call(cSprite);
 			}
 		}
-		see.globalAlpha = 1;
+		snapShotCtx.globalAlpha = 1;
+		
+		//Work out details of smaller-than-screen dimensions
+		if(wX < 0) var xDif = Math.abs(wX);
+		else var xDif = 0;
+		if(wY < 0) var yDif = Math.abs(wY);
+		else var yDif = 0;
+		
+		snapShotCtx.globalCompositeOperation = "destination-over";
+		
+		//Draw layer based on values found in orientScreen() and altered above
+		snapShotCtx.drawImage(SLVDEngine.currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
+
+		snapShotCtx.globalCompositeOperation = "source-over";
+		
+		see.drawImage(snapShot, 0, 0);
 	}
 	
 	//Weather

@@ -57,7 +57,7 @@ SLVD.speedCheck.prototype.logUnusual = function(allow) {
 		allow = 1;
 	}
 	if(this.getTime() > allow) {
-		console.log(this.name + " took " + this.getTime() + " milliseconds");
+		//console.log(this.name + " took " + this.getTime() + " milliseconds");
 	}
 };
 
@@ -149,11 +149,12 @@ function delay(seconds) {
 
 //Determine column in spritesheet to use based on direction
 function determineColumn(direction) {
-	var dir = Math.floor(direction);//%4;
+	var dir = Math.round(direction);//%4;
 	if(dir == 0) { return 2; }
 	else if(dir == 1) { return 1; } 
 	else if(dir == 2) { return 3; }
 	else if(dir == 3) { return 0; }
+	else if(direction < 4 && direction > 3) { return 2; }
 	else { return dir; }
 }
 

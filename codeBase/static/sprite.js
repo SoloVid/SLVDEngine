@@ -123,7 +123,7 @@ SpriteFunctions.prototype.pickAction = function() {
 	//In case of one (will normally work unless "zero probability" of default actions)
 	if(actSet.length > 0 && totProb <= 0)
 	{
-		return actSet[i];
+		return actSet[0];
 	}
 	
 	//Pick random action based on probabilities
@@ -499,16 +499,24 @@ SpriteFunctions.prototype.see = function(ctx) {
 		ctx = see;
 	}
 	
-	bufferCtx.clearRect(0, 0, SCREENX, SCREENY);
+	if(!this.canSee) return;
 	
-	bufferCtx.setTransform(1, 0, 0, 1, 0, 0);
+	var canvSeeX = this.x - wX - SCREENX/2 + this.offX - player[currentPlayer].offX;
+	var canvSeeY = this.y - wY - SCREENY/2 + this.offY - player[currentPlayer].offY;
 	
-	bufferCtx.translate(SCREENX/2, SCREENY/2);
+	if(canvSeeX < -SCREENX || canvSeeY < -SCREENY || canvSeeX > SCREENX || canvSeeY > SCREENY)
+	{
+		return;
+	}
 	
-	bufferCtx.rotate(this.rotate);
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	
+	ctx.translate(this.x - wX + this.offX - player[currentPlayer].offX, this.y - wY + this.offY - player[currentPlayer].offY);
+	
+	ctx.rotate(this.rotate);
 	
 	//BoardC is displayed partially transparent depending on health (<= 50% transparent)
-	//bufferCtx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
+	//ctx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
 		
 	var col = SpriteF.getStance.call(this); //in functions.js
 	var tImg = SpriteF.getImage.call(this);
@@ -517,26 +525,17 @@ SpriteFunctions.prototype.see = function(ctx) {
 	var pos = SpriteF.getShownPosition.call(this);
 	var x = -this.xres/2 - this.baseOffX;
 	var y = -this.yres + this.baseLength/2 - this.baseOffY;
-	bufferCtx.drawImage(tImg, sx, sy, this.xres, this.yres, x, y, this.xres, this.yres);
+	ctx.drawImage(tImg, sx, sy, this.xres, this.yres, x, y, this.xres, this.yres);
 	
-	bufferCtx.globalAlpha = 1;	
+	//ctx.globalAlpha = 1;	
 	
 	SpriteF.seeAction.call(this);
 	SpriteF.seeStatus.call(this);
 	
-	bufferCtx.rotate(-this.rotate);
+	//ctx.rotate(-this.rotate);
 	
-	bufferCtx.translate(-SCREENX/2, -SCREENY/2);
-	
-//	bufferCtx.setTransform(1, 0, 0, 1, 0, 0);
-	
-//	bufferCtx.fillStyle = "rgba(255, 0, 0, 1)";
-//	bufferCtx.fillRect(0, 0, SCREENX, SCREENY);
-	
-//	ctx.drawImage(buffer, 0, 0);
-//Todo: Factor in offset
-	ctx.drawImage(buffer, this.x - wX - SCREENX/2 + this.offX - player[currentPlayer].offX, this.y - wY - SCREENY/2 + this.offY - player[currentPlayer].offY);
-	
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
 	delete this.rotate;
 };
 
@@ -619,12 +618,9 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 			{
 				if(Math.abs(this.x - boardC[i].x) < collisionDist)
 				{
-					if(this.pushy && boardC[i].pushy /*&& boardC[i].pushed != 1*/)
+					if(this.pushy && boardC[i].pushy)
 					{
-//??????????????What's up with this .pushed?
-						//boardC[i].pushed = 1;
 						boardC[i].zeldaBump(this.spd/2, this.dir);
-						//delete boardC.pushed;
 					}
 					return true;
 				}

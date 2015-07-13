@@ -162,32 +162,6 @@ function zeldaNPCMotion() //Function for all non-player boardC's movement in Zel
 					}
 				}*/
 			}
-			//Move projectile
-	/*		if(index < boardNPC.length && boardNPC[index].dart.img != null && boardNPC[index].dart.layer != null)
-			{
-				var moved = zeldaStep(boardNPC[index].dart, boardNPC[index].dart.spd);
-				for(var second = 0; second < player.length; second++)
-				{
-					if((Math.abs(boardNPC[index].dart.y - (player[second].y - 24)) < 32) && (Math.abs(boardNPC[index].dart.x - player[second].x) < 16))
-					{
-						damage(boardNPC[index].dart, player[second]); //damage hit opponent
-						boardNPC[index].dart.layer = null; //remove image
-						boardNPC[index].dart.frame = 0; //reset frame
-						deleteBoardC(boardNPC[index].dart);
-						player[second].status = "hurt"; //"hurt" opponent
-						player[second].statusCountdown = 4; //"hurt" blinks
-						second = player.length; //break out of loop
-					}
-				}
-				//If hit terrain
-				if(moved == -1)
-				{
-					boardNPC[index].dart.layer = null;
-					boardNPC[index].dart.frame = 0;
-					deleteBoardC(boardNPC[index].dart);
-				}
-			}*/
-
 		}
 	}
 }

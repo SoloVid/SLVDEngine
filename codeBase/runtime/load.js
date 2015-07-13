@@ -88,7 +88,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 				var template = data.getElementsByTagName("NPC")[second].getAttribute("template")
 				var NPCCode = data.getElementsByTagName("NPC")[second].textContent;
 				
-				NPC[current] = SLVD.evalObj(template, NPCCode);
+				NPC[current] = SLVDEngine.evalObj(template, NPCCode);
 				NPC[current].lvl = level[index].name;
 			}	
 			
@@ -103,6 +103,9 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 		{
 			NPC[NPC[i].name] = NPC[i];
 		}
+		
+		//Begin main loop
+		setInterval(SLVDEngine.main, 1000/FPS);
 	});
 });
 

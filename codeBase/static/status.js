@@ -13,10 +13,10 @@ baseStatus.prototype.time = 0;
 baseStatus.prototype.apply = function(person) { this.time--; }
 baseStatus.prototype.see = function(person) { }
 
-Status["hurt"] = function(time) { 
-	if(time !== undefined)
+Status["hurt"] = function(sec) { 
+	if(sec !== undefined)
 	{
-		this.time = time;
+		this.time = sec*FPS;
 	}
 }
 Status["hurt"].prototype = new baseStatus();
@@ -24,6 +24,6 @@ Status["hurt"].prototype.constructor = Status["hurt"];
 Status["hurt"].prototype.apply = function(person) {
 	if(frameClock == 1)
 	{
-		person.preventRender();
+		SpriteF.preventRender.call(person);
 	}
 }
