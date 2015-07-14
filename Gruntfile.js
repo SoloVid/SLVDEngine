@@ -24,13 +24,29 @@ module.exports = function(grunt) {
 			]
 		}
 	},
+	injector: {
+		options: {
+			ignorePath: 'files/levels/',
+			addRootSlash: false,
+			transform: function(filepath, index, length) {
+				return '<level>' + filepath + '</level>'
+			},
+			starttag: '<!-- inject-files:{{ext}} -->',
+			endtag: '<!-- end-inject-files -->'
+		},
+		level_files: {
+			files: {
+				'files/main/master.xml': ['files/levels/**/*.xml'],
+			}
+		}
+	},
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'dist/<%= pkg.name %>.min.js': ['dist/static.js', 'dist/load.js', 'dist/initialize.js', 'dist/main.js']//<%= concat.dist.dest %>']
         }
       }
     },
@@ -51,7 +67,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: [/*'jshint', 'qunit'*/ 'copy', 'concat']//, 'uglify']
+      tasks: [/*'jshint', 'qunit'*/ 'injector', 'copy', 'concat', 'uglify']
     }
   });
 
@@ -61,9 +77,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-script-link-tags');
+  grunt.loadNpmTasks('grunt-injector');
 
   grunt.registerTask('test', ['jshint'/*, 'qunit'*/]);
 
-  grunt.registerTask('default', ['concat', 'copy', 'watch']);
-
+  grunt.registerTask('default', ['injector', 'concat', 'copy', 'uglify', 'watch']);
 };
