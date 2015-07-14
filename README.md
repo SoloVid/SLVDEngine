@@ -7,8 +7,10 @@ To get a project running, download the project files. Make sure you have [Nodejs
 From the command line in the directory of the engine, run the following commands:
 ```sh
 npm -g install grunt-cli
+//or on Mac/Linux: sudo npm -g install grunt-cli
 npm install
-grunt watch
+//or on Mac/Linux: sudo npm install
+grunt
 ```
 
 Grunt watch is an ongoing command which "compiles" your updated code into the dist directory as it is updated.
