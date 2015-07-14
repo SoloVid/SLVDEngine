@@ -39,13 +39,13 @@ Sprite.prototype.steps = 0;// = 5;
 Sprite.prototype.wait;// = 0;
 
 Sprite.prototype.act = [];
-SpriteFunctions.prototype.pushAct = function(item) {
+Sprite.prototype.pushAct = function(item) {
 	if(this.act.length == 0) {
 		this.act = [];
 	}
 	this.act.push(item);
 };
-SpriteFunctions.prototype.spliceAct = function(index, length) {
+Sprite.prototype.spliceAct = function(index, length) {
 	this.act.splice(index, length);
 	if(this.act.length <= 0)
 	{
@@ -54,37 +54,37 @@ SpriteFunctions.prototype.spliceAct = function(index, length) {
 };
 Sprite.prototype.actSet = [];
 Sprite.prototype.rcvr = 0;
-SpriteFunctions.prototype.getAct = function(index) {
+Sprite.prototype.getAct = function(index) {
 	return this.act[index];
 };
-SpriteFunctions.prototype.getActTime = function(index) {
+Sprite.prototype.getActTime = function(index) {
 	return this.act[index][1];
 }
-SpriteFunctions.prototype.getActOpt = function(index) {
+Sprite.prototype.getActOpt = function(index) {
 	return this.actSet[index];
 };
-SpriteFunctions.prototype.getActOptProb = function(index) {
+Sprite.prototype.getActOptProb = function(index) {
 	return this.actSet[index].prob;
 };
-SpriteFunctions.prototype.handleAction = function() {
+Sprite.prototype.handleAction = function() {
 	if(this.canAct)
 	{
 		//Start new action
-		var newAct = SpriteF.pickAction.call(this);
+		var newAct = this.pickAction();
 		if(newAct !== null)
 		{
-			SpriteF.pushAct.call(this, newAct);
+			this.pushAct(newAct);
 			newAct.use(this);
 		}
 		
 		//Handle persistent actions
 		for(var i = 0; i < this.act.length; i++)
 		{
-			var currentAct = SpriteF.getAct.call(this, i);
+			var currentAct = this.getAct(i);
 			currentAct.update(this);
 			if(currentAct.time <= 0)
 			{
-				SpriteF.spliceAct.call(this, i, 1);
+				this.spliceAct(i, 1);
 				if(SLVDEngine.process == "TRPG")
 				{
 					TRPGNextTurn(); //in TRPG.js
@@ -93,20 +93,20 @@ SpriteFunctions.prototype.handleAction = function() {
 		}
 	}
 };
-SpriteFunctions.prototype.pickAction = function() {
+Sprite.prototype.pickAction = function() {
 	var actSet = [];
 	var rand;
 	var totProb = 0;
 	//Create a list of useable actions
 	for(var i = 0; i < this.actSet.length; i++)
 	{
-		var actOpt = SpriteF.getActOpt.call(this, i);
+		var actOpt = this.getActOpt(i);
 		if(actOpt.canUse(this))
 		{
 			var typeTaken = false;
 			for(var j = 0; j < this.act.length; j++)
 			{
-				if(actOpt.type == SpriteF.getAct.call(this, j).type)
+				if(actOpt.type == this.getAct(j).type)
 				{
 					typeTaken = true;
 					j = this.act.length;
@@ -139,7 +139,7 @@ SpriteFunctions.prototype.pickAction = function() {
 	}
 	return null;
 };
-SpriteFunctions.prototype.requestAction = function(action) {
+Sprite.prototype.requestAction = function(action) {
 	if(this.canAct)
 	{
 		var typeTaken = false;
@@ -158,7 +158,7 @@ SpriteFunctions.prototype.requestAction = function(action) {
 		}
 	}
 };
-SpriteFunctions.prototype.seeAction = function() {
+Sprite.prototype.seeAction = function() {
 	for(var i = 0; i < this.act.length; i++)
 	{
 		this.act[i].see(this);
@@ -166,7 +166,7 @@ SpriteFunctions.prototype.seeAction = function() {
 };
 
 Sprite.prototype.status = [];
-SpriteFunctions.prototype.handleStatus = function() {
+Sprite.prototype.handleStatus = function() {
 	if(this.status.length > 0)
 	{
 		for(var i = 0; i < this.status.length; i++)
@@ -181,7 +181,7 @@ SpriteFunctions.prototype.handleStatus = function() {
 		}
 	}
 };
-SpriteFunctions.prototype.seeStatus = function() {
+Sprite.prototype.seeStatus = function() {
 	for(var i = 0; i < this.status.length; i++)
 	{
 		this.status[i].see(this);
@@ -197,7 +197,7 @@ Sprite.prototype.pushy = true;
 Sprite.prototype.frame = 0;
 
 Sprite.prototype.stance = 0;
-SpriteFunctions.prototype.defaultStance = function() {
+Sprite.prototype.defaultStance = function() {
 	if(!this.omniDir)
 	{
 		this.stance = determineColumn(this.dir);
@@ -207,13 +207,13 @@ SpriteFunctions.prototype.defaultStance = function() {
 		this.stance = 0;
 	}
 };
-SpriteFunctions.prototype.getStance = function() {
+Sprite.prototype.getStance = function() {
 	return this.stance;
 };
-SpriteFunctions.prototype.requestStance = function(col) {
+Sprite.prototype.requestStance = function(col) {
 	this.stance = col;
 };
-SpriteFunctions.prototype.resetStance = function() {
+Sprite.prototype.resetStance = function() {
 	delete this.stance;
 };
 
@@ -222,7 +222,7 @@ Sprite.prototype.strg = 5;
 Sprite.prototype.spd = 2;
 
 Sprite.prototype.path = [];
-SpriteFunctions.prototype.addPointToPath = function(x, y) {
+Sprite.prototype.addPointToPath = function(x, y) {
 	if(this.path.x.length === 0)
 	{
 		this.path = [];
@@ -237,10 +237,10 @@ Sprite.prototype.canSeeAct = true;
 Sprite.prototype.canSeeStatus = true;
 Sprite.prototype.canSee = true;
 
-SpriteFunctions.prototype.getHp = function() {
+Sprite.prototype.getHp = function() {
 	return this.hp;
 };
-SpriteFunctions.prototype.getImage = function() {
+Sprite.prototype.getImage = function() {
 	if(this.img)
 	{
 		if(!(this.img in image))
@@ -252,49 +252,49 @@ SpriteFunctions.prototype.getImage = function() {
 	}
 	return image[this.img];
 }
-SpriteFunctions.prototype.getMaxHp = function() {
+Sprite.prototype.getMaxHp = function() {
 	return 100;
 };
-SpriteFunctions.prototype.getPosition = function() {
+Sprite.prototype.getPosition = function() {
 	var pos = {};
 	pos.x = this.x;
 	pos.y = this.y;
 	pos.layer = this.layer;
 	return pos;
 };	
-SpriteFunctions.prototype.getShownPosition = function() {
+Sprite.prototype.getShownPosition = function() {
 	var pos = {};
 	pos.x = this.x;
 	pos.y = this.y;
 	pos.layer = this.layer;
 	return pos;
 };
-SpriteFunctions.prototype.getShownX = function() {
+Sprite.prototype.getShownX = function() {
 	return this.x;
 };
-SpriteFunctions.prototype.getShownY = function() {
+Sprite.prototype.getShownY = function() {
 	return this.y;
 };
-SpriteFunctions.prototype.getSpeed = function() {
+Sprite.prototype.getSpeed = function() {
 	return this.spd;
 };
-SpriteFunctions.prototype.getStrength = function() {
+Sprite.prototype.getStrength = function() {
 	return this.strg;
 };
-SpriteFunctions.prototype.getTeam = function() {
+Sprite.prototype.getTeam = function() {
 	return Teams[this.team];
 }
 
-SpriteFunctions.prototype.preventAction = function() { this.canAct = false; };
-SpriteFunctions.prototype.preventActionSee = function() { this.canSeeAct = false; };
-SpriteFunctions.prototype.preventStatusSee = function() { this.canSeeStatus = false; };
-SpriteFunctions.prototype.preventRender = function() { this.canSee = false; };
-SpriteFunctions.prototype.resetCans = function() { delete this.canSee; delete this.canAct; delete this.canSeeAct; delete this.canSeeStatus; };
+Sprite.prototype.preventAction = function() { this.canAct = false; };
+Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; };
+Sprite.prototype.preventStatusSee = function() { this.canSeeStatus = false; };
+Sprite.prototype.preventRender = function() { this.canSee = false; };
+Sprite.prototype.resetCans = function() { delete this.canSee; delete this.canAct; delete this.canSeeAct; delete this.canSeeStatus; };
 
 Sprite.prototype.dart = {};
 
 //Checks if the a Sprite's location is valid (based on current location and layer func data)
-SpriteFunctions.prototype.canBeHere = function(allowInAir) {
+Sprite.prototype.canBeHere = function(allowInAir) {
 	for(var ind = 0; ind < 8; ind++)
 	{
 		for(var sec = 0; sec < 16; sec++)
@@ -310,17 +310,17 @@ SpriteFunctions.prototype.canBeHere = function(allowInAir) {
 	return 1;
 };
 
-SpriteFunctions.prototype.canSeePlayer = function() {
+Sprite.prototype.canSeePlayer = function() {
 	var tDir = dirFromTo(this.x, this.y, player[currentPlayer].x, player[currentPlayer].y);
 	return (Math.abs(tDir - this.dir) < 1 || Math.abs(tDir - this.dir) > 3)
 };
 
-SpriteFunctions.prototype.damage = function(amount) {
+Sprite.prototype.damage = function(amount) {
 	this.hp -= amount;
 };
 
 //All of the "give" functions are intended to be passed a "new" object
-SpriteFunctions.prototype.giveAction = function(action, keyFuncHandle) {
+Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 	if(this.actSet.length == 0)
 	{
 		this.actSet = [];
@@ -353,7 +353,7 @@ SpriteFunctions.prototype.giveAction = function(action, keyFuncHandle) {
 		this.keyFunc = tempKeyFunc;
 	}
 };
-SpriteFunctions.prototype.giveStatus = function(status) {
+Sprite.prototype.giveStatus = function(status) {
 	if(this.status.length == 0)
 	{
 		this.status = [];
@@ -367,7 +367,7 @@ SpriteFunctions.prototype.giveStatus = function(status) {
 	this.status.push(status); 
 };
 
-SpriteFunctions.prototype.hasStatus = function(status) {
+Sprite.prototype.hasStatus = function(status) {
 	if((typeof status) == "string")
 	{
 		status = Status[status];
@@ -384,7 +384,7 @@ SpriteFunctions.prototype.hasStatus = function(status) {
 };
 
 //Move a person along their set path at given speed.
-SpriteFunctions.prototype.pathMotion = function(spd) {
+Sprite.prototype.pathMotion = function(spd) {
 	var dist = Math.sqrt(Math.pow(this.x - this.path[0].x, 2) + Math.pow(this.y - this.path[0].y, 2))
 	if(dist == 0)
 	{
@@ -409,7 +409,7 @@ SpriteFunctions.prototype.pathMotion = function(spd) {
 };
 
 //Based in time.js, this function provides simple interface for setting a timed sequence of movement events for Sprites 
-SpriteFunctions.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute, second) {
+Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute, second) {
 	/*eventA should be an array with specific sequences of "arguments". Acceptable forms:
 		coordinates: x, y
 		abrupt relocation: "put", x, y, z
@@ -493,7 +493,7 @@ SpriteFunctions.prototype.registerWalkEvent = function(eventA, isDaily, day, hou
 	}
 };
 
-SpriteFunctions.prototype.see = function(ctx) {
+Sprite.prototype.see = function(ctx) {
 	if(!ctx)
 	{
 		ctx = see;
@@ -518,19 +518,19 @@ SpriteFunctions.prototype.see = function(ctx) {
 	//SLVDEngine.boardSprite is displayed partially transparent depending on health (<= 50% transparent)
 	//ctx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
 		
-	var col = SpriteF.getStance.call(this); //in functions.js
-	var tImg = SpriteF.getImage.call(this);
+	var col = this.getStance(); //in functions.js
+	var tImg = this.getImage();
 	var sx = this.xres*col;
 	var sy = this.yres*this.frame;
-	var pos = SpriteF.getShownPosition.call(this);
+	var pos = this.getShownPosition();
 	var x = -this.xres/2 - this.baseOffX;
 	var y = -this.yres + this.baseLength/2 - this.baseOffY;
 	ctx.drawImage(tImg, sx, sy, this.xres, this.yres, x, y, this.xres, this.yres);
 	
 	//ctx.globalAlpha = 1;	
 	
-	SpriteF.seeAction.call(this);
-	SpriteF.seeStatus.call(this);
+	this.seeAction();
+	this.seeStatus();
 	
 	//ctx.rotate(-this.rotate);
 	
@@ -539,12 +539,12 @@ SpriteFunctions.prototype.see = function(ctx) {
 	delete this.rotate;
 };
 
-SpriteFunctions.prototype.updateFrame = function() {
+Sprite.prototype.updateFrame = function() {
 	//Only update on frame tick
 	if(frameClock == 1)
 	{
 		this.frame++;
-		if(SpriteF.getImage.call(this).height <= this.frame*this.yres)
+		if(this.getImage().height <= this.frame*this.yres)
 		{
 			this.frame = 0;
 		}
@@ -552,13 +552,13 @@ SpriteFunctions.prototype.updateFrame = function() {
 };
 
 //(x1, y1, x2, y2, ...)
-SpriteFunctions.prototype.walkPath = function() {
+Sprite.prototype.walkPath = function() {
 	if(SLVDEngine.currentLevel == this.level)
 	{
 		var spd = this.spd;
 		for(var i = 0; i < arguments.length; i += 2)
 		{
-			SpriteF.addPointToPath.call(this, arguments[i], arguments[i + 1]);
+			this.addPointToPath(arguments[i], arguments[i + 1]);
 		}
 	}
 	else
@@ -569,18 +569,18 @@ SpriteFunctions.prototype.walkPath = function() {
 };
 
 //zeldaStep but with input direction
-SpriteFunctions.prototype.zeldaBump = function(distance, direction) {
+Sprite.prototype.zeldaBump = function(distance, direction) {
 	//Save direction
 	var tDir = this.dir;
 	//Set direction
 	this.dir = direction;
 	//Bump
-	SpriteF.zeldaStep.call(this, distance);
+	this.zeldaStep(distance);
 	//Revert direction;
 	this.dir = tDir;
 };
 
-SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
+Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	var pixel;
 	var coords = {};	
 
@@ -623,7 +623,7 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 					if(this.pushy && currentAgent.pushy && currentAgent.pushing != this)
 					{
 						this.pushing = currentAgent;
-						SpriteF.zeldaBump.call(currentAgent, this.spd/2, this.dir);
+						currentAgent.zeldaBump(this.spd/2, this.dir);
 						delete this.pushing;
 					}
 					return true;
@@ -635,11 +635,11 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	return false;
 }
 
-SpriteFunctions.prototype.zeldaLockOnPlayer = function() {
-	SpriteF.zeldaLockOnPoint.call(this, player[currentPlayer].x, player[currentPlayer].y);
+Sprite.prototype.zeldaLockOnPlayer = function() {
+	this.zeldaLockOnPoint(player[currentPlayer].x, player[currentPlayer].y);
 };
 	
-SpriteFunctions.prototype.zeldaLockOnPoint = function(qx, qy) {
+Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	this.dir = dirFromTo(this.x, this.y, qx, qy);
 /*	this.dir = Math.atan(-(this.y - qy)/(this.x - qx))/(Math.PI/2);
 	if(this.x > qx)
@@ -657,7 +657,7 @@ SpriteFunctions.prototype.zeldaLockOnPoint = function(qx, qy) {
 };
 
 //*********Advances Sprite person up to distance distance as far as is legal. Includes pushing other Sprites out of the way? Returns -1 if stopped before distance?
-SpriteFunctions.prototype.zeldaStep = function(distance) {
+Sprite.prototype.zeldaStep = function(distance) {
 	var stopped = false;
 	var stoppedTemp = false;
 	var out = false;
@@ -675,7 +675,7 @@ SpriteFunctions.prototype.zeldaStep = function(distance) {
 		}
 		else
 		{
-			stoppedTemp = SpriteF.zeldaCheckStep.call(this, "y", "x", dy > 0);
+			stoppedTemp = this.zeldaCheckStep("y", "x", dy > 0);
 		}
 		
 		if(stoppedTemp || out)
@@ -695,7 +695,7 @@ SpriteFunctions.prototype.zeldaStep = function(distance) {
 		}
 		else
 		{
-			stoppedTemp = SpriteF.zeldaCheckStep.call(this, "x", "y", dx > 0);
+			stoppedTemp = this.zeldaCheckStep("x", "y", dx > 0);
 		}
 		
 		if(stoppedTemp || out)

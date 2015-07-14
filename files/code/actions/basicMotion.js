@@ -29,8 +29,8 @@ baseMotion.prototype.wait = 0;
 baseMotion.prototype.regularMotion = function(person, newSteps, newDir) {
 	if(this.steps > 0)
 	{
-		SpriteF.updateFrame.call(person);
-		SpriteF.zeldaStep.call(person, person.spd);
+		person.updateFrame();
+		person.zeldaStep(person.spd);
 		this.steps--;
 		if(this.steps <= 0)
 		{
@@ -74,10 +74,10 @@ Motion["chase"].prototype = new baseMotion();
 Motion["chase"].prototype.constructor = Motion["chase"];
 Motion["chase"].prototype.canUse = function(person) {
 	var dist = Math.sqrt(Math.pow(person.x - player[currentPlayer].x, 2) + Math.pow(person.y - player[currentPlayer].y, 2));
-	return (dist < 256 && person.layer == player[currentPlayer].layer && SpriteF.canSeePlayer.call(person))
+	return (dist < 256 && person.layer == player[currentPlayer].layer && person.canSeePlayer())
 }
 Motion["chase"].prototype.use = function(person) {
-	SpriteF.zeldaLockOnPlayer.call(person);
-	SpriteF.updateFrame.call(person);
-	SpriteF.zeldaStep.call(person, person.spd);
+	person.zeldaLockOnPlayer();
+	person.updateFrame();
+	person.zeldaStep(person.spd);
 }

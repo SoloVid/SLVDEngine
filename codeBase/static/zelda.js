@@ -21,8 +21,8 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 		
 			if(cNPC.path.length > 0) //Handle path motion
 			{
-				SpriteF.updateFrame.call(cNPC);
-				SpriteF.pathMotion.call(cNPC, cNPC.spd);
+				cNPC.updateFrame();
+				cNPC.pathMotion(cNPC.spd);
 			}
 			else
 			{
@@ -31,10 +31,10 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 //				
 //				cNPC.handleStatus();
 //				cNPC.handleAction();
-				SpriteF.defaultStance.call(cNPC);
+				cNPC.defaultStance();
 				
-				SpriteF.handleStatus.call(cNPC);
-				SpriteF.handleAction.call(cNPC);
+				cNPC.handleStatus();
+				cNPC.handleAction();
 			}
 		}
 	}
@@ -75,7 +75,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		delete SLVDEngine.keyFirstDown;
 	}
 	
-	SpriteF.defaultStance.call(person);
+	person.defaultStance();
 	
 	if(SLVDEngine.keyFirstDown && person.keyFunc[SLVDEngine.keyFirstDown])
 	{
@@ -87,7 +87,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	//Handle persistent actions
 	for(var i = 0; i < person.act.length; i++)
 	{
-		var currentAct = SpriteF.getAct.call(person, i);
+		var currentAct = person.getAct(i);
 		currentAct.update(person);
 		if(currentAct.time <= 0)
 		{
@@ -193,12 +193,12 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		}
 		else
 		{
-			SpriteF.updateFrame.call(person);
+			person.updateFrame();
 		}
 		if(dKeys) //If pressing direction(s), step
 		{
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
-			if(SpriteF.zeldaStep.call(person, person.spd) < 0) {}//console.log("stopped");
+			if(person.zeldaStep(person.spd) < 0) {}//console.log("stopped");
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
 		}
 		var limit = person.baseLength/2;
@@ -241,8 +241,8 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	}
 	else
 	{
-		SpriteF.updateFrame.call(person);
-		SpriteF.pathMotion.call(person, person.spd);
+		person.updateFrame();
+		person.pathMotion(person.spd);
 	}
 
 	//Pet motion

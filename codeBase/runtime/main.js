@@ -500,8 +500,8 @@ function renderBoardState() {
 			var cSprite = SLVDEngine.boardSprite[second];
 			if(cSprite.layer == index) //ensure proper layering
 			{
-				//cSprite.see(see);
-				SpriteF.see.call(cSprite, snapShotCtx);
+				cSprite.see(snapShotCtx);
+				//SpriteF.see.call(cSprite, snapShotCtx);
 				
 				//Determine if SLVDEngine.boardSprite is lighted
 				if(cSprite.isLight)
@@ -509,8 +509,8 @@ function renderBoardState() {
 					lightedThing[lightedThing.length] = cSprite;
 				}
 				
-				SpriteF.resetStance.call(cSprite);
-				SpriteF.resetCans.call(cSprite);
+				cSprite.resetStance();
+				cSprite.resetCans();
 			}
 		}
 		snapShotCtx.globalAlpha = 1;

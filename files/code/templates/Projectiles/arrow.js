@@ -1,5 +1,5 @@
 SpriteTemplate["arrow"] = function() {
-	SpriteF.giveAction.call(this, new Action["propelProjectile"]());
+	this.giveAction(new Action["propelProjectile"]());
 };
 
 t = SpriteTemplate["arrow"];
