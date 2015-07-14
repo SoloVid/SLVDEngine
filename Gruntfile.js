@@ -66,7 +66,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['<%= jshint.files %>'],
+      files: ['<%= jshint.files %>', 'files/levels/**/*.xml'],
       tasks: [/*'jshint', 'qunit'*/ 'injector', 'copy', 'concat', 'uglify']
     }
   });
