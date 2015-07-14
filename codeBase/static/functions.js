@@ -178,6 +178,14 @@ function dirFromTo(px, py, ox, oy) {
 	return (baseDir + 4)%4;
 }
 
+SLVDEngine.distanceEasy = function(x1, y1, x2, y2) {
+	return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+};
+
+SLVDEngine.distanceTrue = function(x1, y1, x2, y2) {
+	return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+};
+
 //Change level (Sprites and map) by name of level (in level's xml)
 function enterLevelByName(nam) {
 	console.log(currentPlayer);

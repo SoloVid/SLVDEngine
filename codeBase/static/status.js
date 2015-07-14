@@ -24,6 +24,6 @@ Status["hurt"].prototype.constructor = Status["hurt"];
 Status["hurt"].prototype.apply = function(person) {
 	if(frameClock == 1)
 	{
-		SpriteF.preventRender.call(person);
+		person.preventRender();
 	}
 }

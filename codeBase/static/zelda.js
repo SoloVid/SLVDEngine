@@ -10,8 +10,8 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 		while(index < SLVDEngine.boardSprite.length && SLVDEngine.boardSprite[index].hp <= 0)
 		{
 			SLVDEngine.boardSprite[index].lvl = null;
-			deleteBoardC(SLVDEngine.boardSprite[index]);
-//				SLVDEngine.boardSprite.splice(index, 1);
+			//deleteBoardC(SLVDEngine.boardSprite[index]);
+			SLVDEngine.boardSprite.splice(index, 1);
 		}
 		//If at invalid index (bc death ran to end of SLVDEngine.boardSprite array), don't continue
 		if(index >= SLVDEngine.boardSprite.length) return;
@@ -27,10 +27,6 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 			else
 			{
 				//Set stance to default based on direction
-//				cNPC.defaultStance();
-//				
-//				cNPC.handleStatus();
-//				cNPC.handleAction();
 				cNPC.defaultStance();
 				
 				cNPC.handleStatus();
@@ -76,6 +72,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	}
 	
 	person.defaultStance();
+	person.handleStatus();
 	
 	if(SLVDEngine.keyFirstDown && person.keyFunc[SLVDEngine.keyFirstDown])
 	{

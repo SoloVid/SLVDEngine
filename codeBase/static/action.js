@@ -39,7 +39,7 @@ Action["slash"].prototype = new baseAction();
 Action["slash"].prototype.constructor = Action["slash"];
 Action["slash"].prototype.time = 4;
 Action["slash"].prototype.canUse = function(person) {
-	return Math.sqrt(Math.pow(player[currentPlayer].x - person.x, 2) + Math.pow(player[currentPlayer].y - person.y, 2)) < 40 && person.canSeePlayer();
+	return SLVDEngine.distanceTrue(person.x, person.y, player[currentPlayer].x, player[currentPlayer].y) < 36 && person.canSeePlayer();
 };
 Action["slash"].prototype.use = function(person) {
 	this.time = 4;
@@ -62,7 +62,7 @@ Action["slash"].prototype.use = function(person) {
 				{
 					SLVDEngine.boardAgent[third].zeldaBump(16, angle);
 					SLVDEngine.boardAgent[third].damage(5);
-					SLVDEngine.boardAgent[third].giveStatus(new Status["hurt"](8));
+					SLVDEngine.boardAgent[third].giveStatus(new Status["hurt"](1));
 				}
 			}
 		}
@@ -77,18 +77,19 @@ Action["slash"].prototype.update = function(person) {
 };
 Action["slash"].prototype.see = function(person) {
 	//Blur player
-	bufferCtx.globalAlpha = .10
+	snapShotCtx.globalAlpha = .10;
 	var tSqueeze = 4;
+	var col = person.getStance();
 	for(var third = -12; third < 12; third++)
 	{
-		bufferCtx.drawImage(person.img, person.xres*col, person.yres*person.frame, person.xres, person.yres, third*Math.cos(Math.PI/2*(4 - Math.round(person.dir))) - person.baseLength/2 - person.baseOffX, tSqueeze + third*Math.sin(Math.PI/2*(4 - Math.round(person.dir))) - person.yres + person.baseLength/2 - person.baseOffY, person.xres, person.yres - tSqueeze);	
+		snapShotCtx.drawImage(person.getImage(), person.xres*col, person.yres*person.frame, person.xres, person.yres, third*Math.cos(Math.PI/2*(4 - Math.round(person.dir))) - person.xres/2 - person.baseOffX, tSqueeze + third*Math.sin(Math.PI/2*(4 - Math.round(person.dir))) - person.yres + person.baseLength/2 - person.baseOffY, person.xres, person.yres - tSqueeze);	
 	}
-	bufferCtx.globalAlpha = 1;
+	snapShotCtx.globalAlpha = 1;
 	
 	//Draw arc
-	bufferCtx.lineWidth = 8;
-	bufferCtx.beginPath();
-	bufferCtx.arc(0, 0, 32, .5*((3 - person.dir) - .5 + (this.time/2))*Math.PI, .5*((3 - person.dir) + .5 + (this.time/2))*Math.PI);
-	bufferCtx.strokeStyle = "white";
-	bufferCtx.stroke();
+	snapShotCtx.lineWidth = 8;
+	snapShotCtx.beginPath();
+	snapShotCtx.arc(0, 0, 32, .5*((3 - person.dir) - .5 + (this.time/2))*Math.PI, .5*((3 - person.dir) + .5 + (this.time/2))*Math.PI);
+	snapShotCtx.strokeStyle = "white";
+	snapShotCtx.stroke();
 };

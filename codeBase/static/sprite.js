@@ -339,13 +339,14 @@ Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 		
 		for(var i in this.keyFunc)
 		{
-			tempKeyFunc[i] = this.keyFunc;
+			tempKeyFunc[i] = this.keyFunc[i];
 		}
 		
 		tempKeyFunc[keyFuncHandle] = (function(person, act) {
 			console.log("assigned " + person + " with " + act + " on " + keyFuncHandle);
 			return function() {
 				console.log("using action");
+				person.pushAct(act);
 				act.use(person);
 			}
 		} (this, action));
@@ -615,10 +616,11 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 		if(this.team != currentAgent.team && currentAgent.baseLength > 0)
 		{
 			var collisionDist = this.baseLength + currentAgent.baseLength;
-			if(Math.abs(this.y - currentAgent.y) < collisionDist)
+//			if(Math.abs(this.y - currentAgent.y) < collisionDist)
+			if(SLVDEngine.distanceTrue(this.x, this.y, currentAgent.x, currentAgent.y) < collisionDist)
 			{
-				if(Math.abs(this.x - currentAgent.x) < collisionDist)
-				{
+//				if(Math.abs(this.x - currentAgent.x) < collisionDist)
+//				{
 					//The .pushing here ensures that there is no infinite loop of pushing back and forth
 					if(this.pushy && currentAgent.pushy && currentAgent.pushing != this)
 					{
@@ -627,7 +629,7 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 						delete this.pushing;
 					}
 					return true;
-				}
+//				}
 			}
 		}
 	}

@@ -1,12 +1,4 @@
-/*The motion system is modeled after the action system (action.js).
-A Motion is intended to be a simple walking pattern (i.e. no special graphics, can happen simultaneously with other action).
-If a "motion" is something complicated (e.g. the way a boss moves), it is generally recommended to make this "motion" an Action.
-Some "motions" will need to have actions directly associated with them (e.g. projectiles); these should be all encompassed in an Action.
-Each movement is associated with three different functions:
-	canUse: returns true/false depending on circumstances, indicates if movement is currently usable by calling player/NPC, default is true
-	use: no significant return value, carries out the step
-Use person.steps to keep track of distance traveled and person.wait to determine idle time
-*/
+//Motions are actions with 0 priority: they only happen when nothing else does.
 
 var Motion = {};
 
