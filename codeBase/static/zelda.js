@@ -1,23 +1,23 @@
-function zeldaNPCMotion() //Function for all non-player boardC's movement in Zelda mode.
+function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's movement in Zelda mode.
 {
 	if(SLVDEngine.process != "zelda")
 	{
 		return -1;
 	}
-	for(var index = 0; index < boardC.length; index++)
+	for(var index = 0; index < SLVDEngine.boardSprite.length; index++)
 	{
 		//Facilitate death
-		while(index < boardC.length && boardC[index].hp <= 0)
+		while(index < SLVDEngine.boardSprite.length && SLVDEngine.boardSprite[index].hp <= 0)
 		{
-			boardC[index].lvl = null;
-			deleteBoardC(boardC[index]);
-//				boardC.splice(index, 1);
+			SLVDEngine.boardSprite[index].lvl = null;
+			deleteBoardC(SLVDEngine.boardSprite[index]);
+//				SLVDEngine.boardSprite.splice(index, 1);
 		}
-		//If at invalid index (bc death ran to end of boardC array), don't continue
-		if(index >= boardC.length) return;
-		if(boardC[index] != player[currentPlayer])
+		//If at invalid index (bc death ran to end of SLVDEngine.boardSprite array), don't continue
+		if(index >= SLVDEngine.boardSprite.length) return;
+		if(SLVDEngine.boardSprite[index] != player[currentPlayer])
 		{					
-			var cNPC = boardC[index];
+			var cNPC = SLVDEngine.boardSprite[index];
 		
 			if(cNPC.path.length > 0) //Handle path motion
 			{
@@ -46,12 +46,12 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 
 	if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space")
 	{
-		for(var index = 0; index < boardC.length; index++)
+		for(var index = 0; index < SLVDEngine.boardAgent.length; index++)
 		{
-			if(Math.abs(person.x - boardC[index].x) < 20 && Math.abs(person.y - boardC[index].y) < 12 && boardC[index].program != null)
+			if(Math.abs(person.x - SLVDEngine.boardAgent[index].x) < 20 && Math.abs(person.y - SLVDEngine.boardAgent[index].y) < 12 && SLVDEngine.boardAgent[index].program != null)
 			{
-				resumeFunc = boardC[index].program;
-				resumeCue = boardC[index].program(0);
+				resumeFunc = SLVDEngine.boardAgent[index].program;
+				resumeCue = SLVDEngine.boardAgent[index].program(0);
 			}
 		}
 		delete SLVDEngine.keyFirstDown;
@@ -79,7 +79,6 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	
 	if(SLVDEngine.keyFirstDown && person.keyFunc[SLVDEngine.keyFirstDown])
 	{
-		console.log("zeldaPlayer... detected keyFirstDown " + SLVDEngine.keyFirstDown);
 		SLVDEngine.mainPromise = person.keyFunc[SLVDEngine.keyFirstDown]();
 		
 		delete SLVDEngine.keyFirstDown;

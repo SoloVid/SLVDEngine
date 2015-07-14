@@ -39,7 +39,7 @@ SLVDEngine.main = function() {
 			var d = new SLVD.speedCheck("zeldaNPCMotion", c.date);
 			d.logUnusual();
 			
-			if(boardC.length == 0) restartBoardC();
+			if(SLVDEngine.boardSprite.length == 0) restartBoardC();
 			else sortBoardC();
 			var e = new SLVD.speedCheck("sortBoardC", d.date);
 			e.logUnusual();
@@ -79,82 +79,82 @@ SLVDEngine.main = function() {
 						see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
 					}
 				}
-				for(var second = 0; second < boardC.length; second++)
+				for(var second = 0; second < SLVDEngine.boardSprite.length; second++)
 				{
-					if(boardC[second].act == "slash") 
+					if(SLVDEngine.boardSprite[second].act == "slash") 
 					{ 
 						//If done slashing, move on.
-						if(boardC[second].countdown <= 0)
+						if(SLVDEngine.boardSprite[second].countdown <= 0)
 						{
-							boardC[second].act = null;
+							SLVDEngine.boardSprite[second].act = null;
 							TRPGNextTurn();
 						}
 						else
 						{
 							//Cycle through opponents
-							for(var third = 0; third < boardC[second].oppTeam.length; third++)
+							for(var third = 0; third < SLVDEngine.boardSprite[second].oppTeam.length; third++)
 							{
 								//If distance < 40
-								//if(Math.sqrt(Math.pow(boardC[second].oppTeam[third].x - boardC[second].x, 2) + Math.pow(boardC[second].oppTeam[third].y - boardC[second].y, 2)) <= 36)
+								//if(Math.sqrt(Math.pow(SLVDEngine.boardSprite[second].oppTeam[third].x - SLVDEngine.boardSprite[second].x, 2) + Math.pow(SLVDEngine.boardSprite[second].oppTeam[third].y - SLVDEngine.boardSprite[second].y, 2)) <= 36)
 								//If one tile away
-								if(Math.pow(xPixToTile(boardC[second].oppTeam[third].x) - xPixToTile(boardC[second].x), 2) + Math.pow(yPixToTile(boardC[second].oppTeam[third].y) - yPixToTile(boardC[second].y), 2) == 1)
+								if(Math.pow(xPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].x) - xPixToTile(SLVDEngine.boardSprite[second].x), 2) + Math.pow(yPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].y) - yPixToTile(SLVDEngine.boardSprite[second].y), 2) == 1)
 								{
 									//Determine angle between slasher and opponent (in terms of PI/2)
-									var angle = Math.atan(-(boardC[second].oppTeam[third].y - boardC[second].y)/(boardC[second].oppTeam[third].x - boardC[second].x))/(Math.PI/2);
+									var angle = Math.atan(-(SLVDEngine.boardSprite[second].oppTeam[third].y - SLVDEngine.boardSprite[second].y)/(SLVDEngine.boardSprite[second].oppTeam[third].x - SLVDEngine.boardSprite[second].x))/(Math.PI/2);
 
-									if(boardC[second].oppTeam[third].x > boardC[second].x && boardC[second].oppTeam[third].y > boardC[second].y)
+									if(SLVDEngine.boardSprite[second].oppTeam[third].x > SLVDEngine.boardSprite[second].x && SLVDEngine.boardSprite[second].oppTeam[third].y > SLVDEngine.boardSprite[second].y)
 									{	
 										angle += 4;
 									}
-									else if(boardC[second].oppTeam[third].x < boardC[second].x)
+									else if(SLVDEngine.boardSprite[second].oppTeam[third].x < SLVDEngine.boardSprite[second].x)
 									{
 										angle += 2;
 									}
 									//Compare angle to direction of slasher. If in range of PI...
-									if((Math.abs(angle - boardC[second].dir) <= .5 || Math.abs(angle - boardC[second].dir) >= 3.5) && boardC[second].oppTeam[third].status != "hurt")
+									if((Math.abs(angle - SLVDEngine.boardSprite[second].dir) <= .5 || Math.abs(angle - SLVDEngine.boardSprite[second].dir) >= 3.5) && SLVDEngine.boardSprite[second].oppTeam[third].status != "hurt")
 									{
-										damage(boardC[second], boardC[second].oppTeam[third]);
-										boardC[second].oppTeam[third].status = "hurt";
-										boardC[second].oppTeam[third].countdown = 4;
+										damage(SLVDEngine.boardSprite[second], SLVDEngine.boardSprite[second].oppTeam[third]);
+										SLVDEngine.boardSprite[second].oppTeam[third].status = "hurt";
+										SLVDEngine.boardSprite[second].oppTeam[third].countdown = 4;
 									}
 								}
 							}
 							see.lineWidth = 8;
 							see.beginPath();
-							see.arc((boardC[second].x - ((boardC[second].xres)/2)) - wX + 24, (boardC[second].y - (boardC[second].yres)) - wY + 56, 32, .5*((3 - boardC[second].dir) - .5 + (boardC[second].countdown/8))*Math.PI, .5*((3 - boardC[second].dir) + .5 + (boardC[second].countdown/8))*Math.PI);
+							see.arc((SLVDEngine.boardSprite[second].x - ((SLVDEngine.boardSprite[second].xres)/2)) - wX + 24, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres)) - wY + 56, 32, .5*((3 - SLVDEngine.boardSprite[second].dir) - .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI, .5*((3 - SLVDEngine.boardSprite[second].dir) + .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI);
 							see.strokeStyle = "white";
 							see.stroke();
-							boardC[second].countdown--;
-							if(boardC[second].countdown < 0)
+							SLVDEngine.boardSprite[second].countdown--;
+							if(SLVDEngine.boardSprite[second].countdown < 0)
 							{
-								boardC[second].countdown = 0;
+								SLVDEngine.boardSprite[second].countdown = 0;
 							}
 						}
 					}
-					if(boardC[second].layer == index)
+					if(SLVDEngine.boardSprite[second].layer == index)
 					{
-						if((boardC[second].status == "hurt" && frameClock != 1) || boardC[second].status != "hurt")
+						if((SLVDEngine.boardSprite[second].status == "hurt" && frameClock != 1) || SLVDEngine.boardSprite[second].status != "hurt")
 						{
-							var col = determineColumn(boardC[second].dir);
-							see.drawImage(boardC[second].img, 32*col, 64*boardC[second].frame, boardC[second].xres, boardC[second].yres, (boardC[second].x - (((boardC[second].xres)/2) - 8)) - wX, (boardC[second].y - (boardC[second].yres - 8)) - wY, boardC[second].xres, boardC[second].yres);
-							if(boardC[second].holding != null && Math.round(boardC[second].dir) != 1)
+							var col = determineColumn(SLVDEngine.boardSprite[second].dir);
+							see.drawImage(SLVDEngine.boardSprite[second].img, 32*col, 64*SLVDEngine.boardSprite[second].frame, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - wX, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 8)) - wY, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres);
+							if(SLVDEngine.boardSprite[second].holding != null && Math.round(SLVDEngine.boardSprite[second].dir) != 1)
 							{
-								see.drawImage(boardC[second].holding, (boardC[second].holding.width/4)*col, 0, (boardC[second].holding.width/4), 32, (boardC[second].x - (((boardC[second].xres)/2) - 8)) - wX + 16*Math.round(Math.cos(boardC[second].dir*Math.PI/2)), (boardC[second].y - (boardC[second].yres - 18)) - wY - 5*Math.round(Math.sin(boardC[second].dir*Math.PI/2)), 32, 32);	
+								see.drawImage(SLVDEngine.boardSprite[second].holding, (SLVDEngine.boardSprite[second].holding.width/4)*col, 0, (SLVDEngine.boardSprite[second].holding.width/4), 32, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - wX + 16*Math.round(Math.cos(SLVDEngine.boardSprite[second].dir*Math.PI/2)), (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 18)) - wY - 5*Math.round(Math.sin(SLVDEngine.boardSprite[second].dir*Math.PI/2)), 32, 32);	
 							}
 						}
-						if(boardC[second].status == "hurt" && frameClock == 1)
+						if(SLVDEngine.boardSprite[second].status == "hurt" && frameClock == 1)
 						{
-								boardC[second].countdown--;
-								if(boardC[second].countdown <= 0) 
+								SLVDEngine.boardSprite[second].countdown--;
+								if(SLVDEngine.boardSprite[second].countdown <= 0) 
 								{
-									boardC[second].status = null;
+									SLVDEngine.boardSprite[second].status = null;
 								}
 						}
 					}
-					if(boardC[second].dart.layer == index)
+					if(SLVDEngine.boardSprite[second].dart.layer == index)
 					{
-						var col = determineColumn(boardC[second].dart.dir);
-						see.drawImage(boardC[second].dart.img, boardC[second].dart.xres*col, boardC[second].dart.yres*boardC[second].dart.frame, boardC[second].dart.xres, boardC[second].dart.yres, boardC[second].dart.x - wX, boardC[second].dart.y - wY, boardC[second].dart.xres, boardC[second].dart.yres);
+						var col = determineColumn(SLVDEngine.boardSprite[second].dart.dir);
+						see.drawImage(SLVDEngine.boardSprite[second].dart.img, SLVDEngine.boardSprite[second].dart.xres*col, SLVDEngine.boardSprite[second].dart.yres*SLVDEngine.boardSprite[second].dart.frame, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres, SLVDEngine.boardSprite[second].dart.x - wX, SLVDEngine.boardSprite[second].dart.y - wY, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres);
 					}
 				}
 			}
@@ -350,9 +350,9 @@ function orientScreen() {
   }
 }
 
-//Sort all board characters into the array boardC in order of y location (in order to properly render sprite overlap).
+//Sort all board characters into the array SLVDEngine.boardSprite in order of y location (in order to properly render sprite overlap).
 function restartBoardC() {
-	boardC.length = 0;
+	SLVDEngine.boardSprite.length = 0;
 	
 	//Figure out which NPCs are onboard
 	for(var index = 0; index < NPC.length; index++)
@@ -379,19 +379,19 @@ function restartBoardC() {
 	}
 }
 
-//Sort the array boardC in order of y location (in order to properly render sprite overlap).
+//Sort the array SLVDEngine.boardSprite in order of y location (in order to properly render sprite overlap).
 function sortBoardC() {
-	if(boardC.length == 0) restartBoardC();
+	if(SLVDEngine.boardSprite.length == 0) restartBoardC();
 	else
 	{
-		for(var index = 1; index < boardC.length; index++)
+		for(var index = 1; index < SLVDEngine.boardSprite.length; index++)
 		{
 			var second = index;
-			while(second > 0 && boardC[second].y < boardC[second - 1].y)
+			while(second > 0 && SLVDEngine.boardSprite[second].y < SLVDEngine.boardSprite[second - 1].y)
 			{
-				var tempC = boardC[second];
-				boardC[second] = boardC[second - 1];
-				boardC[second - 1] = tempC;
+				var tempC = SLVDEngine.boardSprite[second];
+				SLVDEngine.boardSprite[second] = SLVDEngine.boardSprite[second - 1];
+				SLVDEngine.boardSprite[second - 1] = tempC;
 				second--;
 			}
 		}
@@ -400,32 +400,32 @@ function sortBoardC() {
 
 function insertBoardC(element) {
 	var index = 0;
-	while(index < boardC.length && element.y > boardC[index].y)
+	while(index < SLVDEngine.boardSprite.length && element.y > SLVDEngine.boardSprite[index].y)
 	{
 		index++;
 	}
-	boardC.splice(index, 0, element);
-/*	var second = boardC.length;
-	boardC[second] = element;
+	SLVDEngine.boardSprite.splice(index, 0, element);
+/*	var second = SLVDEngine.boardSprite.length;
+	SLVDEngine.boardSprite[second] = element;
 	while(second > 0)
 	{
-		if(boardC[second].y < boardC[second - 1].y)
+		if(SLVDEngine.boardSprite[second].y < SLVDEngine.boardSprite[second - 1].y)
 		{
-			var tempC = boardC[second];
-			boardC[second] = boardC[second - 1];
-			boardC[second - 1] = tempC;
+			var tempC = SLVDEngine.boardSprite[second];
+			SLVDEngine.boardSprite[second] = SLVDEngine.boardSprite[second - 1];
+			SLVDEngine.boardSprite[second - 1] = tempC;
 		}
 		second--;
 	}*/
 }
 
 function deleteBoardC(element) {
-	for(var index = 0; index < boardC.length; index++)
+	for(var index = 0; index < SLVDEngine.boardSprite.length; index++)
 	{
-		if(element == boardC[index])
+		if(element == SLVDEngine.boardSprite[index])
 		{
-			boardC.splice(index, 1);
-			index = boardC.length;
+			SLVDEngine.boardSprite.splice(index, 1);
+			index = SLVDEngine.boardSprite.length;
 		}
 	}
 }
@@ -494,16 +494,16 @@ function renderBoardState() {
 			}
 		}
 		
-		//Loop through boardC (to render)
-		for(var second = 0; second < boardC.length; second++)
+		//Loop through SLVDEngine.boardSprite (to render)
+		for(var second = 0; second < SLVDEngine.boardSprite.length; second++)
 		{
-			var cSprite = boardC[second];
+			var cSprite = SLVDEngine.boardSprite[second];
 			if(cSprite.layer == index) //ensure proper layering
 			{
 				//cSprite.see(see);
 				SpriteF.see.call(cSprite, snapShotCtx);
 				
-				//Determine if boardC is lighted
+				//Determine if SLVDEngine.boardSprite is lighted
 				if(cSprite.isLight)
 				{
 					lightedThing[lightedThing.length] = cSprite;

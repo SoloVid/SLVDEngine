@@ -43,26 +43,26 @@ Action["slash"].prototype.canUse = function(person) {
 };
 Action["slash"].prototype.use = function(person) {
 	this.time = 4;
-	for(var third = 0; third < boardC.length; third++)
+	for(var third = 0; third < SLVDEngine.boardAgent.length; third++)
 	{
-		if(boardC[third].team != person.team)
+		if(SLVDEngine.boardAgent[third].team != person.team)
 		{
 			//One tile away
-			var caseTRPG = Math.pow(xPixToTile(boardC[third].x) - xPixToTile(person.x), 2) + Math.pow(yPixToTile(boardC[third].y) - yPixToTile(person.y), 2) == 1;
+			var caseTRPG = Math.pow(xPixToTile(SLVDEngine.boardAgent[third].x) - xPixToTile(person.x), 2) + Math.pow(yPixToTile(SLVDEngine.boardAgent[third].y) - yPixToTile(person.y), 2) == 1;
 			//Distance < 40
-			var caseZelda = Math.sqrt(Math.pow(boardC[third].x - person.x, 2) + Math.pow(boardC[third].y - person.y, 2)) < 40;
+			var caseZelda = Math.sqrt(Math.pow(SLVDEngine.boardAgent[third].x - person.x, 2) + Math.pow(SLVDEngine.boardAgent[third].y - person.y, 2)) < 40;
 		
 			if((SLVDEngine.process == "TRPG" && caseTRPG) || (SLVDEngine.process == "zelda" && caseZelda))
 			{
 				//Determine angle between slasher and opponent (in terms of PI/2)
-				var angle = dirFromTo(person.x, person.y, boardC[third].x, boardC[third].y);
+				var angle = dirFromTo(person.x, person.y, SLVDEngine.boardAgent[third].x, SLVDEngine.boardAgent[third].y);
 				
 				//Compare angle to direction of slasher. If in range of PI... and if not already hurt and not invincible
-				if((Math.abs(angle - person.dir) < 1 || Math.abs(angle - person.dir) > 3) && boardC[third].status != "hurt" && boardC[third].status != "invincible")
+				if((Math.abs(angle - person.dir) < 1 || Math.abs(angle - person.dir) > 3) && SLVDEngine.boardAgent[third].status != "hurt" && SLVDEngine.boardAgent[third].status != "invincible")
 				{
-					boardC[third].zeldaBump(16, angle);
-					boardC[third].damage(5);
-					boardC[third].giveStatus(new Status["hurt"](8));
+					SLVDEngine.boardAgent[third].zeldaBump(16, angle);
+					SLVDEngine.boardAgent[third].damage(5);
+					SLVDEngine.boardAgent[third].giveStatus(new Status["hurt"](8));
 				}
 			}
 		}

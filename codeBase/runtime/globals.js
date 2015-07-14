@@ -14,8 +14,9 @@ var audio = [];
 var level = [];
 
 var player = [];
-var NPC = [] //Universal, absolute list of NPC objects
-var boardC = []; //NPCs and players, for drawing purposes
+var NPC = [] //Universal, absolute list of NPC objects (on all boards)
+SLVDEngine.boardAgent = []; //NPCs and players, for functional interaction
+SLVDEngine.boardSprite = []; //NPCs, players, and boardObjs, for drawing purposes
 var Teams = {};
 
 SLVDEngine.process = "loading"; //Input of master setInterval switch-case

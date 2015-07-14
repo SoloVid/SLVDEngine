@@ -1,6 +1,6 @@
 //Promises for SLVDEngine
 SLVD.promise = function() {
-	console.log(this);
+//	console.log(this);
 };
 SLVD.promise.prototype.then = function(callBack) {
 	if("data" in this) {
@@ -184,15 +184,17 @@ function enterLevelByName(nam) {
 	console.log(player[currentPlayer].name);
 	
 	//Finish all paths
-	for(var i = 0; i < boardC.length; i++)
+	for(var i = 0; i < SLVDEngine.boardSprite.length; i++)
 	{
-		if(boardC.path.x.length > 0)
+		if(SLVDEngine.boardSprite.path.x.length > 0)
 		{
-			boardC.x = boardC.path.x[boardC.path.x.length - 1];
-			boardC.y = boardC.path.y[boardC.path.y.length - 1];
+			SLVDEngine.boardSprite.x = SLVDEngine.boardSprite.path.x[SLVDEngine.boardSprite.path.x.length - 1];
+			SLVDEngine.boardSprite.y = SLVDEngine.boardSprite.path.y[SLVDEngine.boardSprite.path.y.length - 1];
 		}
 	}
 
+	SLVDEngine.boardAgent.length = 0;
+	
 	for(var index = 0; index < level.length; index++)
 	{
 		if(level[index].name == nam)
@@ -205,6 +207,7 @@ function enterLevelByName(nam) {
 	if(SLVDEngine.process == "zelda") 
 	{
 		cTeam = player;
+		SLVDEngine.boardAgent.push(player[currentPlayer]);
 		insertBoardC(player[currentPlayer]);
 	}
 	else if(SLVDEngine.process == "TRPG")
@@ -219,6 +222,7 @@ function enterLevelByName(nam) {
 	{
 		if(NPC[index].lvl == SLVDEngine.currentLevel.name)
 		{
+			SLVDEngine.boardAgent.push(NPC[index]);
 			insertBoardC(NPC[index]);
 		}
 	}

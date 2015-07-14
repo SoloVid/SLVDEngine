@@ -509,13 +509,13 @@ SpriteFunctions.prototype.see = function(ctx) {
 		return;
 	}
 	
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
+//	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	
 	ctx.translate(this.x - wX + this.offX - player[currentPlayer].offX, this.y - wY + this.offY - player[currentPlayer].offY);
 	
 	ctx.rotate(this.rotate);
 	
-	//BoardC is displayed partially transparent depending on health (<= 50% transparent)
+	//SLVDEngine.boardSprite is displayed partially transparent depending on health (<= 50% transparent)
 	//ctx.globalAlpha = (this.hp + this.strg)/(2*this.strg);
 		
 	var col = SpriteF.getStance.call(this); //in functions.js
@@ -609,20 +609,21 @@ SpriteFunctions.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	}
 	
 	//Check for collision with people
-	for(var i = 0; i < boardC.length; i++)
+	for(var i = 0; i < SLVDEngine.boardAgent.length; i++)
 	{
-		if(this.team != boardC[i].team && boardC[i].baseLength > 0)
+		var currentAgent = SLVDEngine.boardAgent[i];
+		if(this.team != currentAgent.team && currentAgent.baseLength > 0)
 		{
-			var collisionDist = this.baseLength + boardC[i].baseLength;
-			if(Math.abs(this.y - boardC[i].y) < collisionDist)
+			var collisionDist = this.baseLength + currentAgent.baseLength;
+			if(Math.abs(this.y - currentAgent.y) < collisionDist)
 			{
-				if(Math.abs(this.x - boardC[i].x) < collisionDist)
+				if(Math.abs(this.x - currentAgent.x) < collisionDist)
 				{
 					//The .pushing here ensures that there is no infinite loop of pushing back and forth
-					if(this.pushy && boardC[i].pushy && boardC[i].pushing != this)
+					if(this.pushy && currentAgent.pushy && currentAgent.pushing != this)
 					{
-						this.pushing = boardC[i];
-						SpriteF.zeldaBump.call(boardC[i], this.spd/2, this.dir);
+						this.pushing = currentAgent;
+						SpriteF.zeldaBump.call(currentAgent, this.spd/2, this.dir);
 						delete this.pushing;
 					}
 					return true;
