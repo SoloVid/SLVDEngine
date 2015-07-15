@@ -16,9 +16,23 @@ grunt
 Grunt watch is an ongoing command which "compiles" your updated code and levels into the dist directory as it is updated. Be sure to run grunt before editing levels or running the engine.
 Open the distMain.htm file to run the engine.
 
+## Project Directory Structure
 All of the files specific to your game are to be located in the files folder. 
 In that folder, there is a very important file found at files/main/initialize.js. This file has a function called startUp which is the entry point of the game.
-Also in the main folder is an XML file called master.xml which tells the engine what levels, music, sound effects (not looping), and system images to grab. The levels should be managed by grunt, but the others need to be manually populated.
-Levels may be produced in the level editor and must be moved to files/levels to be incorporated into the game.
-Any code you write for the game (events, sprites, etc.) should be put in their respective folders within files/code.
-All images used should be housed withing files/images, and they should be referenced relative to that folder (e.g. an image at "files/images/people/me.jpg" should be referenced by "people/me.jpg").
+Also in the main folder is an XML file called master.xml which tells the engine what levels, music, sound effects (not looping), and system images to grab. 
+This file should be managed by grunt.
+Be sure to put all of the files in their respective folders:
+- Audio files must be placed in files/audio (mp3s are encouraged).
+    - Music files (looping) should be placed in files/audio/music and referred to in-game by their path relative to that directory.
+    - Sound effect files (non-looping) should be placed in files/audio/soundeffects and referred to in-game by their path relative to that directory.
+- Image files must be placed in files/images.
+    - Images that are to be used in custom code or that should otherwise be loaded before the game starts should be placed in files/images/preloaded and referred to in-game by their path relative to that directory.
+    - Images used in sprites can be put into the preloaded folder, but the engine may at some point incorporate optimizations which would be inhibited by such. Sprite images generally should be placed in files/images and referred to in-game by their path relative to that directory.
+- Levels must must be placed in files/levels and referred to in-game by their name (not filename).
+- Any custom code (events, sprite templates, actions, etc.) must be placed in files/code. N.B. All code in this folder will be concatenated by grunt into a single file dist/static.js along with some engine code. Therefore, all code files may be considered as a single, flattened file but not guaranteed to be in a specific folder. Function hoisting should be available across these files.
+
+## Distribution
+Once grunt has been run on a completed project, the distribution files required are:
+- distMinMain.htm: the launch point of the game; may be renamed
+- dist/Maven.js
+- everything in files/ minus that in files/code/ and files/main/initialize.js (which are both incorporated into Maven.js)

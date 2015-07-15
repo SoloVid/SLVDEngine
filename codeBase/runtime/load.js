@@ -26,19 +26,19 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 	for(var index = 0; index < master.getElementsByTagName("image").length; index++) //Load all images referenced in master.xml outside of levels
 	{
 		image[index] = new Image();
-		image[index].src = "files/images/" + master.getElementsByTagName("image")[index].childNodes[0].nodeValue;
+		image[index].src = "files/images/preloaded/" + master.getElementsByTagName("image")[index].childNodes[0].nodeValue;
 		image[master.getElementsByTagName("image")[index].childNodes[0].nodeValue] = image[index];
 	}
 	
 	for(var index = 0; index < master.getElementsByTagName("music").length; index++) //Load all audio
 	{
-		audio[index] = audioCreate("files/audio/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
+		audio[index] = audioCreate("files/audio/music/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
 		audio[index].loop = true
 		audio[master.getElementsByTagName("music")[index].childNodes[0].nodeValue] = audio[index];
 	}
 	for(var second = index; second < master.getElementsByTagName("soundeffect") + index; second++)
 	{
-		audio[second] = audioCreate("files/audio/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
+		audio[second] = audioCreate("files/audio/soundeffects/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
 		audio[second].loop = false;
 		audio[master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue] = audio[second];
 	}

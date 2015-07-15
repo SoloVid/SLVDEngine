@@ -26,19 +26,61 @@ module.exports = function(grunt) {
 	},
 	injector: {
 		options: {
-			ignorePath: 'files/levels/',
-			addRootSlash: false,
-			transform: function(filepath, index, length) {
-				return '<level>' + filepath + '</level>'
-			},
-			starttag: '<!-- inject-files:{{ext}} -->',
-			endtag: '<!-- end-inject-files -->'
+			addRootSlash: false
 		},
 		level_files: {
+			options: {
+				templateString: '<?xml version="1.0" encoding="UTF-8"?>\n<stuff>\n\t<levels>\t\n</levels>\n\t<images>\n\t</images>\n\t<musics>\n\t</musics>\n\t<soundeffects>\n\t</soundeffects>\n</stuff>',
+				starttag: '<levels>',
+				endtag: '</levels>',
+				transform: function(filepath, index, length) {
+					return '\t<level>' + filepath + '</level>'
+				},
+				ignorePath: 'files/levels/'
+			},
 			files: {
 				'files/main/master.xml': ['files/levels/**/*.xml'],
 			}
-		}
+		},
+		music_files: {
+			options: {
+				starttag: '<musics>',
+				endtag: '</musics>',
+				transform: function(filepath, index, length) {
+					return '\t<music>' + filepath + '</music>'
+				},
+				ignorePath: 'files/audio/music/'
+			},
+			files: {
+				'files/main/master.xml': ['files/audio/music/**/*.mp3'],
+			}
+		},
+		sound_effect_files: {
+			options: {
+				starttag: '<soundeffects>',
+				endtag: '</soundeffects>',
+				transform: function(filepath, index, length) {
+					return '\t<soundeffect>' + filepath + '</soundeffect>'
+				},
+				ignorePath: 'files/audio/soundeffects/'
+			},
+			files: {
+				'files/main/master.xml': ['files/audio/soundeffects/**/*.mp3'],
+			}
+		},
+		preloaded_image_files: {
+			options: {
+				starttag: '<images>',
+				endtag: '</images>',
+				transform: function(filepath, index, length) {
+					return '\t<image>' + filepath + '</image>'
+				},
+				ignorePath: 'files/images/preloaded/'
+			},
+			files: {
+				'files/main/master.xml': ['files/images/preloaded/**/*'],
+			}
+		}		
 	},
     uglify: {
       options: {
