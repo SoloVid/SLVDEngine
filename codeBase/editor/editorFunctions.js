@@ -2,6 +2,8 @@ function toPolygon() { console.log("polygon mode"); mode = "polygon"; }
 function toNPC() { mode = "NPC"; }
 function toBoardObj() { mode = "boardObj"; }
 
+function setMode(name) { mode = name; }
+
 function drawVectors(highlightIndex)
 {
 	var XMLLayers = levelXML.getElementsByTagName("layer");
@@ -99,17 +101,23 @@ function loadFile2(data)
 	var NPC = levelXML.getElementsByTagName("NPC");
 	for(var i = 0; i < NPC.length; i++)
 	{
+//var a = new Date();
 		createObject("NPC", true, i);
-		openXMLEditor(NPC[i]);
-		$("#saveChanges").click();
+//var b = new Date();
+		updateObject("NPC", i);
+//var c = new Date();
+//console.log("a to b: " + (b.getTime() - a.getTime()));
+//console.log("b to c: " + (c.getTime() - b.getTime()));
 	}
 	var BO = levelXML.getElementsByTagName("boardObj");
 	for(var i = 0; i < BO.length; i++)
 	{
 		createObject("boardObj", true, i);
-		openXMLEditor(BO[i]);
-		$("#saveChanges").click();
+		updateObject("boardObj", i);
 	}
+	
+	generateLayerMenu();
+	drawVectors();
 }
 
 function downloadFile()
@@ -341,10 +349,8 @@ function openXMLEditor(node, disableTemplate)
 	$("#hardCode").val(node.textContent);
 }
 
-function updateObject(template, type, index)
+function updateObject(type, index)
 {
-	var t = loadSpriteFromTemplate(template);//new SpriteTemplate[template]() || new Sprite();
-
 	if(type === undefined) type = typeSelected;
 	if(index === undefined) index = indexSelected;
 
@@ -352,9 +358,12 @@ function updateObject(template, type, index)
 	HTMLNode = document.getElementById(type + index);
 	HTMLImg = HTMLNode.getElementsByTagName("img")[0];
 
+	var template = XMLNode.getAttribute("template");
+	var t = loadSpriteFromTemplate(template);//new SpriteTemplate[template]() || new Sprite();
+	
 	var code = XMLNode.textContent;
 	
-	console.log(code);
+//	console.log(code);
 	
 	var dRegex = /[\d]+/;
 	
@@ -415,8 +424,8 @@ function updateObject(template, type, index)
 	
 	HTMLImg.style.left = (-(xres*determineColumn(dir))) + "px";
 	
-	generateLayerMenu();
-	drawVectors();
+	//generateLayerMenu();
+	//drawVectors();
 }
 
 function createLevel(name, type)

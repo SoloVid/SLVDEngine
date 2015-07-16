@@ -11,6 +11,12 @@ document.onContextMenu = function()
 $("#layers").contextmenu(function(event) { event.preventDefault(); });
 $("#XMLEditor").contextmenu(function(event) { event.preventDefault(); });
 
+$(document).keydown(function(event) {
+	if(event.keyCode == 17)
+	{
+		ctrlDown = true;
+	}
+});
 $(document).keypress(function(event)
 {
 	if(event.which == 32)
@@ -21,6 +27,12 @@ $(document).keypress(function(event)
 		//console.log(JSON.stringify(document.getElementsByClassName("whiteboard")[0].getContext("2d").getImageData(0, 0, BOARDX/getPixelsPerPixel(), BOARDY/getPixelsPerPixel()), null, '\t'));
 		
 		//console.log(document.getElementById("testTA").value);
+	}
+});
+$(document).keyup(function(event) {
+	if(event.keyCode == 17)
+	{
+		ctrlDown = false;
 	}
 });
 
@@ -54,7 +66,10 @@ var mouseY = 0;
 
 var mouseDown = false;
 
+var ctrlDown = false;
+
 var follower = null;
+var copySprite = null;
 
 var pathInProgress = false;
 
@@ -122,7 +137,46 @@ $(document).mousemove(function(event) {
 });
 
 $(document.body).on("mousedown", ".draggable", function(event) {
-	follower = this;
+	if(mode != "polygon" && event.which == 1)
+	{
+		if(ctrlDown)
+		{
+			//Locate index of element
+			var thisType = this.className;
+			var regex = /[\s]*draggable[\s]*/;
+			thisType = thisType.replace(regex, "");
+
+			var activeLayer = document.getElementById("activeLayer").value;
+			
+			var i = /[\d]+/.exec(this.id)[0];
+
+			cloneIndex = 0;
+			while(document.getElementById(thisType + cloneIndex)) { cloneIndex++; }
+
+			
+			var XMLNode = levelXML.getElementsByTagName(thisType)[i];
+			
+			var template = XMLNode.getAttribute("template");
+			
+			var t = loadSpriteFromTemplate(template);
+			
+			var HTMLClone = this.cloneNode(true);
+			HTMLClone.id = thisType + cloneIndex;
+			var XMLClone = XMLNode.cloneNode(true);
+			
+			document.getElementById("layers").getElementsByClassName("layerDisplay")[activeLayer].appendChild(HTMLClone);	
+			
+			levelXML.getElementsByTagName(thisType + "s")[0].appendChild(XMLClone);
+			
+			follower = HTMLClone;
+			
+			generateLayerMenu();
+		}
+		else
+		{
+			follower = this;
+		}
+	}
 });
 $(document.body).on("dblclick", ".draggable", function(event) {
 	//Locate index of element
@@ -382,14 +436,8 @@ $("#saveChanges").click(function(event)
 	//Update graphics
 	if(typeSelected == "NPC" || typeSelected == "boardObj")
 	{
-		if($("#template").val())
-		{		
-			updateObject($("#template").val(), typeSelected, indexSelected);
-		}
-		else
-		{
-			updateObject();
-		}
+		updateObject(typeSelected, indexSelected);
+		generateLayerMenu();
 	}
 	else
 	{
@@ -409,8 +457,19 @@ $("#deleteThing").click(function(event)
 
 	$("#XMLEditor").hide();
 	
-	try { var HTMLNode = document.getElementById("layers").getElementsByClassName(typeSelected)[indexSelected];
-	HTMLNode.parentNode.removeChild(HTMLNode); } catch(e) { console.log(e); }
+	var HTMLNode = document.getElementById(typeSelected + indexSelected);
+	
+	HTMLNode.parentNode.removeChild(HTMLNode);
+	
+	var i = indexSelected;
+	
+	while(document.getElementById(typeSelected + ++i))
+	{
+		document.getElementById(typeSelected + i).id = typeSelected + (i - 1);
+	}
+	
+//	try { var HTMLNode = document.getElementById("layers").getElementsByClassName(typeSelected)[indexSelected];
+//	HTMLNode.parentNode.removeChild(HTMLNode); } catch(e) { console.log(e); }
 	
 	//Redraw menu
 	generateLayerMenu();

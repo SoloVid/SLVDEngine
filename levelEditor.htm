@@ -142,9 +142,12 @@
 		<div id="layers"></div>
 	
 		<div class="menu" style="left:0px;width:100px">
-			<div class="option" onclick="toNPC()">NPC</div>
-			<div class="option" onclick="toBoardObj()">Board Object</div>
-			<div class="option" onclick="toPolygon()">Vector</div>
+			Tools:
+			<div class="option" onclick="setMode('NPC')">NPC</div>
+			<div class="option" onclick="setMode('boardObj')">Board Object</div>
+<!--			<div class="option" onclick="setMode('copySprite')">Copy Sprite</div>
+			<div class="option" onclick="setMode('editSprite')">Edit Sprite</div>-->
+			<div class="option" onclick="setMode('polygon')">New Vector</div>
 			<br>
 			Active Layer:
 			<select id="activeLayer"></select>
