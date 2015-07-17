@@ -69,7 +69,6 @@ var mouseDown = false;
 var ctrlDown = false;
 
 var follower = null;
-var copySprite = null;
 
 var pathInProgress = false;
 
@@ -88,14 +87,13 @@ $("#fileChooser").change(function(evt) {
 	}
 });
 
-$(".option").click(function()
-{
+$(".option").click(function() {
 	pathInProgress = false;
 });
 
-$(".color").click(function()
-{
+$(".color").click(function() {
 	color = this.style.backgroundColor;
+	setMode("vector");
 });
 
 $(document).mousemove(function(event) {
@@ -137,7 +135,7 @@ $(document).mousemove(function(event) {
 });
 
 $(document.body).on("mousedown", ".draggable", function(event) {
-	if(mode != "polygon" && event.which == 1)
+	if(mode != "vector" && event.which == 1)
 	{
 		if(ctrlDown)
 		{
@@ -203,7 +201,7 @@ $(document.body).on("mousedown", "#layers", function(event)
 	
 	var pos = $(this).position();
 	
-	if(mode == "polygon")
+	if(mode == "vector")
 	{		
 		if(event.which == 1)
 		{
@@ -235,7 +233,10 @@ $(document.body).on("mousedown", "#layers", function(event)
 		}
 		else if(pathInProgress && event.which == 3)
 		{
-			pathInProgress.textContent += " (close)";
+			if(!ctrlDown)
+			{
+				pathInProgress.textContent += " (close)";
+			}
 			pathInProgress = false;
 		}
 		
