@@ -467,7 +467,7 @@ function createLevel(name, type)
 
 function createLayer(back, skipXML)
 {
-	if(back == null || back == "") back = subImg2;
+	if(back === null || back == "" || back == "files/images/") back = subImg2;
 
 	if(!skipXML)
 	{
