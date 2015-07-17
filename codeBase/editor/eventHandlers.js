@@ -12,7 +12,7 @@ $("#layers").contextmenu(function(event) { event.preventDefault(); });
 $("#XMLEditor").contextmenu(function(event) { event.preventDefault(); });
 
 $(document).keydown(function(event) {
-	if(event.keyCode == 17)
+	if(event.keyCode == 16)
 	{
 		ctrlDown = true;
 	}
@@ -30,7 +30,7 @@ $(document).keypress(function(event)
 	}
 });
 $(document).keyup(function(event) {
-	if(event.keyCode == 17)
+	if(event.keyCode == 16)
 	{
 		ctrlDown = false;
 	}
