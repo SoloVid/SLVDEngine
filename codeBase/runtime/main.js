@@ -196,7 +196,8 @@ SLVDEngine.main = function() {
 				delete SLVDEngine.keyFirstDown;
 				SLVDEngine.currentMenu.chosenPoint = SLVDEngine.currentMenu.currentPoint;
 				SLVDEngine.mainPromise.resolve(SLVDEngine.currentMenu.chosenPoint);
-			}			
+			}	
+			delete SLVDEngine.keyFirstDown;
 			break;
 		}
 		case "delay":
