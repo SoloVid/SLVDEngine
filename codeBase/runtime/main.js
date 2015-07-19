@@ -191,10 +191,10 @@ SLVDEngine.main = function() {
 			SLVDEngine.see.drawImage(SLVDEngine.currentMenu.cursor, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].x, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].y);
 			if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //Select
 			{
-				delete SLVDEngine.keyFirstDown;
 				SLVDEngine.currentMenu.chosenPoint = SLVDEngine.currentMenu.currentPoint;
 				SLVDEngine.mainPromise.resolve(SLVDEngine.currentMenu.chosenPoint);
-			}			
+			}	
+			delete SLVDEngine.keyFirstDown;
 			break;
 		}
 		case "delay":
