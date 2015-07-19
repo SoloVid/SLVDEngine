@@ -58,26 +58,26 @@ Time.advance = function(seconds) {
 }
 
 Time.renderClock = function(context) {
-	context.drawImage(image["clock.png"], SCREENX - 140, 0);
+	context.drawImage(image["clock.png"], SLVDEngine.SCREENX - 140, 0);
 	context.lineWidth = 1;
 	context.strokeStyle="#DDDDDD";
 	var hand = Math.PI/2 - (2*(SAVE.timeSeconds/60)*Math.PI);
 	context.beginPath();
-	context.moveTo(SCREENX - 70, 70);
-	context.lineTo(SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
+	context.moveTo(SLVDEngine.SCREENX - 70, 70);
+	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
 	context.stroke();
 	context.lineWidth = 2
 	context.strokeStyle="#000000";
 	hand = Math.PI/2 - (2*(SAVE.timeMinutes/60)*Math.PI);
 	context.beginPath();
-	context.moveTo(SCREENX - 70, 70);
-	context.lineTo(SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
+	context.moveTo(SLVDEngine.SCREENX - 70, 70);
+	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
 	context.stroke();
 	context.strokeStyle="#EE0000";
 	context.lineWidth = 3;
 	hand = Math.PI/2 - (2*(SAVE.timeHours/12)*Math.PI);
 	context.beginPath();
-	context.moveTo(SCREENX - 70, 70);
-	context.lineTo(SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
+	context.moveTo(SLVDEngine.SCREENX - 70, 70);
+	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
 	context.stroke();
 }

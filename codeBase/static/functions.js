@@ -1,65 +1,3 @@
-//Promises for SLVDEngine
-SLVD.promise = function() {
-//	console.log(this);
-};
-SLVD.promise.prototype.then = function(callBack) {
-	if("data" in this) {
-		return callBack(this.data);
-	}
-	else {
-		this.callBack = callBack;
-		
-		this.babyPromise = new SLVD.promise();
-		
-		return this.babyPromise;
-	}
-};
-SLVD.promise.prototype.resolve = function(data) {
-	if(this.callBack) {
-		var tPromise = this.callBack(data);
-		
-		if(this.babyPromise) {
-			if(!(tPromise instanceof SLVD.promise)) {
-				this.babyPromise.resolve(tPromise);
-			}
-			else if("data" in tPromise) {
-				this.babyPromise.resolve(tPromise.data);
-			}
-			else {
-				tPromise.callBack = this.babyPromise.callBack;
-				if(this.babyPromise.babyPromise) {
-				tPromise.babyPromise = this.babyPromise.babyPromise;
-				}
-			}
-		}
-	}
-	else {
-		this.data = data;
-	}
-};
-SLVD.promise.as = function(data) {
-	var prom = new SLVD.promise();
-	prom.resolve(data);
-	return prom;
-};
-
-SLVD.speedCheck = function(name, comparison) {
-	this.date = new Date();
-	this.name = name;
-	this.prior = comparison;
-};
-SLVD.speedCheck.prototype.getTime = function() {
-	return this.date.getMilliseconds() - this.prior.getMilliseconds();
-};
-SLVD.speedCheck.prototype.logUnusual = function(allow) {
-	if(!allow)
-	{
-		allow = 1;
-	}
-	if(this.getTime() > allow) {
-		//console.log(this.name + " took " + this.getTime() + " milliseconds");
-	}
-};
 
 //Create an audio element
 function audioCreate(source, iden) {
@@ -95,29 +33,10 @@ function audioResume() {
 }
 
 //Black out canvas
-function canvasBlackout(canv) {
+SLVDEngine.canvasBlackout = function(canv) {
 	canv.fillStyle="#000000";
 	canv.fillRect(0, 0, 640, 480);
-}
-
-//Get a cookie by its name
-function cookieGet(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-    }
-    return "";
-}
-
-//Save a cookie: name, value, days until expiration
-function cookieSet(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+d.toGMTString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
-}
+};
 
 //Deal damage from, to
 function damage(attacker, victim) {
@@ -139,12 +58,6 @@ function damage(attacker, victim) {
 	}
 	//Make victim aggressive if excitable
 	if(victim.dmnr == 1) victim.dmnr = 2;
-}
-
-//Setup delay process
-function delay(seconds) {
-	SLVDEngine.process = "delay";
-	SLVDEngine.countdown = Math.round(seconds*50);
 }
 
 //Determine column in spritesheet to use based on direction
@@ -271,85 +184,6 @@ SLVDEngine.evalObj = function(template, code) {
 	}
 	return obj;
 };
-
-//Return object from JSON-ish string
-function evalObj(code) {
-	var temp = new Sprite(null, null);
-	console.log("new Sprite");
-	//Loop until all code is handled, remove code as things go
-	while(code != "")
-	{
-		var tLine = /[^;]+;/.exec(code)[0];
-//		console.log("evalObjs() - " + tLine);
-		//return temp;
-		if(/=/.test(tLine))
-		{	
-			var leftRegex = /[\s]*[\w\.]+[\s]*/;
-			var left = leftRegex.exec(code)[0];
-			left = left.trim();
-			code = code.replace(leftRegex, "");
-			code = code.replace(/[\s]*=[\s]*/, "");
-			
-			//Handle functions differently than simple assignments
-			if(code.substr(0, 8) == "function")
-			{
-				var index = 0;
-				openB = 0;
-				while(openB != 0 || code.charAt(index - 1) != "}")
-				{
-					if(code.charAt(index) == "{")
-					{
-						openB++;
-					}
-					else if(code.charAt(index) == "}")
-					{
-						openB--;
-					}
-					index++;
-				}
-				
-				var funcCode = code.substring(0, index);
-				
-				var innerFuncCode = funcCode.substr(0, funcCode.length - 1);
-				innerFuncCode = innerFuncCode.replace(/function[^{]*{/, "");
-				
-				eval("temp[\"" + left + "\"] = function(cue) { " + evalFunc(innerFuncCode) + " };");
-				
-				code = code.replace(funcCode, "");
-				code = code.replace(/[\s]*/, "");
-			}
-			else
-			{
-				var rightRegex = /[\s]*[^;]+;[\s]*/;
-				var right = rightRegex.exec(code)[0].trim();
-				
-				right = right.replace(";", "");
-				
-				code = code.replace(rightRegex, "");
-				
-				if(left == "img")
-				{
-					if(!(right in image))
-					{
-						image[right] = new Image();
-						image[right].src = "files/images/" + right.replace(/\"/g, "");
-					}
-					temp["img"] = image[right];
-				}
-				else
-				{
-					temp[left] = eval(right);
-				}
-			}
-		}
-		else //Handle function calls differently than assignments
-		{
-			eval("temp." + tLine);
-		}
-	}
-	console.log("evaled obj");
-	return temp;
-}
 
 //Make a valid switch-case resumeFunc out of function. "waitForEngine();" will signal a return from a case.
 function evalFunc(code) {
@@ -560,21 +394,6 @@ function getTXT(fil) {
 //Disguised HTTP GET request
 function include(fil) {
 	//$.getScript("files/code/" + fil);
-}
-
-function includeScripts() {
-	if(arguments.length == 1)
-	{
-		getScriptAlt(arguments[0]);
-	}
-	else
-	{
-		var fil = arguments[0];
-		var args = Array.prototype.slice.call(arguments);
-		args.splice(0, 1);
-		console.log("getting |" + fil + "|");
-		getScriptAlt(fil, function() { includeScripts.apply(this, args); });//.done(function() { }).fail(function() { console.log("includeInOrder() failed with " + args.length + " arguments left to go."); });
-	}
 }
 
 //Gets the index on canvas data of given coordinates

@@ -502,17 +502,17 @@ Sprite.prototype.see = function(ctx) {
 	
 	if(!this.canSee) return;
 	
-	var canvSeeX = this.x - wX - SCREENX/2 + this.offX - player[currentPlayer].offX;
-	var canvSeeY = this.y - wY - SCREENY/2 + this.offY - player[currentPlayer].offY;
+	var canvSeeX = this.x - SLVDEngine.wX - SLVDEngine.SCREENX/2 + this.offX - player[currentPlayer].offX;
+	var canvSeeY = this.y - SLVDEngine.wY - SLVDEngine.SCREENY/2 + this.offY - player[currentPlayer].offY;
 	
-	if(canvSeeX < -SCREENX || canvSeeY < -SCREENY || canvSeeX > SCREENX || canvSeeY > SCREENY)
+	if(canvSeeX < -SLVDEngine.SCREENX || canvSeeY < -SLVDEngine.SCREENY || canvSeeX > SLVDEngine.SCREENX || canvSeeY > SLVDEngine.SCREENY)
 	{
 		return;
 	}
 	
 //	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	
-	ctx.translate(this.x - wX + this.offX - player[currentPlayer].offX, this.y - wY + this.offY - player[currentPlayer].offY);
+	ctx.translate(this.x - SLVDEngine.wX + this.offX - player[currentPlayer].offX, this.y - SLVDEngine.wY + this.offY - player[currentPlayer].offY);
 	
 	ctx.rotate(this.rotate);
 	
@@ -542,7 +542,7 @@ Sprite.prototype.see = function(ctx) {
 
 Sprite.prototype.updateFrame = function() {
 	//Only update on frame tick
-	if(frameClock == 1)
+	if(SLVDEngine.frameClock == 1)
 	{
 		this.frame++;
 		if(this.getImage().height <= this.frame*this.yres)

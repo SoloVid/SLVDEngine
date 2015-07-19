@@ -1,6 +1,6 @@
 SLVDEngine.showImage = function(file, duration, waitForEnterSpace) {
 	//SLVDEngine.process = "wait";
-	see.drawImage(file, 0, 0, SCREENX, SCREENY);
+	see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	return SLVDEngine.delay(duration).then(function() {
 		if(waitForEnterSpace)
 		{
@@ -68,13 +68,13 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 			}
 			else
 			{
-				var isUnderUpperBound = this.point[iPoint].y <= -this.point[iPoint].x + (this.point[prevPoint].x + SCREENX) + this.point[prevPoint].y;
-				var isAboveLowerBound = this.point[iPoint].y >= this.point[iPoint].x - (this.point[prevPoint].x + SCREENX) + this.point[prevPoint].y;
+				var isUnderUpperBound = this.point[iPoint].y <= -this.point[iPoint].x + (this.point[prevPoint].x + SLVDEngine.SCREENX) + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y >= this.point[iPoint].x - (this.point[prevPoint].x + SLVDEngine.SCREENX) + this.point[prevPoint].y;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdx = this.point[prevPoint].x - this.point[iPoint].x;
-				if(!isLeft) testdx += SCREENX;
+				if(!isLeft) testdx += SLVDEngine.SCREENX;
 				var testdy = Math.abs(this.point[prevPoint].y - this.point[iPoint].y);
 				if(testdx <= bestdx)
 				{
@@ -104,13 +104,13 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 			}
 			else
 			{
-				var isAboveLowerBound = this.point[iPoint].x <= -this.point[iPoint].y + (this.point[prevPoint].y + SCREENY) + this.point[prevPoint].x;
-				var isUnderUpperBound = this.point[iPoint].x >= this.point[iPoint].y - (this.point[prevPoint].y + SCREENY) + this.point[prevPoint].x;
+				var isAboveLowerBound = this.point[iPoint].x <= -this.point[iPoint].y + (this.point[prevPoint].y + SLVDEngine.SCREENY) + this.point[prevPoint].x;
+				var isUnderUpperBound = this.point[iPoint].x >= this.point[iPoint].y - (this.point[prevPoint].y + SLVDEngine.SCREENY) + this.point[prevPoint].x;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdy = this.point[prevPoint].y - this.point[iPoint].y;
-				if(!isUp) testdy += SCREENY;
+				if(!isUp) testdy += SLVDEngine.SCREENY;
 				var testdx = Math.abs(this.point[prevPoint].x - this.point[iPoint].x);
 				if(testdy <= bestdy)
 				{
@@ -141,13 +141,13 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 			}
 			else
 			{
-				var isUnderUpperBound = this.point[iPoint].y >= -this.point[iPoint].x + (this.point[prevPoint].x - SCREENX) + this.point[prevPoint].y;
-				var isAboveLowerBound = this.point[iPoint].y <= this.point[iPoint].x - (this.point[prevPoint].x - SCREENX) + this.point[prevPoint].y;
+				var isUnderUpperBound = this.point[iPoint].y >= -this.point[iPoint].x + (this.point[prevPoint].x - SLVDEngine.SCREENX) + this.point[prevPoint].y;
+				var isAboveLowerBound = this.point[iPoint].y <= this.point[iPoint].x - (this.point[prevPoint].x - SLVDEngine.SCREENX) + this.point[prevPoint].y;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdx =  this.point[iPoint].x - this.point[prevPoint].x;
-				if(!isRight) testdx += SCREENX;
+				if(!isRight) testdx += SLVDEngine.SCREENX;
 				var testdy = Math.abs(this.point[prevPoint].y - this.point[iPoint].y);
 				if(testdx <= bestdx)
 				{
@@ -178,13 +178,13 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 			}
 			else
 			{
-				var isUnderUpperBound = this.point[iPoint].x >= -this.point[iPoint].y + (this.point[prevPoint].y - SCREENY) + this.point[prevPoint].x;
-				var isAboveLowerBound = this.point[iPoint].x <= this.point[iPoint].y - (this.point[prevPoint].y - SCREENY) + this.point[prevPoint].x;
+				var isUnderUpperBound = this.point[iPoint].x >= -this.point[iPoint].y + (this.point[prevPoint].y - SLVDEngine.SCREENY) + this.point[prevPoint].x;
+				var isAboveLowerBound = this.point[iPoint].x <= this.point[iPoint].y - (this.point[prevPoint].y - SLVDEngine.SCREENY) + this.point[prevPoint].x;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdy = this.point[iPoint].y - this.point[prevPoint].y;
-				if(!isUp) testdy += SCREENY;
+				if(!isUp) testdy += SLVDEngine.SCREENY;
 				var testdx = Math.abs(this.point[prevPoint].x - this.point[iPoint].x);
 				if(testdy <= bestdy)
 				{
@@ -207,7 +207,7 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 
 function showImage(file, duration) {
 	SLVDEngine.process = "wait";
-	see.drawImage(file, 0, 0, SCREENX, SCREENY);
+	see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	SLVDEngine.countdown = 50*duration;
 	
 	SLVDEngine.mainPromise = new SLVD.promise();
@@ -272,13 +272,13 @@ function handleMenu() {
 			}
 			else
 			{
-				var isUnderUpperBound = opMenu.point[iPoint].y <= -opMenu.point[iPoint].x + (opMenu.point[prevPoint].x + SCREENX) + opMenu.point[prevPoint].y;
-				var isAboveLowerBound = opMenu.point[iPoint].y >= opMenu.point[iPoint].x - (opMenu.point[prevPoint].x + SCREENX) + opMenu.point[prevPoint].y;
+				var isUnderUpperBound = opMenu.point[iPoint].y <= -opMenu.point[iPoint].x + (opMenu.point[prevPoint].x + SLVDEngine.SCREENX) + opMenu.point[prevPoint].y;
+				var isAboveLowerBound = opMenu.point[iPoint].y >= opMenu.point[iPoint].x - (opMenu.point[prevPoint].x + SLVDEngine.SCREENX) + opMenu.point[prevPoint].y;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdx = opMenu.point[prevPoint].x - opMenu.point[iPoint].x;
-				if(!isLeft) testdx += SCREENX;
+				if(!isLeft) testdx += SLVDEngine.SCREENX;
 				var testdy = Math.abs(opMenu.point[prevPoint].y - opMenu.point[iPoint].y);
 				if(testdx <= bestdx)
 				{
@@ -308,13 +308,13 @@ function handleMenu() {
 			}
 			else
 			{
-				var isAboveLowerBound = opMenu.point[iPoint].x <= -opMenu.point[iPoint].y + (opMenu.point[prevPoint].y + SCREENY) + opMenu.point[prevPoint].x;
-				var isUnderUpperBound = opMenu.point[iPoint].x >= opMenu.point[iPoint].y - (opMenu.point[prevPoint].y + SCREENY) + opMenu.point[prevPoint].x;
+				var isAboveLowerBound = opMenu.point[iPoint].x <= -opMenu.point[iPoint].y + (opMenu.point[prevPoint].y + SLVDEngine.SCREENY) + opMenu.point[prevPoint].x;
+				var isUnderUpperBound = opMenu.point[iPoint].x >= opMenu.point[iPoint].y - (opMenu.point[prevPoint].y + SLVDEngine.SCREENY) + opMenu.point[prevPoint].x;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdy = opMenu.point[prevPoint].y - opMenu.point[iPoint].y;
-				if(!isUp) testdy += SCREENY;
+				if(!isUp) testdy += SLVDEngine.SCREENY;
 				var testdx = Math.abs(opMenu.point[prevPoint].x - opMenu.point[iPoint].x);
 				if(testdy <= bestdy)
 				{
@@ -345,13 +345,13 @@ function handleMenu() {
 			}
 			else
 			{
-				var isUnderUpperBound = opMenu.point[iPoint].y >= -opMenu.point[iPoint].x + (opMenu.point[prevPoint].x - SCREENX) + opMenu.point[prevPoint].y;
-				var isAboveLowerBound = opMenu.point[iPoint].y <= opMenu.point[iPoint].x - (opMenu.point[prevPoint].x - SCREENX) + opMenu.point[prevPoint].y;
+				var isUnderUpperBound = opMenu.point[iPoint].y >= -opMenu.point[iPoint].x + (opMenu.point[prevPoint].x - SLVDEngine.SCREENX) + opMenu.point[prevPoint].y;
+				var isAboveLowerBound = opMenu.point[iPoint].y <= opMenu.point[iPoint].x - (opMenu.point[prevPoint].x - SLVDEngine.SCREENX) + opMenu.point[prevPoint].y;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdx =  opMenu.point[iPoint].x - opMenu.point[prevPoint].x;
-				if(!isRight) testdx += SCREENX;
+				if(!isRight) testdx += SLVDEngine.SCREENX;
 				var testdy = Math.abs(opMenu.point[prevPoint].y - opMenu.point[iPoint].y);
 				if(testdx <= bestdx)
 				{
@@ -382,13 +382,13 @@ function handleMenu() {
 			}
 			else
 			{
-				var isUnderUpperBound = opMenu.point[iPoint].x >= -opMenu.point[iPoint].y + (opMenu.point[prevPoint].y - SCREENY) + opMenu.point[prevPoint].x;
-				var isAboveLowerBound = opMenu.point[iPoint].x <= opMenu.point[iPoint].y - (opMenu.point[prevPoint].y - SCREENY) + opMenu.point[prevPoint].x;
+				var isUnderUpperBound = opMenu.point[iPoint].x >= -opMenu.point[iPoint].y + (opMenu.point[prevPoint].y - SLVDEngine.SCREENY) + opMenu.point[prevPoint].x;
+				var isAboveLowerBound = opMenu.point[iPoint].x <= opMenu.point[iPoint].y - (opMenu.point[prevPoint].y - SLVDEngine.SCREENY) + opMenu.point[prevPoint].x;
 			}
 			if(isUnderUpperBound && isAboveLowerBound) //Point within 90 degree viewing window
 			{
 				var testdy = opMenu.point[iPoint].y - opMenu.point[prevPoint].y;
-				if(!isUp) testdy += SCREENY;
+				if(!isUp) testdy += SLVDEngine.SCREENY;
 				var testdx = Math.abs(opMenu.point[prevPoint].x - opMenu.point[iPoint].x);
 				if(testdy <= bestdy)
 				{
@@ -415,7 +415,7 @@ function setupFileSelect() {
 	opMenu.cursor = image["torchCursor.png"];
 	opMenu.background = buffer;
 
-	canvasBlackout(bufferCtx);
+	SLVDEngine.canvasBlackout(bufferCtx);
 	bufferCtx.fillStyle = "#FFFFFF";
 	bufferCtx.font = "20px Arial";
 	bufferCtx.fillText("Select a file.", 10, 30);
@@ -445,7 +445,7 @@ function setupActionMenu() {
 	opMenu.cursor = image["blueSquare.png"];
 	opMenu.background = buffer;
 
-	canvasBlackout(bufferCtx);
+	SLVDEngine.canvasBlackout(bufferCtx);
 	bufferCtx.fillStyle = "#FFFFFF";
 	bufferCtx.font = "20px Arial";
 	bufferCtx.fillText("Select a file.", 10, 30);
@@ -512,10 +512,10 @@ function personSays(persOb, message, overrideName) {
 
 	var tSpkr = overrideName || persOb.name;
 	
-	var py = persOb.y - wY - persOb.yres + 5;
-	//if(persOb.y - wY < 220) py = persOb.y - wY - persOb.yres + 40;
+	var py = persOb.y - SLVDEngine.wY - persOb.yres + 5;
+	//if(persOb.y - SLVDEngine.wY < 220) py = persOb.y - SLVDEngine.wY - persOb.yres + 40;
 	
-	speechBubble(message, tSpkr, persOb.x - wX + 8, py); 
+	speechBubble(message, tSpkr, persOb.x - SLVDEngine.wX + 8, py); 
 }
 
 function say(message) {
@@ -552,25 +552,25 @@ function speechBubble(msg, spkr, px, py) {
 	if(!py) yShift = 0;
 	
 	//Text box
-	drawAwesomeRect(SCREENX/2 - 300, yShift + 30, SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, see, px, py, (linNum - 1)*20 + 50 > py);
+	drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, see, px, py, (linNum - 1)*20 + 50 > py);
 
 	see.fillStyle="#FFFFFF";
 	see.font="18px Verdana";
 	if(line[0] != null)
 	{
 		//Lines
-		for(var index = 0; index < linNum - 1; index++) see.fillText(line[index], SCREENX/2 - 290, yShift + 20*index + 50);
+		for(var index = 0; index < linNum - 1; index++) see.fillText(line[index], SLVDEngine.SCREENX/2 - 290, yShift + 20*index + 50);
 	}
 	
 	if(spkr)
 	{
 		//Name box
-		drawAwesomeRect(SCREENX/2 - 300, yShift, see.measureText(spkr).width + SCREENX/2 - 260, yShift + 30, see);
+		drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift, see.measureText(spkr).width + SLVDEngine.SCREENX/2 - 260, yShift + 30, see);
 
 		see.fillStyle="#FFFFFF";
 		see.font="18px Verdana";
 		
 		//Name
-		see.fillText(spkr, SCREENX/2 - 280, yShift + 20);
+		see.fillText(spkr, SLVDEngine.SCREENX/2 - 280, yShift + 20);
 	}
 }

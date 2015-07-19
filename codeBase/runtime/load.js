@@ -3,20 +3,20 @@ gen = document.getElementById("bod");
 //<canvas class="center" id="seenCanvas" width="640" height="480" style="border:1px solid #d3d3d3;">
 seeB = document.createElement("canvas");//document.getElementById("seenCanvas");
 seeB.setAttribute("class", "center");
-seeB.setAttribute("width", SCREENX);
-seeB.setAttribute("height", SCREENY);
+seeB.setAttribute("width", SLVDEngine.SCREENX);
+seeB.setAttribute("height", SLVDEngine.SCREENY);
 seeB.setAttribute("style", "border:1px solid #d3d3d3;");
 gen.appendChild(seeB);
 see = seeB.getContext("2d");
 
 buffer = document.getElementById("buffer");
-buffer.setAttribute("width", SCREENX);
-buffer.setAttribute("height", SCREENY);
+buffer.setAttribute("width", SLVDEngine.SCREENX);
+buffer.setAttribute("height", SLVDEngine.SCREENY);
 bufferCtx = buffer.getContext("2d");
 
 snapShot = document.getElementById("snapShot");
-snapShot.setAttribute("width", SCREENX);
-snapShot.setAttribute("height", SCREENY);
+snapShot.setAttribute("width", SLVDEngine.SCREENX);
+snapShot.setAttribute("height", SLVDEngine.SCREENY);
 snapShotCtx = snapShot.getContext("2d");
 
 var holder = document.getElementById("holderCanvas")
@@ -78,8 +78,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 			for(var second = 0; second < data.getElementsByTagName("boardProgram").length; second++)
 			{
 				var content = data.getElementsByTagName("boardProgram")[second].childNodes[0].nodeValue;
-				var inline = "level[" + index + "].boardProgram[" + second + "] = function(cue) {" + evalFunc(content) + " };";
-				eval(inline);
+				level[index].boardProgram[second] = new Function(content);
 			}
 			for(var second = 0; second < data.getElementsByTagName("NPC").length; second++)
 			{
@@ -105,7 +104,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 		}
 		
 		//Begin main loop
-		setInterval(SLVDEngine.main, 1000/FPS);
+		setInterval(SLVDEngine.main, 1000/SLVDEngine.FPS);
 	});
 });
 
@@ -187,7 +186,7 @@ function loadUpdate() { //Used in main interval of engine
 	}
 	//Display load "percentage"
 	see.fillStyle = "#000000";
-	see.fillRect(0, 0, SCREENX, SCREENY);
+	see.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	see.fillStyle = "#FFFFFF";
 	see.fillText("Loading: " + Math.round(((loading + 0)/image.length)*100) + "%", 250, 230);
 

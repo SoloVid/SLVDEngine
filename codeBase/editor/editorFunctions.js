@@ -411,7 +411,7 @@ function updateObject(type, index)
 	
 	HTMLImg.src = img;
 	
-	//(boardC[second].x - (((boardC[second].xres)/2) - 8)) - wX, (boardC[second].y - (boardC[second].yres - 8)) - wY + tSqueeze
+	//(boardC[second].x - (((boardC[second].xres)/2) - 8)) - SLVDEngine.wX, (boardC[second].y - (boardC[second].yres - 8)) - SLVDEngine.wY + tSqueeze
 	
 	var x = x - xres/2 - t.baseOffX - t.offX;
 	var y = y - yres + t.baseLength/2 - t.baseOffY - t.offY;

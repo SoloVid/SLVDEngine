@@ -5,7 +5,7 @@ SLVDEngine.setupMainPromise = function() {
 
 SLVDEngine.delay = function(seconds) {
 	SLVDEngine.process = "delay";
-	SLVDEngine.countdown = Math.round(seconds*FPS);
+	SLVDEngine.countdown = Math.round(seconds*SLVDEngine.FPS);
 	
 	SLVDEngine.mainPromise = new SLVD.promise();
 	return SLVDEngine.mainPromise;

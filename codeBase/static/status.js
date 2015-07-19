@@ -16,13 +16,13 @@ baseStatus.prototype.see = function(person) { }
 Status["hurt"] = function(sec) { 
 	if(sec !== undefined)
 	{
-		this.time = sec*FPS;
+		this.time = sec*SLVDEngine.FPS;
 	}
 }
 Status["hurt"].prototype = new baseStatus();
 Status["hurt"].prototype.constructor = Status["hurt"];
 Status["hurt"].prototype.apply = function(person) {
-	if(frameClock == 1)
+	if(SLVDEngine.frameClock == 1)
 	{
 		person.preventRender();
 	}

@@ -27,7 +27,7 @@ SLVDEngine.main = function() {
 		case "zelda":
 		{
 			//Advance one second per second (given 20ms main interval)
-			if(SLVDEngine.counter%FPS == 0) Time.advance(1); //in time.js
+			if(SLVDEngine.counter%SLVDEngine.FPS == 0) Time.advance(1); //in time.js
 			var b = new SLVD.speedCheck("Time.advance", a);
 			b.logUnusual();
 			
@@ -70,13 +70,13 @@ SLVDEngine.main = function() {
 			for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 			{
 				//Draw layer
-				see.drawImage(SLVDEngine.currentLevel.layerImg[index], wX, wY, SCREENX, SCREENY, 0, 0, SCREENX, SCREENY);
+				see.drawImage(SLVDEngine.currentLevel.layerImg[index], SLVDEngine.wX, SLVDEngine.wY, SLVDEngine.SCREENX, SLVDEngine.SCREENY, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 				//Draw blue range squares
 				if(index == cTeam[currentPlayer].layer && cTeam[currentPlayer].squares != null)
 				{
 					for(var second = 0; second < cTeam[currentPlayer].squares.length; second++)
 					{
-						see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
+						see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - SLVDEngine.wX, cTeam[currentPlayer].squares[second].y*32 - SLVDEngine.wY, 32, 32);
 					}
 				}
 				for(var second = 0; second < SLVDEngine.boardSprite.length; second++)
@@ -121,7 +121,7 @@ SLVDEngine.main = function() {
 							}
 							see.lineWidth = 8;
 							see.beginPath();
-							see.arc((SLVDEngine.boardSprite[second].x - ((SLVDEngine.boardSprite[second].xres)/2)) - wX + 24, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres)) - wY + 56, 32, .5*((3 - SLVDEngine.boardSprite[second].dir) - .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI, .5*((3 - SLVDEngine.boardSprite[second].dir) + .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI);
+							see.arc((SLVDEngine.boardSprite[second].x - ((SLVDEngine.boardSprite[second].xres)/2)) - SLVDEngine.wX + 24, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres)) - SLVDEngine.wY + 56, 32, .5*((3 - SLVDEngine.boardSprite[second].dir) - .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI, .5*((3 - SLVDEngine.boardSprite[second].dir) + .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI);
 							see.strokeStyle = "white";
 							see.stroke();
 							SLVDEngine.boardSprite[second].countdown--;
@@ -133,16 +133,16 @@ SLVDEngine.main = function() {
 					}
 					if(SLVDEngine.boardSprite[second].layer == index)
 					{
-						if((SLVDEngine.boardSprite[second].status == "hurt" && frameClock != 1) || SLVDEngine.boardSprite[second].status != "hurt")
+						if((SLVDEngine.boardSprite[second].status == "hurt" && SLVDEngine.frameClock != 1) || SLVDEngine.boardSprite[second].status != "hurt")
 						{
 							var col = determineColumn(SLVDEngine.boardSprite[second].dir);
-							see.drawImage(SLVDEngine.boardSprite[second].img, 32*col, 64*SLVDEngine.boardSprite[second].frame, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - wX, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 8)) - wY, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres);
+							see.drawImage(SLVDEngine.boardSprite[second].img, 32*col, 64*SLVDEngine.boardSprite[second].frame, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - SLVDEngine.wX, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 8)) - SLVDEngine.wY, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres);
 							if(SLVDEngine.boardSprite[second].holding != null && Math.round(SLVDEngine.boardSprite[second].dir) != 1)
 							{
-								see.drawImage(SLVDEngine.boardSprite[second].holding, (SLVDEngine.boardSprite[second].holding.width/4)*col, 0, (SLVDEngine.boardSprite[second].holding.width/4), 32, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - wX + 16*Math.round(Math.cos(SLVDEngine.boardSprite[second].dir*Math.PI/2)), (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 18)) - wY - 5*Math.round(Math.sin(SLVDEngine.boardSprite[second].dir*Math.PI/2)), 32, 32);	
+								see.drawImage(SLVDEngine.boardSprite[second].holding, (SLVDEngine.boardSprite[second].holding.width/4)*col, 0, (SLVDEngine.boardSprite[second].holding.width/4), 32, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - SLVDEngine.wX + 16*Math.round(Math.cos(SLVDEngine.boardSprite[second].dir*Math.PI/2)), (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 18)) - SLVDEngine.wY - 5*Math.round(Math.sin(SLVDEngine.boardSprite[second].dir*Math.PI/2)), 32, 32);	
 							}
 						}
-						if(SLVDEngine.boardSprite[second].status == "hurt" && frameClock == 1)
+						if(SLVDEngine.boardSprite[second].status == "hurt" && SLVDEngine.frameClock == 1)
 						{
 								SLVDEngine.boardSprite[second].countdown--;
 								if(SLVDEngine.boardSprite[second].countdown <= 0) 
@@ -154,16 +154,16 @@ SLVDEngine.main = function() {
 					if(SLVDEngine.boardSprite[second].dart.layer == index)
 					{
 						var col = determineColumn(SLVDEngine.boardSprite[second].dart.dir);
-						see.drawImage(SLVDEngine.boardSprite[second].dart.img, SLVDEngine.boardSprite[second].dart.xres*col, SLVDEngine.boardSprite[second].dart.yres*SLVDEngine.boardSprite[second].dart.frame, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres, SLVDEngine.boardSprite[second].dart.x - wX, SLVDEngine.boardSprite[second].dart.y - wY, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres);
+						see.drawImage(SLVDEngine.boardSprite[second].dart.img, SLVDEngine.boardSprite[second].dart.xres*col, SLVDEngine.boardSprite[second].dart.yres*SLVDEngine.boardSprite[second].dart.frame, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres, SLVDEngine.boardSprite[second].dart.x - SLVDEngine.wX, SLVDEngine.boardSprite[second].dart.y - SLVDEngine.wY, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres);
 					}
 				}
 			}
 			//Weather
 			see.fillStyle = "rgba(0, 0, 0, " + shade + ")";
-			see.fillRect(0, 0, SCREENX, SCREENY);
+			see.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 			if(rainy)
 			{
-				see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SCREENX, ((SLVDEngine.counter%25)/25)*SCREENY - SCREENY);
+				see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SLVDEngine.SCREENX, ((SLVDEngine.counter%25)/25)*SLVDEngine.SCREENY - SLVDEngine.SCREENY);
 				if(SLVDEngine.counter%8 == randomInt(12))
 				{
 					for(var index = 0; index < randomInt(3); index++)
@@ -196,8 +196,7 @@ SLVDEngine.main = function() {
 				delete SLVDEngine.keyFirstDown;
 				SLVDEngine.currentMenu.chosenPoint = SLVDEngine.currentMenu.currentPoint;
 				SLVDEngine.mainPromise.resolve(SLVDEngine.currentMenu.chosenPoint);
-			}	
-			delete SLVDEngine.keyFirstDown;
+			}			
 			break;
 		}
 		case "delay":
@@ -226,11 +225,11 @@ SLVDEngine.main = function() {
 //	document.getElementById("timey").innerHTML = SLVDEngine.counter;
 	if((SLVDEngine.counter%8) == 0)
 	{
-		frameClock = 1;
+		SLVDEngine.frameClock = 1;
 	}
 	else
 	{
-		frameClock = 0;
+		SLVDEngine.frameClock = 0;
 	}
 };
 
@@ -262,8 +261,7 @@ document.onkeydown = function(e) {
         e.preventDefault();
     }
 
-	keys++;
-	key = SLVDEngine.keyCodeKey[e.which || e.keyCode];//e.key.toLowerCase();
+	var key = SLVDEngine.keyCodeKey[e.which || e.keyCode];//e.key.toLowerCase();
 	
 	if(key == " ")
 	{
@@ -308,8 +306,7 @@ document.onkeydown = function(e) {
 
 //The clean-up of the above function.
 document.onkeyup = function(e) {
-	keys--;
-	key = SLVDEngine.keyCodeKey[e.keyCode];//e.key.toLowerCase();
+	var key = SLVDEngine.keyCodeKey[e.keyCode];//e.key.toLowerCase();
 	
 	if(key == SLVDEngine.keyFirstDown)
 	{
@@ -319,35 +316,35 @@ document.onkeyup = function(e) {
 	delete SLVDEngine.keyDown[key];
 }
 
-//Set wX and wY (references for relative image drawing) based on current player's (or in some cases NPC's) position.
+//Set SLVDEngine.wX and SLVDEngine.wY (references for relative image drawing) based on current player's (or in some cases NPC's) position.
 function orientScreen() {
 	var person = cTeam[currentPlayer];
 	var x = person.x + person.offX;
 	var y = person.y + person.offY;
-  if(SLVDEngine.currentLevel.layerImg[0].width <= SCREENX) {
-	wX = (SLVDEngine.currentLevel.layerImg[0].width - SCREENX)/2;
+  if(SLVDEngine.currentLevel.layerImg[0].width <= SLVDEngine.SCREENX) {
+	SLVDEngine.wX = (SLVDEngine.currentLevel.layerImg[0].width - SLVDEngine.SCREENX)/2;
   }
-  else if (x + SCREENX/2 >= SLVDEngine.currentLevel.layerImg[0].width) {
-    wX = SLVDEngine.currentLevel.layerImg[0].width - SCREENX;
+  else if (x + SLVDEngine.SCREENX/2 >= SLVDEngine.currentLevel.layerImg[0].width) {
+    SLVDEngine.wX = SLVDEngine.currentLevel.layerImg[0].width - SLVDEngine.SCREENX;
   }
-  else if (x >= SCREENX/2) {
-    wX = x - (SCREENX/2);
+  else if (x >= SLVDEngine.SCREENX/2) {
+    SLVDEngine.wX = x - (SLVDEngine.SCREENX/2);
   }
   else {
-    wX = 0;
+    SLVDEngine.wX = 0;
   }
   
-  if(SLVDEngine.currentLevel.layerImg[0].height <= SCREENY) {
-	wY = (SLVDEngine.currentLevel.layerImg[0].height - SCREENY)/2;
+  if(SLVDEngine.currentLevel.layerImg[0].height <= SLVDEngine.SCREENY) {
+	SLVDEngine.wY = (SLVDEngine.currentLevel.layerImg[0].height - SLVDEngine.SCREENY)/2;
   }
-  else if (y + SCREENY/2 >= SLVDEngine.currentLevel.layerImg[0].height) {
-    wY = SLVDEngine.currentLevel.layerImg[0].height - SCREENY;
+  else if (y + SLVDEngine.SCREENY/2 >= SLVDEngine.currentLevel.layerImg[0].height) {
+    SLVDEngine.wY = SLVDEngine.currentLevel.layerImg[0].height - SLVDEngine.SCREENY;
   }
-  else if (y >= SCREENY/2) {
-    wY = y - (SCREENY/2);
+  else if (y >= SLVDEngine.SCREENY/2) {
+    SLVDEngine.wY = y - (SLVDEngine.SCREENY/2);
   }
   else {
-    wY = 0;
+    SLVDEngine.wY = 0;
   }
 }
 
@@ -433,7 +430,7 @@ function deleteBoardC(element) {
 
 //Based on keys down (ASDW and arrows), set current player's direction. Used in zeldaPlayerMotion().
 function figurePlayerDirection() {
-	dKeys = 0;
+	var dKeys = 0;
 	var dir = 0;
 	if(SLVDEngine.keyDown['a'] || SLVDEngine.keyDown['left']) //West
 	{
@@ -464,8 +461,10 @@ function figurePlayerDirection() {
 
 	if(dKeys)
 	{
-		player[currentPlayer].dir = dir;
+		player[currentPlayer].dir = dir % 4;
+		return true;
 	}
+	return false;
 }
 
 function renderBoardState() {
@@ -474,12 +473,12 @@ function renderBoardState() {
 	
 	//Black out screen (mainly for the case of board being smaller than the screen)
 	see.fillStyle="#000000";
-	see.fillRect(0, 0, SCREENX, SCREENY);
+	see.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	
 	//Rendering sequence
 	for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 	{
-		snapShotCtx.clearRect(0, 0, SCREENX, SCREENY);
+		snapShotCtx.clearRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	
 		if(SLVDEngine.process == "TRPG")
 		{
@@ -489,8 +488,8 @@ function renderBoardState() {
 				for(var second = 0; second < cTeam[currentPlayer].squares.length; second++)
 				{
 					see.fillStyle = "rgba(0, 100, 255, .5)";
-					see.fillRect(cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
-					//see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - wX, cTeam[currentPlayer].squares[second].y*32 - wY, 32, 32);
+					see.fillRect(cTeam[currentPlayer].squares[second].x*32 - SLVDEngine.wX, cTeam[currentPlayer].squares[second].y*32 - SLVDEngine.wY, 32, 32);
+					//see.drawImage(image["blueSquare.png"], 0, 0, 32, 32, cTeam[currentPlayer].squares[second].x*32 - SLVDEngine.wX, cTeam[currentPlayer].squares[second].y*32 - SLVDEngine.wY, 32, 32);
 				}
 			}
 		}
@@ -517,15 +516,15 @@ function renderBoardState() {
 		snapShotCtx.globalAlpha = 1;
 		
 		//Work out details of smaller-than-screen dimensions
-		if(wX < 0) var xDif = Math.abs(wX);
+		if(SLVDEngine.wX < 0) var xDif = Math.abs(SLVDEngine.wX);
 		else var xDif = 0;
-		if(wY < 0) var yDif = Math.abs(wY);
+		if(SLVDEngine.wY < 0) var yDif = Math.abs(SLVDEngine.wY);
 		else var yDif = 0;
 		
 		snapShotCtx.globalCompositeOperation = "destination-over";
 		
 		//Draw layer based on values found in orientScreen() and altered above
-		snapShotCtx.drawImage(SLVDEngine.currentLevel.layerImg[index], wX + xDif, wY + yDif, SCREENX - 2*xDif, SCREENY - 2*yDif, xDif, yDif, SCREENX - 2*xDif, SCREENY - 2*yDif);
+		snapShotCtx.drawImage(SLVDEngine.currentLevel.layerImg[index], SLVDEngine.wX + xDif, SLVDEngine.wY + yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif, xDif, yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif);
 
 		snapShotCtx.globalCompositeOperation = "source-over";
 		
@@ -533,21 +532,21 @@ function renderBoardState() {
 	}
 	
 	//Weather
-	if(rainy) see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SCREENX, ((SLVDEngine.counter%25)/25)*SCREENY - SCREENY);
-	if(cloudy) see.drawImage(image["stormClouds.png"], SLVDEngine.counter%1280 - 1280, 0);
+	if(SLVDEngine.weather.rain) see.drawImage(image["rain.png"], -((SLVDEngine.counter%100)/100)*SLVDEngine.SCREENX, ((SLVDEngine.counter%25)/25)*SLVDEngine.SCREENY - SLVDEngine.SCREENY);
+	if(SLVDEngine.weather.clouds) see.drawImage(image["stormClouds.png"], SLVDEngine.counter%1280 - 1280, 0);
 	//Light in dark
-	if(dark > 0)
+	if(SLVDEngine.weather.dark > 0)
 	{
 		//Transparentize buffer
-		bufferCtx.clearRect(0, 0, SCREENX, SCREENY);
+		bufferCtx.clearRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 
 		//Put lighted things on the buffer as white radial gradients with opaque centers and transparent edges
 		for(var index = 0; index < lightedThing.length; index++)
 		{
-			var xCoord = (lightedThing[index].x) - wX; 
-			var yCoord = (lightedThing[index].y) - wY;
+			var xCoord = (lightedThing[index].x) - SLVDEngine.wX; 
+			var yCoord = (lightedThing[index].y) - SLVDEngine.wY;
 			var grd = bufferCtx.createRadialGradient(xCoord, yCoord, 1, xCoord, yCoord, 150);
-			grd.addColorStop(0, "rgba(255, 255, 255, " + dark + ")");
+			grd.addColorStop(0, "rgba(255, 255, 255, " + SLVDEngine.weather.dark + ")");
 			grd.addColorStop(1, "rgba(255, 255, 255, 0)");
 			bufferCtx.fillStyle = grd;
 			bufferCtx.beginPath();
@@ -559,10 +558,10 @@ function renderBoardState() {
 		//XOR lights placed with black overlay (the result being holes in the black)
 		bufferCtx.globalCompositeOperation = "xor";
 		bufferCtx.fillStyle = "rgba(0, 0, 0, " + dark + ")";//"#000000";
-		bufferCtx.fillRect(0, 0, SCREENX, SCREENY);
+		bufferCtx.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 
 		//Render buffer
-		see.drawImage(buffer, 0, 0, SCREENX, SCREENY);
+		see.drawImage(buffer, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 		
 		//Return to default image layering
 		bufferCtx.globalCompositeOperation = "source-over";

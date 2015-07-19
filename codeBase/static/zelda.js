@@ -179,24 +179,16 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 //	}
 	if(person.path.length === 0)
 	{
-		figurePlayerDirection();
-		if (person.dir >= 4)
-		{
-			person.dir -= 4;
-		}
-		if (dKeys == 0)
-		{
-			person.frame = 0;
-		}
-		else
+		if(figurePlayerDirection()) //If pressing direction(s), step
 		{
 			person.updateFrame();
-		}
-		if(dKeys) //If pressing direction(s), step
-		{
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
 			if(person.zeldaStep(person.spd) < 0) {}//console.log("stopped");
 //			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
+		}
+		else
+		{
+			person.frame = 0;
 		}
 		var limit = person.baseLength/2;
 		for(var ind = -limit; ind < limit; ind++)
@@ -294,7 +286,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 				}
 			}
 			//Update frame
-			if(frameClock == 1) player[currentPlayer].pet.frame = (player[currentPlayer].pet.frame + 1)%4;
+			if(SLVDEngine.frameClock == 1) player[currentPlayer].pet.frame = (player[currentPlayer].pet.frame + 1)%4;
 			//Trend toward inactivity
 			player[currentPlayer].pet.statusCountdown--;
 			if(player[currentPlayer].pet.statusCountdown <= 0)
@@ -340,7 +332,7 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 			deleteBoardC(player[currentPlayer].dart);
 		}
 		//Update frame
-		if(frameClock == 1)
+		if(SLVDEngine.frameClock == 1)
 		{
 			player[currentPlayer].dart.frame = (player[currentPlayer].dart.frame + 1)%4;
 		}
