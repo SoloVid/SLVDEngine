@@ -65,8 +65,8 @@ SLVDEngine.Motion["chase"] = function() {};
 SLVDEngine.Motion["chase"].prototype = new SLVDEngine.baseMotion();
 SLVDEngine.Motion["chase"].prototype.constructor = SLVDEngine.Motion["chase"];
 SLVDEngine.Motion["chase"].prototype.canUse = function(person) {
-	var dist = Math.sqrt(Math.pow(person.x - SLVDEngine.player[currentPlayer].x, 2) + Math.pow(person.y - SLVDEngine.player[currentPlayer].y, 2));
-	return (dist < 256 && person.layer == SLVDEngine.player[currentPlayer].layer && person.canSeePlayer())
+	var dist = Math.sqrt(Math.pow(person.x - SLVDEngine.player[SLVDEngine.currentPlayer].x, 2) + Math.pow(person.y - SLVDEngine.player[SLVDEngine.currentPlayer].y, 2));
+	return (dist < 256 && person.layer == SLVDEngine.player[SLVDEngine.currentPlayer].layer && person.canSeePlayer())
 }
 SLVDEngine.Motion["chase"].prototype.use = function(person) {
 	person.zeldaLockOnPlayer();

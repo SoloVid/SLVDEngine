@@ -6,7 +6,7 @@ Each action is associated with five different functions:
 	SLVDEngine.see: no significant return value, renders graphics each frame onto the screen just after calling SLVDEngine.player/SLVDEngine.NPC is drawn
 See "slash" action below for usage sampling
 One of the most important usage guidelines is the use of time. 
-	The engine will continue to call the action's update SLVDEngine.for = function a particular person until this.time hits 0.
+	The engine will continue to call the action's update function for a particular person until this.time hits 0.
 	Keep in mind that this.time will likely be 0 at the call of use(); 
 	so this.time should generally be initialized in use() and decremented in update().
 If there is to be a delay before the person may use another SLVDEngine.Action of the same class, don't let this.time reach zero
@@ -48,14 +48,14 @@ SLVDEngine.Action["slash"].prototype.use = function(person) {
 		if(SLVDEngine.boardAgent[third].team != person.team)
 		{
 			//One tile away
-			var caseTRPG = Math.pow(xPixToTile(SLVDEngine.boardAgent[third].x) - xPixToTile(person.x), 2) + Math.pow(yPixToTile(SLVDEngine.boardAgent[third].y) - yPixToTile(person.y), 2) == 1;
+			var caseTRPG = Math.pow(SLVDEngine.xPixToTile(SLVDEngine.boardAgent[third].x) - SLVDEngine.xPixToTile(person.x), 2) + Math.pow(SLVDEngine.yPixToTile(SLVDEngine.boardAgent[third].y) - SLVDEngine.yPixToTile(person.y), 2) == 1;
 			//Distance < 40
 			var caseZelda = Math.sqrt(Math.pow(SLVDEngine.boardAgent[third].x - person.x, 2) + Math.pow(SLVDEngine.boardAgent[third].y - person.y, 2)) < 40;
 		
 			if((SLVDEngine.process == "TRPG" && caseTRPG) || (SLVDEngine.process == "zelda" && caseZelda))
 			{
 				//Determine angle between slasher and opponent (in terms of PI/2)
-				var angle = dirFromTo(person.x, person.y, SLVDEngine.boardAgent[third].x, SLVDEngine.boardAgent[third].y);
+				var angle = SLVDEngine.dirFromTo(person.x, person.y, SLVDEngine.boardAgent[third].x, SLVDEngine.boardAgent[third].y);
 				
 				//Compare angle to direction of slasher. If in range of PI... and if not already hurt and not invincible
 				if((Math.abs(angle - person.dir) < 1 || Math.abs(angle - person.dir) > 3) && SLVDEngine.boardAgent[third].status != "hurt" && SLVDEngine.boardAgent[third].status != "invincible")

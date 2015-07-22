@@ -86,7 +86,7 @@ SLVDEngine.Sprite.prototype.handleAction = function() {
 				this.spliceAct(i, 1);
 				if(SLVDEngine.process == "TRPG")
 				{
-					TRPGNextTurn(); //in TRPG.js
+					SLVDEngine.TRPGNextTurn(); //in TRPG.js
 				}
 			}
 		}
@@ -199,7 +199,7 @@ SLVDEngine.Sprite.prototype.stance = 0;
 SLVDEngine.Sprite.prototype.defaultStance = function() {
 	if(!this.omniDir)
 	{
-		this.stance = determineColumn(this.dir);
+		this.stance = SLVDEngine.determineColumn(this.dir);
 	}
 	else
 	{
@@ -298,7 +298,7 @@ SLVDEngine.Sprite.prototype.canBeHere = function(allowInAir) {
 	{
 		for(var sec = 0; sec < 16; sec++)
 		{
-			var i = pixCoordToIndex(person.x + sec, person.y + ind, SLVDEngine.currentLevel.layerFuncData[person.layer]);
+			var i = SLVDEngine.pixCoordToIndex(person.x + sec, person.y + ind, SLVDEngine.currentLevel.layerFuncData[person.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[person.layer].data[i] == 255)
 			{
 				if(allowInAir == 1 && SLVDEngine.currentLevel.layerFuncData[person.layer].data[i + 1] == 255) { }
@@ -310,7 +310,7 @@ SLVDEngine.Sprite.prototype.canBeHere = function(allowInAir) {
 };
 
 SLVDEngine.Sprite.prototype.canSeePlayer = function() {
-	var tDir = dirFromTo(this.x, this.y, SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
+	var tDir = SLVDEngine.dirFromTo(this.x, this.y, SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
 	return (Math.abs(tDir - this.dir) < 1 || Math.abs(tDir - this.dir) > 3)
 };
 
@@ -441,7 +441,7 @@ SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, h
 			ptA.push(nx);
 			ptA.push(ny);
 			i += 2;
-			var tDir = dirFromTo(cx, cy, nx, ny); //in functions.js
+			var tDir = SLVDEngine.dirFromTo(cx, cy, nx, ny); //in functions.js
 			
 			//Single step component distances
 			var dy = Math.round(this.spd*Math.sin((tDir)*(Math.PI/2)));
@@ -461,7 +461,7 @@ SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, h
 		{
 			if(ptA.length > 0)
 			{
-				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.walkPath(" + ptA.toString() + ");");
+				var event = new Function("var tNPC = SLVDEngine.getNPCByName(\"" + this.name + "\"); tNPC.walkPath(" + ptA.toString() + ");");
 				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				ptA.length = 0;
 				cTime = nTime + 8; //tack on a few extra frames to be safe
@@ -469,7 +469,7 @@ SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, h
 			
 			if(eventA[i] == "put")
 			{
-				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.x = " + eventA[i + 1] + "; tNPC.y = " + eventA[i + 2] + "; tNPC.layer = " + eventA[i + 3] + ";");
+				var event = new Function("var tNPC = SLVDEngine.getNPCByName(\"" + this.name + "\"); tNPC.x = " + eventA[i + 1] + "; tNPC.y = " + eventA[i + 2] + "; tNPC.layer = " + eventA[i + 3] + ";");
 				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				i += 4;
 				
@@ -478,7 +478,7 @@ SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, h
 			}
 			else if(eventA[i] == "send")
 			{
-				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.lvl = " + eventA[i + 1] + "; tNPC.x = " + eventA[i + 2] + "; tNPC.y = " + eventA[i + 3] + "; tNPC.layer = " + eventA[i + 4] + ";");
+				var event = new Function("var tNPC = SLVDEngine.getNPCByName(\"" + this.name + "\"); tNPC.lvl = " + eventA[i + 1] + "; tNPC.x = " + eventA[i + 2] + "; tNPC.y = " + eventA[i + 3] + "; tNPC.layer = " + eventA[i + 4] + ";");
 				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				i += 5;
 				
@@ -590,8 +590,8 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 	for(var i = -this.baseLength/2; i < this.baseLength/2; i++)
 	{
 		coords[altAxis] = this[altAxis] + i;
-		pixel = getPixel(coords.x, coords.y, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 		if(pixel[0] == 255) //If pixel on func map has R=255
+		pixel = SLVDEngine.getPixel(coords.x, coords.y, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 		{
 			//Don't worry if Y=255 (open air) and person is inAir
 			if(this.inAir == 1 && pixel[1] == 255) { }
@@ -641,7 +641,7 @@ SLVDEngine.Sprite.prototype.zeldaLockOnPlayer = function() {
 };
 	
 SLVDEngine.Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
-	this.dir = dirFromTo(this.x, this.y, qx, qy);
+	this.dir = SLVDEngine.dirFromTo(this.x, this.y, qx, qy);
 /*	this.dir = Math.atan(-(this.y - qy)/(this.x - qx))/(Math.PI/2);
 	if(this.x > qx)
 	{	
@@ -716,29 +716,29 @@ SLVDEngine.Sprite.prototype.zeldaStep = function(distance) {
 		
 		if(dir < 1 || dir > 3) //case 0:
 		{
-			var j = pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 0 && dir < 2) //case 1:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}
 		if(dir > 1 && dir < 3) //case 2:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 2 && dir < 4) //case 3:
 		{
-			var j = pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}

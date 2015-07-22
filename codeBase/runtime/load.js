@@ -39,7 +39,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 		SLVDEngine.audio[master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue] = SLVDEngine.audio[second];
 	}
 		
-	SLVDEngine.loadOneLevel = function(index) {
+	function loadOneLevel(index) {
 		if(index >= master.getElementsByTagName("level").length) {
 			return SLVD.promise.as();
 		}

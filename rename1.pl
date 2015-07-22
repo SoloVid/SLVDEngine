@@ -12,8 +12,8 @@ $/ = "\n";
 
 for $var (@vars) {
 	chomp $var;
-	print "|$var|\n";
-	s/\b(?!SLVDEngine\.)$var\b/SLVDEngine.$var/g;
+	#print "|$var|\n";
+	s/\b$var\b/SLVDEngine.$var/g;
 }
 
 print;

@@ -409,7 +409,7 @@ SLVDEngine.handleMenu = function() {
 	}
 };
 
-//File selection menu
+//File selection SLVDEngine.menu
 SLVDEngine.setupFileSelect = function() {
 	opMenu.killPoints();
 	opMenu.cursor = SLVDEngine.image["torchCursor.png"];
@@ -508,19 +508,19 @@ SLVDEngine.drawAwesomeRect = function(sx, sy, ex, ey, context, px, py, down) {
 };
 
 SLVDEngine.personSays = function(persOb, message, overrideName) {
-	renderBoardState(); //in main.js
+	SLVDEngine.renderBoardState(); //in SLVDEngine.main.js
 
 	var tSpkr = overrideName || persOb.name;
 	
 	var py = persOb.y - SLVDEngine.wY - persOb.yres + 5;
 	//if(persOb.y - SLVDEngine.wY < 220) py = persOb.y - SLVDEngine.wY - persOb.yres + 40;
 	
-	speechBubble(message, tSpkr, persOb.x - SLVDEngine.wX + 8, py); 
+	SLVDEngine.speechBubble(message, tSpkr, persOb.x - SLVDEngine.wX + 8, py); 
 };
 
 SLVDEngine.say = function(message) {
-	renderBoardState();
-	speechBubble(message);
+	SLVDEngine.renderBoardState();
+	SLVDEngine.speechBubble(message);
 };
 
 SLVDEngine.speechBubble = function(msg, spkr, px, py) {
@@ -552,7 +552,7 @@ SLVDEngine.speechBubble = function(msg, spkr, px, py) {
 	if(!py) yShift = 0;
 	
 	//Text box
-	drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, SLVDEngine.see, px, py, (linNum - 1)*20 + 50 > py);
+	SLVDEngine.drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, SLVDEngine.see, px, py, (linNum - 1)*20 + 50 > py);
 
 	SLVDEngine.see.fillStyle="#FFFFFF";
 	SLVDEngine.see.font="18px Verdana";
@@ -565,7 +565,7 @@ SLVDEngine.speechBubble = function(msg, spkr, px, py) {
 	if(spkr)
 	{
 		//Name box
-		drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift, SLVDEngine.see.measureText(spkr).width + SLVDEngine.SCREENX/2 - 260, yShift + 30, SLVDEngine.see);
+		SLVDEngine.drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift, SLVDEngine.see.measureText(spkr).width + SLVDEngine.SCREENX/2 - 260, yShift + 30, SLVDEngine.see);
 
 		SLVDEngine.see.fillStyle="#FFFFFF";
 		SLVDEngine.see.font="18px Verdana";

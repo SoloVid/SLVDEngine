@@ -10,7 +10,7 @@ SLVDEngine.zeldaNPCMotion = function() //Function for all non-SLVDEngine.player 
 		while(index < SLVDEngine.boardSprite.length && SLVDEngine.boardSprite[index].hp <= 0)
 		{
 			SLVDEngine.boardSprite[index].lvl = null;
-			//deleteBoardC(SLVDEngine.boardSprite[index]);
+			//SLVDEngine.deleteBoardC(SLVDEngine.boardSprite[index]);
 			SLVDEngine.boardSprite.splice(index, 1);
 		}
 		//If at invalid index (bc death ran to end of SLVDEngine.boardSprite array), don't continue
@@ -66,8 +66,8 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 		person.y = SLVDEngine.player[prevPlayer].y;
 		person.layer = SLVDEngine.player[prevPlayer].layer;
 		person.dir = SLVDEngine.player[prevPlayer].dir;
-		deleteBoardC(SLVDEngine.player[prevPlayer]);
-		insertBoardC(person);
+		SLVDEngine.deleteBoardC(SLVDEngine.player[prevPlayer]);
+		SLVDEngine.insertBoardC(person);
 		delete SLVDEngine.keyFirstDown;
 	}
 	
@@ -91,7 +91,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 			person.act.splice(i, 1);
 			if(SLVDEngine.process == "TRPG")
 			{
-				TRPGNextTurn(); //in TRPG.js
+				SLVDEngine.TRPGNextTurn(); //in TRPG.js
 			}
 		}
 	}
@@ -179,7 +179,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 //	}
 	if(person.path.length === 0)
 	{
-		if(figurePlayerDirection()) //If pressing direction(s), step
+		if(SLVDEngine.figurePlayerDirection()) //If pressing direction(s), step
 		{
 			person.updateFrame();
 //			if(SLVDEngine.player[SLVDEngine.currentPlayer].act == "jumping" && SLVDEngine.player[SLVDEngine.currentPlayer].inAir == 1 && SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown < 0) SLVDEngine.player[SLVDEngine.currentPlayer].y += 2*(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown + 32);
@@ -195,7 +195,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 		{
 			for(var sec = -limit; sec < limit; sec++)
 			{
-				var i = pixCoordToIndex(SLVDEngine.player[SLVDEngine.currentPlayer].x + sec, SLVDEngine.player[SLVDEngine.currentPlayer].y + ind, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer]);
+				var i = SLVDEngine.pixCoordToIndex(SLVDEngine.player[SLVDEngine.currentPlayer].x + sec, SLVDEngine.player[SLVDEngine.currentPlayer].y + ind, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer]);
 				if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i] == 100)
 				{
 					SLVDEngine.player[SLVDEngine.currentPlayer].onPrg = SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i + 2];
@@ -300,7 +300,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 			SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown--;
 			if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown <= 0)
 			{
-				deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].pet);
+				SLVDEngine.deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].pet);
 				delete SLVDEngine.player[SLVDEngine.currentPlayer].pet;
 			}
 		}
@@ -315,10 +315,10 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 		{
 			if((Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.y - (boardNPC[index].y - 24)) < 32) && (Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.x - boardNPC[index].x) < 16))
 			{
-				damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //damage hit opponent
+				SLVDEngine.damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //SLVDEngine.damage hit opponent
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null; //remove SLVDEngine.image
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0; //reset frame
-				deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
+				SLVDEngine.deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
 				boardNPC[index].status = "hurt"; //"hurt" opponent
 				boardNPC[index].statusCountdown = 4; //"hurt" blinks
 				index = boardNPC.length; //break out of loop
@@ -329,7 +329,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 		{
 			SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null;
 			SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0;
-			deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
+			SLVDEngine.deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
 		}
 		//Update frame
 		if(SLVDEngine.frameClock == 1)

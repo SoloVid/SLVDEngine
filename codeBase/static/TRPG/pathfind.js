@@ -8,13 +8,13 @@ SLVDEngine.pathToEnemy = function(finder)
 	SLVDEngine.PF.point = [];
 	SLVDEngine.PF.binHeap = [];
 	SLVDEngine.PF.pointC = {};
-	SLVDEngine.PF.counter = 0;
+	SLVDEngine.PF.SLVDEngine.counter = 0;
 	//Start with finder's point
 	//Convert to tile coordinates
-	SLVDEngine.PF.pointC.x = xPixToTile(SLVDEngine.PF.finder.x);
-	SLVDEngine.PF.pointC.y = yPixToTile(SLVDEngine.PF.finder.y);
-	//Get index (based on SLVDEngine.level's function map data) of the point
-	SLVDEngine.PF.pointC.index = pixCoordToIndex(SLVDEngine.PF.pointC.x, SLVDEngine.PF.pointC.y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
+	SLVDEngine.PF.pointC.x = SLVDEngine.xPixToTile(SLVDEngine.PF.finder.x);
+	SLVDEngine.PF.pointC.y = SLVDEngine.yPixToTile(SLVDEngine.PF.finder.y);
+	//Get index (based on SLVDEngine.level's function SLVDEngine.map data) of the point
+	SLVDEngine.PF.pointC.index = SLVDEngine.pixCoordToIndex(SLVDEngine.PF.pointC.x, SLVDEngine.PF.pointC.y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
 	//No parent
 	SLVDEngine.PF.pointC.parent = -1;
 	//Initial point costs nothing
@@ -26,7 +26,7 @@ SLVDEngine.pathToEnemy = function(finder)
 	var cont = 1;
 	while(cont == 1)
 	{
-		//if(SLVDEngine.PF.counter > 1000) alert("way too many while loopings");
+		//if(SLVDEngine.PF.SLVDEngine.counter > 1000) alert("way too many while loopings");
 		//alert(SLVDEngine.PF.pointC.x + ", " + SLVDEngine.PF.pointC.y);
 		//Cycle through opposing team positions
 		for(var index = 0; index < SLVDEngine.boardAgent.length; index++)
@@ -36,7 +36,7 @@ SLVDEngine.pathToEnemy = function(finder)
 			{
 				//if(index > 100) alert("something is wrong");
 				//If reached one opponent's position, set path to troop
-				if(SLVDEngine.PF.pointC.x == xPixToTile(currentAgent.x) && SLVDEngine.PF.pointC.y == yPixToTile(currentAgent.y))
+				if(SLVDEngine.PF.pointC.x == SLVDEngine.xPixToTile(currentAgent.x) && SLVDEngine.PF.pointC.y == SLVDEngine.yPixToTile(currentAgent.y))
 				{
 					//alert("found target");
 					//Check if spot next to target is already occupied by team member
@@ -44,7 +44,7 @@ SLVDEngine.pathToEnemy = function(finder)
 					{
 						//If found a team member, but it is the finder
 						if(SLVDEngine.PF.opTeam[0].oppTeam[second] == SLVDEngine.PF.finder) { }
-						else if(SLVDEngine.PF.pointC.parent.x == xPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].x) && SLVDEngine.PF.pointC.parent.y == yPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].y))
+						else if(SLVDEngine.PF.pointC.parent.x == SLVDEngine.xPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].x) && SLVDEngine.PF.pointC.parent.y == SLVDEngine.yPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].y))
 						{
 							//Pretend the target's point has not been touched
 							//SLVDEngine.PF.removeOb(SLVDEngine.PF.pointC.location); //Point is already out of the heap since it was grabbed.
@@ -64,8 +64,8 @@ SLVDEngine.pathToEnemy = function(finder)
 								SLVDEngine.PF.finder.path.x[second] = SLVDEngine.PF.finder.path.x[second - 1];
 								SLVDEngine.PF.finder.path.y[second] = SLVDEngine.PF.finder.path.y[second - 1];
 							}
-							SLVDEngine.PF.finder.path.x[0] = xTileToPix(SLVDEngine.PF.pointC.x);
-							SLVDEngine.PF.finder.path.y[0] = yTileToPix(SLVDEngine.PF.pointC.y);
+							SLVDEngine.PF.finder.path.x[0] = SLVDEngine.xTileToPix(SLVDEngine.PF.pointC.x);
+							SLVDEngine.PF.finder.path.y[0] = SLVDEngine.yTileToPix(SLVDEngine.PF.pointC.y);
 							SLVDEngine.PF.pointC = SLVDEngine.PF.pointC.parent;
 						}
 						//Because the last child point is the point of the target, we delete it off to keep from going there
@@ -143,13 +143,13 @@ SLVDEngine.pathToTeam = function(finder, opTeam)
 	SLVDEngine.PF.point = [];
 	SLVDEngine.PF.binHeap = [];
 	SLVDEngine.PF.pointC = {};
-	SLVDEngine.PF.counter = 0;
+	SLVDEngine.PF.SLVDEngine.counter = 0;
 	//Start with finder's point
 	//Convert to tile coordinates
-	SLVDEngine.PF.pointC.x = xPixToTile(SLVDEngine.PF.finder.x);
-	SLVDEngine.PF.pointC.y = yPixToTile(SLVDEngine.PF.finder.y);
-	//Get index (based on SLVDEngine.level's function map data) of the point
-	SLVDEngine.PF.pointC.index = pixCoordToIndex(SLVDEngine.PF.pointC.x, SLVDEngine.PF.pointC.y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
+	SLVDEngine.PF.pointC.x = SLVDEngine.xPixToTile(SLVDEngine.PF.finder.x);
+	SLVDEngine.PF.pointC.y = SLVDEngine.yPixToTile(SLVDEngine.PF.finder.y);
+	//Get index (based on SLVDEngine.level's function SLVDEngine.map data) of the point
+	SLVDEngine.PF.pointC.index = SLVDEngine.pixCoordToIndex(SLVDEngine.PF.pointC.x, SLVDEngine.PF.pointC.y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
 	//No parent
 	SLVDEngine.PF.pointC.parent = -1;
 	//Initial point costs nothing
@@ -161,14 +161,14 @@ SLVDEngine.pathToTeam = function(finder, opTeam)
 	var cont = 1;
 	while(cont == 1)
 	{
-		//if(SLVDEngine.PF.counter > 1000) alert("way too many while loopings");
+		//if(SLVDEngine.PF.SLVDEngine.counter > 1000) alert("way too many while loopings");
 		//alert(SLVDEngine.PF.pointC.x + ", " + SLVDEngine.PF.pointC.y);
 		//Cycle through opposing team positions
 		for(var index = 0; index < SLVDEngine.PF.opTeam.length; index++)
 		{
 			//if(index > 100) alert("something is wrong");
 			//If reached one opponent's position, set path to troop
-			if(SLVDEngine.PF.pointC.x == xPixToTile(SLVDEngine.PF.opTeam[index].x) && SLVDEngine.PF.pointC.y == yPixToTile(SLVDEngine.PF.opTeam[index].y))
+			if(SLVDEngine.PF.pointC.x == SLVDEngine.xPixToTile(SLVDEngine.PF.opTeam[index].x) && SLVDEngine.PF.pointC.y == SLVDEngine.yPixToTile(SLVDEngine.PF.opTeam[index].y))
 			{
 				//alert("found target");
 				//Check if spot next to target is already occupied by team member
@@ -176,7 +176,7 @@ SLVDEngine.pathToTeam = function(finder, opTeam)
 				{
 					//If found a team member, but it is the finder
 					if(SLVDEngine.PF.opTeam[0].oppTeam[second] == SLVDEngine.PF.finder) { }
-					else if(SLVDEngine.PF.pointC.parent.x == xPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].x) && SLVDEngine.PF.pointC.parent.y == yPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].y))
+					else if(SLVDEngine.PF.pointC.parent.x == SLVDEngine.xPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].x) && SLVDEngine.PF.pointC.parent.y == SLVDEngine.yPixToTile(SLVDEngine.PF.opTeam[0].oppTeam[second].y))
 					{
 						//Pretend the target's point has not been touched
 						//SLVDEngine.PF.removeOb(SLVDEngine.PF.pointC.location); //Point is already out of the heap since it was grabbed.
@@ -196,8 +196,8 @@ SLVDEngine.pathToTeam = function(finder, opTeam)
 							SLVDEngine.PF.finder.path.x[second] = SLVDEngine.PF.finder.path.x[second - 1];
 							SLVDEngine.PF.finder.path.y[second] = SLVDEngine.PF.finder.path.y[second - 1];
 						}
-						SLVDEngine.PF.finder.path.x[0] = xTileToPix(SLVDEngine.PF.pointC.x);
-						SLVDEngine.PF.finder.path.y[0] = yTileToPix(SLVDEngine.PF.pointC.y);
+						SLVDEngine.PF.finder.path.x[0] = SLVDEngine.xTileToPix(SLVDEngine.PF.pointC.x);
+						SLVDEngine.PF.finder.path.y[0] = SLVDEngine.yTileToPix(SLVDEngine.PF.pointC.y);
 						SLVDEngine.PF.pointC = SLVDEngine.PF.pointC.parent;
 					}
 					//Because the last child point is the point of the target, we delete it off to keep from going there
@@ -270,7 +270,7 @@ SLVDEngine.PF.evaluatePoint = function(x, y)
 {
 	//alert("evaluating" + x + ", " + y);
 	//Get point's index
-	var i = pixCoordToIndex(x, y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
+	var i = SLVDEngine.pixCoordToIndex(x, y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer]);
 	//If the point has not yet been analyzed and spot on SLVDEngine.map = function is not blocked
 	if(SLVDEngine.PF.point[i] == null && SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.finder.layer].data[i] != 255 && x >= 0 && y >= 0 && x < SLVDEngine.currentLevel.layerFunc[SLVDEngine.PF.finder.layer].width && y < SLVDEngine.currentLevel.layerFunc[SLVDEngine.PF.finder.layer].height)
 	{
@@ -552,8 +552,8 @@ SLVDEngine.PF.getSquares = function(person)
 	SLVDEngine.PF.person = person;
 	//Since person.squares is deleted every turn, re-setup the first square
 	person.squares[0] = new Object;
-	person.squares[0].x = xPixToTile(person.ix);
-	person.squares[0].y = yPixToTile(person.iy);
+	person.squares[0].x = SLVDEngine.xPixToTile(person.ix);
+	person.squares[0].y = SLVDEngine.yPixToTile(person.iy);
 	person.squares[0].GCost = 0;
 	//Loop as long as there is another square to look at
 	for(var index = 0; index < person.squares.length; index++)
@@ -600,7 +600,7 @@ SLVDEngine.PF.evaluateSquare = function(x, y)
 		//Determine if opponent is on the square.
 		for(var second = 0; second < SLVDEngine.PF.person.oppTeam.length; second++)
 		{
-			if(xPixToTile(SLVDEngine.PF.person.oppTeam[second].x) == x && yPixToTile(SLVDEngine.PF.person.oppTeam[second].y) == y)
+			if(SLVDEngine.xPixToTile(SLVDEngine.PF.person.oppTeam[second].x) == x && SLVDEngine.yPixToTile(SLVDEngine.PF.person.oppTeam[second].y) == y)
 			{
 				blocked = 1;
 			}
@@ -609,13 +609,13 @@ SLVDEngine.PF.evaluateSquare = function(x, y)
 		for(var second = 0; second < SLVDEngine.PF.person.oppTeam[0].oppTeam.length; second++)
 		{
 			if(SLVDEngine.PF.person.oppTeam[0].oppTeam[second] == SLVDEngine.PF.person) { } //Exception: teammate is self.
-			else if(xPixToTile(SLVDEngine.PF.person.oppTeam[0].oppTeam[second].x) == x && yPixToTile(SLVDEngine.PF.person.oppTeam[0].oppTeam[second].y) == y)
+			else if(SLVDEngine.xPixToTile(SLVDEngine.PF.person.oppTeam[0].oppTeam[second].x) == x && SLVDEngine.yPixToTile(SLVDEngine.PF.person.oppTeam[0].oppTeam[second].y) == y)
 			{
 				//This square is still a parent square but will be removed in the end.
 				forRemoval = 1;
 			}
 		}
-		if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.person.layer].data[pixCoordToIndex(x, y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.person.layer])] != 255 && blocked != 1)
+		if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.person.layer].data[SLVDEngine.pixCoordToIndex(x, y, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.PF.person.layer])] != 255 && blocked != 1)
 		{
 			if(SLVDEngine.PF.cSquare.GCost + 1 <= SLVDEngine.PF.person.spd)
 			{
@@ -637,7 +637,7 @@ SLVDEngine.PF.onSquare = function(person)
 {
 	for(var index = 0; index < person.squares.length; index++)
 	{
-		if(person.squares[index].x == xPixToTile(person.x) && person.squares[index].y == yPixToTile(person.y))
+		if(person.squares[index].x == SLVDEngine.xPixToTile(person.x) && person.squares[index].y == SLVDEngine.yPixToTile(person.y))
 		{
 			return 1;
 		}
@@ -649,7 +649,7 @@ SLVDEngine.PF.isSquare = function(x, y, person)
 {
 	for(var index = 0; index < person.squares.length; index++)
 	{
-		if(person.squares[index].x == xPixToTile(x) && person.squares[index].y == yPixToTile(y))
+		if(person.squares[index].x == SLVDEngine.xPixToTile(x) && person.squares[index].y == SLVDEngine.yPixToTile(y))
 		{
 			return 1;
 		}
@@ -663,27 +663,27 @@ SLVDEngine.PF.reformUnitsOnSquareWithout = function(x, y, team, exMember)
 	unit.length = 0;
 	for(var index = 0; index < team.length; index++)
 	{
-		if(xPixToTile(team[index].x) == x && yPixToTile(team[index].y) == y && team[index] != exMember) unit[unit.length] = team[index];
+		if(SLVDEngine.xPixToTile(team[index].x) == x && SLVDEngine.yPixToTile(team[index].y) == y && team[index] != exMember) unit[unit.length] = team[index];
 	}
 	if(unit.length == 1)
 	{
-		unit[0].x = xTileToPix(x);
-		unit[0].y = yTileToPix(y);
+		unit[0].x = SLVDEngine.xTileToPix(x);
+		unit[0].y = SLVDEngine.yTileToPix(y);
 	}
 	else
 	{
 		try
 		{
-			unit[0].x = xTileToPix(x) - 8;
-			unit[0].y = yTileToPix(y) + 8;
-			unit[1].x = xTileToPix(x) + 8;
-			unit[1].y = yTileToPix(y) - 8;
-			unit[2].x = xTileToPix(x) - 8;
-			unit[2].y = yTileToPix(y) - 8;
-			unit[3].x = xTileToPix(x) + 8;
-			unit[3].y = yTileToPix(y) + 8;
-			unit[4].x = xTileToPix(x) - 0;
-			unit[4].y = yTileToPix(y) + 0;
+			unit[0].x = SLVDEngine.xTileToPix(x) - 8;
+			unit[0].y = SLVDEngine.yTileToPix(y) + 8;
+			unit[1].x = SLVDEngine.xTileToPix(x) + 8;
+			unit[1].y = SLVDEngine.yTileToPix(y) - 8;
+			unit[2].x = SLVDEngine.xTileToPix(x) - 8;
+			unit[2].y = SLVDEngine.yTileToPix(y) - 8;
+			unit[3].x = SLVDEngine.xTileToPix(x) + 8;
+			unit[3].y = SLVDEngine.yTileToPix(y) + 8;
+			unit[4].x = SLVDEngine.xTileToPix(x) - 0;
+			unit[4].y = SLVDEngine.yTileToPix(y) + 0;
 		}
 		catch(e)
 		{

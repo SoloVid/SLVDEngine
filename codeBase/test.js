@@ -1,3 +1,3 @@
-wX
-wY
-	audioPlay
+SLVDEngine.wX
+SLVDEngine.wY
+	SLVDEngine.audioPlay

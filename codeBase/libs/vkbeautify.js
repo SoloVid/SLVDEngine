@@ -47,7 +47,7 @@
 
 (function() {
 
-SLVDEngine.createShiftArr = function(step) {
+function createShiftArr(step) {
 
 	var space = '    ';
 	
@@ -75,12 +75,12 @@ SLVDEngine.createShiftArr = function(step) {
 		shift.push(shift[ix]+space); 
 	}
 	return shift;
-};
+}
 
-SLVDEngine.vkbeautify = function(){
+function vkbeautify(){
 	this.step = '    '; // 4 spaces
 	this.shift = createShiftArr(this.step);
-};;
+};
 
 vkbeautify.prototype.xml = function(text,step) {
 
@@ -198,11 +198,11 @@ vkbeautify.prototype.css = function(text, step) {
 
 //----------------------------------------------------------------------------
 
-SLVDEngine.isSubquery = function(str, parenthesisLevel) {
+function isSubquery(str, parenthesisLevel) {
 	return  parenthesisLevel - (str.replace(/\(/g,'').length - str.replace(/\)/g,'').length )
-};
+}
 
-SLVDEngine.split_sql = function(str, tab) {
+function split_sql(str, tab) {
 
 	return str.replace(/\s{1,}/g," ")
 
@@ -256,7 +256,7 @@ SLVDEngine.split_sql = function(str, tab) {
 							
 				.replace(/~::~{1,}/g,"~::~")
 				.split('~::~');
-};
+}
 
 vkbeautify.prototype.sql = function(text,step) {
 

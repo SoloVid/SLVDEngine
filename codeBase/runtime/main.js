@@ -1,5 +1,5 @@
 //Include user files
-//$.getScript("files/main/initialize.js");
+//$.getScript("files/SLVDEngine.main/initialize.js");
 //alert("got script");
 
 //Engine code
@@ -19,34 +19,34 @@ SLVDEngine.main = function() {
 	{
 		case "SLVDEngine.loading":
 		{
-			loadUpdate(); //in load.js
+			SLVDEngine.loadUpdate(); //in load.js
 			break;
 		}
 		case "zelda":
 		{
-			//Advance one second per second (given 20ms main interval)
+			//Advance one second per second (given 20ms SLVDEngine.main interval)
 			if(SLVDEngine.counter%SLVDEngine.FPS == 0) SLVDEngine.Time.advance(1); //in time.js
 			var b = new SLVD.speedCheck("SLVDEngine.Time.advance", a);
 			b.logUnusual();
 			
-			zeldaPlayerMotion();
-			var c = new SLVD.speedCheck("zeldaPlayerMotion", b.date);
+			SLVDEngine.zeldaPlayerMotion();
+			var c = new SLVD.speedCheck("SLVDEngine.zeldaPlayerMotion", b.date);
 			c.logUnusual();
 			
-			zeldaNPCMotion();
-			var d = new SLVD.speedCheck("zeldaNPCMotion", c.date);
+			SLVDEngine.zeldaNPCMotion();
+			var d = new SLVD.speedCheck("SLVDEngine.zeldaNPCMotion", c.date);
 			d.logUnusual();
 			
-			if(SLVDEngine.boardSprite.length == 0) restartBoardC();
-			else sortBoardC();
-			var e = new SLVD.speedCheck("sortBoardC", d.date);
+			if(SLVDEngine.boardSprite.length == 0) SLVDEngine.restartBoardC();
+			else SLVDEngine.sortBoardC();
+			var e = new SLVD.speedCheck("SLVDEngine.sortBoardC", d.date);
 			e.logUnusual();
 
 			if(SLVDEngine.process != "zelda") break;
 			
 			//Render board, SLVDEngine.see below
-			renderBoardState(true);
-			var f = new SLVD.speedCheck("renderBoardState", e.date);
+			SLVDEngine.renderBoardState(true);
+			var f = new SLVD.speedCheck("SLVDEngine.renderBoardState", e.date);
 			f.logUnusual(5);
 			
 			break;
@@ -55,16 +55,16 @@ SLVDEngine.main = function() {
 		{
 			if(SLVDEngine.cTeam == SLVDEngine.player)
 			{
-				TRPGPlayerMotion();
+				SLVDEngine.TRPGPlayerMotion();
 			}
 			else if(SLVDEngine.cTeam == boardNPC)
 			{
-				TRPGNPCMotion();
+				SLVDEngine.TRPGNPCMotion();
 			}
-			sortBoardC();
+			SLVDEngine.sortBoardC();
 			
-			renderBoardState(true);
-			/*orientScreen();
+			SLVDEngine.renderBoardState(true);
+			/*SLVDEngine.orientScreen();
 			for(var index = 0; index < SLVDEngine.currentLevel.layerImg.length; index++)
 			{
 				//Draw layer
@@ -82,10 +82,10 @@ SLVDEngine.main = function() {
 					if(SLVDEngine.boardSprite[second].act == "slash") 
 					{ 
 						//If done slashing, move on.
-						if(SLVDEngine.boardSprite[second].countdown <= 0)
+						if(SLVDEngine.boardSprite[second].SLVDEngine.countdown <= 0)
 						{
 							SLVDEngine.boardSprite[second].act = null;
-							TRPGNextTurn();
+							SLVDEngine.TRPGNextTurn();
 						}
 						else
 						{
@@ -95,7 +95,7 @@ SLVDEngine.main = function() {
 								//If distance < 40
 								//if(Math.sqrt(Math.pow(SLVDEngine.boardSprite[second].oppTeam[third].x - SLVDEngine.boardSprite[second].x, 2) + Math.pow(SLVDEngine.boardSprite[second].oppTeam[third].y - SLVDEngine.boardSprite[second].y, 2)) <= 36)
 								//If one tile away
-								if(Math.pow(xPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].x) - xPixToTile(SLVDEngine.boardSprite[second].x), 2) + Math.pow(yPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].y) - yPixToTile(SLVDEngine.boardSprite[second].y), 2) == 1)
+								if(Math.pow(SLVDEngine.xPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].x) - SLVDEngine.xPixToTile(SLVDEngine.boardSprite[second].x), 2) + Math.pow(SLVDEngine.yPixToTile(SLVDEngine.boardSprite[second].oppTeam[third].y) - SLVDEngine.yPixToTile(SLVDEngine.boardSprite[second].y), 2) == 1)
 								{
 									//Determine angle between slasher and opponent (in terms of PI/2)
 									var angle = Math.atan(-(SLVDEngine.boardSprite[second].oppTeam[third].y - SLVDEngine.boardSprite[second].y)/(SLVDEngine.boardSprite[second].oppTeam[third].x - SLVDEngine.boardSprite[second].x))/(Math.PI/2);
@@ -111,21 +111,21 @@ SLVDEngine.main = function() {
 									//Compare angle to direction of slasher. If in range of PI...
 									if((Math.abs(angle - SLVDEngine.boardSprite[second].dir) <= .5 || Math.abs(angle - SLVDEngine.boardSprite[second].dir) >= 3.5) && SLVDEngine.boardSprite[second].oppTeam[third].status != "hurt")
 									{
-										damage(SLVDEngine.boardSprite[second], SLVDEngine.boardSprite[second].oppTeam[third]);
+										SLVDEngine.damage(SLVDEngine.boardSprite[second], SLVDEngine.boardSprite[second].oppTeam[third]);
 										SLVDEngine.boardSprite[second].oppTeam[third].status = "hurt";
-										SLVDEngine.boardSprite[second].oppTeam[third].countdown = 4;
+										SLVDEngine.boardSprite[second].oppTeam[third].SLVDEngine.countdown = 4;
 									}
 								}
 							}
 							SLVDEngine.see.lineWidth = 8;
 							SLVDEngine.see.beginPath();
-							SLVDEngine.see.arc((SLVDEngine.boardSprite[second].x - ((SLVDEngine.boardSprite[second].xres)/2)) - SLVDEngine.wX + 24, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres)) - SLVDEngine.wY + 56, 32, .5*((3 - SLVDEngine.boardSprite[second].dir) - .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI, .5*((3 - SLVDEngine.boardSprite[second].dir) + .5 + (SLVDEngine.boardSprite[second].countdown/8))*Math.PI);
+							SLVDEngine.see.arc((SLVDEngine.boardSprite[second].x - ((SLVDEngine.boardSprite[second].xres)/2)) - SLVDEngine.wX + 24, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres)) - SLVDEngine.wY + 56, 32, .5*((3 - SLVDEngine.boardSprite[second].dir) - .5 + (SLVDEngine.boardSprite[second].SLVDEngine.countdown/8))*Math.PI, .5*((3 - SLVDEngine.boardSprite[second].dir) + .5 + (SLVDEngine.boardSprite[second].SLVDEngine.countdown/8))*Math.PI);
 							SLVDEngine.see.strokeStyle = "white";
 							SLVDEngine.see.stroke();
-							SLVDEngine.boardSprite[second].countdown--;
-							if(SLVDEngine.boardSprite[second].countdown < 0)
+							SLVDEngine.boardSprite[second].SLVDEngine.countdown--;
+							if(SLVDEngine.boardSprite[second].SLVDEngine.countdown < 0)
 							{
-								SLVDEngine.boardSprite[second].countdown = 0;
+								SLVDEngine.boardSprite[second].SLVDEngine.countdown = 0;
 							}
 						}
 					}
@@ -133,7 +133,7 @@ SLVDEngine.main = function() {
 					{
 						if((SLVDEngine.boardSprite[second].status == "hurt" && SLVDEngine.frameClock != 1) || SLVDEngine.boardSprite[second].status != "hurt")
 						{
-							var col = determineColumn(SLVDEngine.boardSprite[second].dir);
+							var col = SLVDEngine.determineColumn(SLVDEngine.boardSprite[second].dir);
 							SLVDEngine.see.drawImage(SLVDEngine.boardSprite[second].img, 32*col, 64*SLVDEngine.boardSprite[second].frame, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres, (SLVDEngine.boardSprite[second].x - (((SLVDEngine.boardSprite[second].xres)/2) - 8)) - SLVDEngine.wX, (SLVDEngine.boardSprite[second].y - (SLVDEngine.boardSprite[second].yres - 8)) - SLVDEngine.wY, SLVDEngine.boardSprite[second].xres, SLVDEngine.boardSprite[second].yres);
 							if(SLVDEngine.boardSprite[second].holding != null && Math.round(SLVDEngine.boardSprite[second].dir) != 1)
 							{
@@ -142,8 +142,8 @@ SLVDEngine.main = function() {
 						}
 						if(SLVDEngine.boardSprite[second].status == "hurt" && SLVDEngine.frameClock == 1)
 						{
-								SLVDEngine.boardSprite[second].countdown--;
-								if(SLVDEngine.boardSprite[second].countdown <= 0) 
+								SLVDEngine.boardSprite[second].SLVDEngine.countdown--;
+								if(SLVDEngine.boardSprite[second].SLVDEngine.countdown <= 0) 
 								{
 									SLVDEngine.boardSprite[second].status = null;
 								}
@@ -151,7 +151,7 @@ SLVDEngine.main = function() {
 					}
 					if(SLVDEngine.boardSprite[second].dart.layer == index)
 					{
-						var col = determineColumn(SLVDEngine.boardSprite[second].dart.dir);
+						var col = SLVDEngine.determineColumn(SLVDEngine.boardSprite[second].dart.dir);
 						SLVDEngine.see.drawImage(SLVDEngine.boardSprite[second].dart.img, SLVDEngine.boardSprite[second].dart.xres*col, SLVDEngine.boardSprite[second].dart.yres*SLVDEngine.boardSprite[second].dart.frame, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres, SLVDEngine.boardSprite[second].dart.x - SLVDEngine.wX, SLVDEngine.boardSprite[second].dart.y - SLVDEngine.wY, SLVDEngine.boardSprite[second].dart.xres, SLVDEngine.boardSprite[second].dart.yres);
 					}
 				}
@@ -178,14 +178,14 @@ SLVDEngine.main = function() {
 			*/
 			break;
 		}
-		case "menu":
+		case "SLVDEngine.menu":
 		{
-			//alert("start menu");
-			SLVDEngine.currentMenu.handleMenu(); //in menuFunctions.js
-			//alert("handled menu");
-			SLVDEngine.currentMenu.update(); //in menu object declaration
+			//alert("start SLVDEngine.menu");
+			SLVDEngine.currentMenu.SLVDEngine.handleMenu(); //in menuFunctions.js
+			//alert("handled SLVDEngine.menu");
+			SLVDEngine.currentMenu.update(); //in SLVDEngine.menu object declaration
 			//alert("ran update check");
-			//Draw menu background
+			//Draw SLVDEngine.menu background
 			SLVDEngine.see.drawImage(SLVDEngine.currentMenu.background, 0, 0);
 			//Draw cursor
 			SLVDEngine.see.drawImage(SLVDEngine.currentMenu.cursor, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].x, SLVDEngine.currentMenu.point[SLVDEngine.currentMenu.currentPoint].y);
@@ -197,7 +197,7 @@ SLVDEngine.main = function() {
 			}			
 			break;
 		}
-		case "delay":
+		case "SLVDEngine.delay":
 		{
 			if(SLVDEngine.countdown <= 0)
 			{
@@ -271,7 +271,7 @@ document.onkeydown = function(e) {
 	{
 		alert("saving...");
 		//alert("test second alert");
-		fileSave("testFile");
+		SLVDEngine.fileSave("testFile");
 		alert("saved!");
 	}
 	else if(key == "y")
@@ -296,7 +296,7 @@ document.onkeydown = function(e) {
 	{
 		SLVDEngine.mainPromise.resolve(key);
 	}
-	else if(SLVDEngine.process == "waitForEnterOrSpace" && (key == "enter" || key == "space"))
+	else if(SLVDEngine.process == "SLVDEngine.waitForEnterOrSpace" && (key == "enter" || key == "space"))
 	{
 		SLVDEngine.mainPromise.resolve(key);
 	}
@@ -355,7 +355,7 @@ SLVDEngine.restartBoardC = function() {
 	{
 		if(SLVDEngine.NPC[index].lvl == SLVDEngine.currentLevel.name)
 		{
-			insertBoardC(SLVDEngine.NPC[index]);
+			SLVDEngine.insertBoardC(SLVDEngine.NPC[index]);
 		}
 	}
 	
@@ -365,19 +365,19 @@ SLVDEngine.restartBoardC = function() {
 		var template = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
 		var objCode = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
 		
-		insertBoardC(SLVDEngine.evalObj(template, objCode));
+		SLVDEngine.insertBoardC(SLVDEngine.evalObj(template, objCode));
 		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
 	}
 
 	for(var index = 0; index < SLVDEngine.player.length; index++)
 	{
-		if(index == SLVDEngine.currentPlayer || SLVDEngine.currentLevel.type == "TRPG") insertBoardC(SLVDEngine.player[index]);
+		if(index == SLVDEngine.currentPlayer || SLVDEngine.currentLevel.type == "TRPG") SLVDEngine.insertBoardC(SLVDEngine.player[index]);
 	}
 };
 
 //Sort the array SLVDEngine.boardSprite in order of y location (in order to properly render sprite overlap).
 SLVDEngine.sortBoardC = function() {
-	if(SLVDEngine.boardSprite.length == 0) restartBoardC();
+	if(SLVDEngine.boardSprite.length == 0) SLVDEngine.restartBoardC();
 	else
 	{
 		for(var index = 1; index < SLVDEngine.boardSprite.length; index++)
@@ -426,7 +426,7 @@ SLVDEngine.deleteBoardC = function(element) {
 	}
 };
 
-//Based on keys down (ASDW and arrows), set current SLVDEngine.player's direction. Used in zeldaPlayerMotion().
+//Based on keys down (ASDW and arrows), set current SLVDEngine.player's direction. Used in SLVDEngine.zeldaPlayerMotion().
 SLVDEngine.figurePlayerDirection = function() {
 	var dKeys = 0;
 	var dir = 0;
@@ -466,7 +466,7 @@ SLVDEngine.figurePlayerDirection = function() {
 };
 
 SLVDEngine.renderBoardState = function() {
-	orientScreen();
+	SLVDEngine.orientScreen();
 	var lightedThing = [];
 	
 	//Black out screen (mainly for the case of board being smaller than the screen)
@@ -521,7 +521,7 @@ SLVDEngine.renderBoardState = function() {
 		
 		SLVDEngine.snapShotCtx.globalCompositeOperation = "destination-over";
 		
-		//Draw layer based on values found in orientScreen() and altered above
+		//Draw layer based on values found in SLVDEngine.orientScreen() and altered above
 		SLVDEngine.snapShotCtx.drawImage(SLVDEngine.currentLevel.layerImg[index], SLVDEngine.wX + xDif, SLVDEngine.wY + yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif, xDif, yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif);
 
 		SLVDEngine.snapShotCtx.globalCompositeOperation = "source-over";

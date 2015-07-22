@@ -3,7 +3,7 @@ SLVDEngine.TRPGNextTurn = function() //Function run at the end of a character's 
 	if(SLVDEngine.currentPlayer >= 0) 
 	{
 		SLVDEngine.cTeam[SLVDEngine.currentPlayer].dir = 3;
-		SLVDEngine.PF.reformUnitsOnSquareWithout(xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x), yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y), SLVDEngine.cTeam, 0);
+		SLVDEngine.PF.reformUnitsOnSquareWithout(SLVDEngine.xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x), SLVDEngine.yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y), SLVDEngine.cTeam, 0);
 	}
 	if(SLVDEngine.cTeam[SLVDEngine.currentPlayer] != null)
 	{
@@ -34,9 +34,9 @@ SLVDEngine.TRPGNextTurn = function() //Function run at the end of a character's 
 	SLVDEngine.cTeam[SLVDEngine.currentPlayer].ix = SLVDEngine.cTeam[SLVDEngine.currentPlayer].x;
 	SLVDEngine.cTeam[SLVDEngine.currentPlayer].iy = SLVDEngine.cTeam[SLVDEngine.currentPlayer].y;
 	
-	SLVDEngine.PF.reformUnitsOnSquareWithout(xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x), yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y), SLVDEngine.cTeam, SLVDEngine.cTeam[SLVDEngine.currentPlayer]);
-	SLVDEngine.cTeam[SLVDEngine.currentPlayer].x = xTileToPix(xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x));
-	SLVDEngine.cTeam[SLVDEngine.currentPlayer].y = yTileToPix(yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y));
+	SLVDEngine.PF.reformUnitsOnSquareWithout(SLVDEngine.xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x), SLVDEngine.yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y), SLVDEngine.cTeam, SLVDEngine.cTeam[SLVDEngine.currentPlayer]);
+	SLVDEngine.cTeam[SLVDEngine.currentPlayer].x = SLVDEngine.xTileToPix(SLVDEngine.xPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].x));
+	SLVDEngine.cTeam[SLVDEngine.currentPlayer].y = SLVDEngine.yTileToPix(SLVDEngine.yPixToTile(SLVDEngine.cTeam[SLVDEngine.currentPlayer].y));
 /*	SLVDEngine.process = "wait";
 	SLVDEngine.countdown = 8;*/
 };
@@ -45,13 +45,13 @@ SLVDEngine.TRPGNPCMotion = function() //Function for a single SLVDEngine.NPC who
 {
 	if(boardNPC[SLVDEngine.currentPlayer].dmnr != 2) //If SLVDEngine.NPC is non-aggressive (such as one for talking to), just move on to next SLVDEngine.NPC without moving.
 	{
-		TRPGNextTurn();
+		SLVDEngine.TRPGNextTurn();
 	}
 	else
 	{
 		if(boardNPC[SLVDEngine.currentPlayer].target == -1) //If no path could be found to a target, end turn.
 		{
-			TRPGNextTurn();
+			SLVDEngine.TRPGNextTurn();
 		}
 		else if(boardNPC[SLVDEngine.currentPlayer].path.x[0] != null) //If path is set up, follow path.
 		{
@@ -60,7 +60,7 @@ SLVDEngine.TRPGNPCMotion = function() //Function for a single SLVDEngine.NPC who
 		}
 		else if(boardNPC[SLVDEngine.currentPlayer].target == null) //If no target (or -1 as "target"), pathfind (the pathfind function returns a target).
 		{
-			boardNPC[SLVDEngine.currentPlayer].target = pathToTeam(boardNPC[SLVDEngine.currentPlayer], boardNPC[SLVDEngine.currentPlayer].oppTeam);
+			boardNPC[SLVDEngine.currentPlayer].target = SLVDEngine.pathToTeam(boardNPC[SLVDEngine.currentPlayer], boardNPC[SLVDEngine.currentPlayer].oppTeam);
 		}
 		else
 		{
@@ -86,11 +86,11 @@ SLVDEngine.TRPGNPCMotion = function() //Function for a single SLVDEngine.NPC who
 			{
 				SLVDEngine.Action.act.slash(boardNPC[SLVDEngine.currentPlayer]);
 /*				boardNPC[SLVDEngine.currentPlayer].act = "slash";
-				boardNPC[SLVDEngine.currentPlayer].countdown = 16;*/
+				boardNPC[SLVDEngine.currentPlayer].SLVDEngine.countdown = 16;*/
 			}
 			else if(boardNPC[SLVDEngine.currentPlayer].act != "slash") //If not worth slashing or already slashing (end turn gets handled after slash), end turn
 			{
-				TRPGNextTurn();
+				SLVDEngine.TRPGNextTurn();
 			}
 		}
 	}
@@ -102,7 +102,7 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 	{
 		SLVDEngine.player[SLVDEngine.currentPlayer].squares = [];
 		SLVDEngine.PF.getSquares(SLVDEngine.player[SLVDEngine.currentPlayer]);
-		SLVDEngine.PF.reformUnitsOnSquareWithout(xPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].x), yPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].y), SLVDEngine.player, SLVDEngine.player[SLVDEngine.currentPlayer]);
+		SLVDEngine.PF.reformUnitsOnSquareWithout(SLVDEngine.xPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].x), SLVDEngine.yPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].y), SLVDEngine.player, SLVDEngine.player[SLVDEngine.currentPlayer]);
 	}
 	if(SLVDEngine.player[SLVDEngine.currentPlayer].path.x[0] != null)
 	{
@@ -130,7 +130,7 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 			if(SLVDEngine.keyFirstDown == "k" && SLVDEngine.player[SLVDEngine.currentPlayer].act == null && SLVDEngine.player[SLVDEngine.currentPlayer].inAir == null) //K
 			{ 
 				//alert("prepare for next turn");
-				TRPGNextTurn();
+				SLVDEngine.TRPGNextTurn();
 				delete SLVDEngine.keyFirstDown;
 				return;
 			}
@@ -143,9 +143,9 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 			{
 				SLVDEngine.Action.act.slash(SLVDEngine.player[SLVDEngine.currentPlayer]);
 /*				SLVDEngine.player[SLVDEngine.currentPlayer].act = "slash";
-				SLVDEngine.player[SLVDEngine.currentPlayer].countdown = 16;*/
+				SLVDEngine.player[SLVDEngine.currentPlayer].SLVDEngine.countdown = 16;*/
 				delete SLVDEngine.keyFirstDown;
-//				TRPGNextTurn();
+//				SLVDEngine.TRPGNextTurn();
 			}
 			if(SLVDEngine.keyFirstDown == "l") //L
 			{
@@ -190,7 +190,7 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 			//alert("ds done");
 			if(dx != 0 || dy != 0)
 			{
-				var toIndex = pixCoordToIndex(xPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].x + dx), yPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].y + dy), SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer]);
+				var toIndex = SLVDEngine.pixCoordToIndex(SLVDEngine.xPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].x + dx), SLVDEngine.yPixToTile(SLVDEngine.player[SLVDEngine.currentPlayer].y + dy), SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer]);
 				var squareType = SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[toIndex];
 //				var blocked = 0;
 				if(squareType != 255)
@@ -227,13 +227,13 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 			{
 				if((Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.y - (boardNPC[index].y - 24)) < 32) && (Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.x - boardNPC[index].x) < 16))
 				{
-					damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //damage hit opponent
+					SLVDEngine.damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //SLVDEngine.damage hit opponent
 					SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null; //remove SLVDEngine.image
 					SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0; //reset frame
 					boardNPC[index].status = "hurt"; //"hurt" opponent
-					boardNPC[index].countdown = 4; //"hurt" blinks
+					boardNPC[index].SLVDEngine.countdown = 4; //"hurt" blinks
 					index = boardNPC.length; //break out of loop
-					TRPGNextTurn();
+					SLVDEngine.TRPGNextTurn();
 				}
 			}
 			//If hit terrain
@@ -241,7 +241,7 @@ SLVDEngine.TRPGPlayerMotion = function() //Function for current SLVDEngine.playe
 			{
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null;
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0;
-				TRPGNextTurn();
+				SLVDEngine.TRPGNextTurn();
 
 			}
 			//Update frame

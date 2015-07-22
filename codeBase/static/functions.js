@@ -129,13 +129,13 @@ SLVDEngine.enterLevelByName = function(nam) {
 	{
 		SLVDEngine.cTeam = SLVDEngine.player;
 		SLVDEngine.boardAgent.push(SLVDEngine.player[SLVDEngine.currentPlayer]);
-		insertBoardC(SLVDEngine.player[SLVDEngine.currentPlayer]);
+		SLVDEngine.insertBoardC(SLVDEngine.player[SLVDEngine.currentPlayer]);
 	}
 	else if(SLVDEngine.process == "TRPG")
 	{
 		SLVDEngine.cTeam = SLVDEngine.player;
 		SLVDEngine.currentPlayer = -1;
-		TRPGNextTurn();
+		SLVDEngine.TRPGNextTurn();
 	}
 
 	//Figure out which NPCs are onboard
@@ -144,7 +144,7 @@ SLVDEngine.enterLevelByName = function(nam) {
 		if(SLVDEngine.NPC[index].lvl == SLVDEngine.currentLevel.name)
 		{
 			SLVDEngine.boardAgent.push(SLVDEngine.NPC[index]);
-			insertBoardC(SLVDEngine.NPC[index]);
+			SLVDEngine.insertBoardC(SLVDEngine.NPC[index]);
 		}
 	}
 	
@@ -155,7 +155,7 @@ SLVDEngine.enterLevelByName = function(nam) {
 		var template = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].getAttribute("template")
 		var objCode = SLVDEngine.currentLevel.filedata.getElementsByTagName("boardObj")[index].textContent;
 		
-		insertBoardC(SLVDEngine.evalObj(template, objCode));
+		SLVDEngine.insertBoardC(SLVDEngine.evalObj(template, objCode));
 		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
 	}
 };
@@ -206,7 +206,7 @@ SLVDEngine.getNPCByName = function(name) {
 };
 
 SLVDEngine.getPixel = function(x, y, data) {
-	var i = pixCoordToIndex(x, y, data);
+	var i = SLVDEngine.pixCoordToIndex(x, y, data);
 	
 	var pixArray = [];
 	
@@ -252,12 +252,12 @@ SLVDEngine.pixCoordToIndex = function(x,y,dat) {
  return (y*dat.width + x)*4;
 };
 
-//Like enterLevelByName() with coordinates
+//Like SLVDEngine.enterLevelByName() with coordinates
 SLVDEngine.send = function(board, x, y, z) {
 	SLVDEngine.player[SLVDEngine.currentPlayer].x = x;
 	SLVDEngine.player[SLVDEngine.currentPlayer].y = y;
 	SLVDEngine.player[SLVDEngine.currentPlayer].layer = z;
-	enterLevelByName(board);
+	SLVDEngine.enterLevelByName(board);
 };
 
 //Functions to convert between actual pixel locations and tile-based locations. All begin with 0, 0 as top left. Rounding is employed to ensure all return values are integers

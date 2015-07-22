@@ -31,7 +31,6 @@ cTeam
 canvasBlackout
 countdown
 counter
-createShiftArr
 currentAudio
 currentLevel
 currentMenu
@@ -50,7 +49,6 @@ evalObj
 figurePlayerDirection
 fileLoad
 fileSave
-for
 frameClock
 getNPCByName
 getPixel
@@ -58,7 +56,6 @@ getScriptAlt
 handleMenu
 image
 insertBoardC
-isSubquery
 keyCodeKey
 keyDown
 keyFirstDown
@@ -79,7 +76,6 @@ pixCoordToIndex
 player
 process
 provides
-r
 renderBoardState
 restartBoardC
 say
@@ -94,9 +90,7 @@ snapShot
 snapShotCtx
 sortBoardC
 speechBubble
-split_sql
 unallyTeams
-vkbeautify
 volume
 wX
 wY

@@ -422,7 +422,7 @@ function updateObject(type, index)
 	HTMLNode.style.width = xres + "px";
 	HTMLNode.style.height = yres + "px";
 	
-	HTMLImg.style.left = (-(xres*determineColumn(dir))) + "px";
+	HTMLImg.style.left = (-(xres*SLVDEngine.determineColumn(dir))) + "px";
 	
 	//generateLayerMenu();
 	//drawVectors();

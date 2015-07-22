@@ -1,4 +1,4 @@
-//Load from localStorage save "file" of fileName, returns SLVDEngine.level name to be passed to enterLevelByName()
+//Load from localStorage save "file" of fileName, returns SLVDEngine.level name to be passed to SLVDEngine.enterLevelByName()
 SLVDEngine.fileLoad = function(fileName) {
 	var keyList = { level: "", x: "", y: "", layer: "", mvmt: "", speech: "", dmnr: "", dir: "", steps: "", pushy: "", hp: "", maxHp: "", strg: "", spd: "" }; 
 
