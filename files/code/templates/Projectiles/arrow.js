@@ -1,9 +1,9 @@
-SpriteTemplate["arrow"] = function() {
-	this.giveAction(new Action["propelProjectile"](2));
+SLVDEngine.SpriteTemplate["arrow"] = function() {
+	this.giveAction(new SLVDEngine.Action["propelProjectile"](2));
 };
 
-t = SpriteTemplate["arrow"];
-t.prototype = new Sprite();
+t = SLVDEngine.SpriteTemplate["arrow"];
+t.prototype = new SLVDEngine.Sprite();
 t.prototype.constructor = t;
 
 t.prototype.img = "arrow.png";

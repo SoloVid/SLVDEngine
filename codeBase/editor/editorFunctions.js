@@ -1,5 +1,5 @@
 function toPolygon() { console.log("polygon mode"); mode = "polygon"; }
-function toNPC() { mode = "NPC"; }
+function toNPC() { mode = "SLVDEngine.NPC"; }
 function toBoardObj() { mode = "boardObj"; }
 
 function setMode(name) { mode = name; }
@@ -98,13 +98,13 @@ function loadFile2(data)
 /*	console.log(levelXML);
 	return;*/
 	
-	var NPC = levelXML.getElementsByTagName("NPC");
-	for(var i = 0; i < NPC.length; i++)
+	var SLVDEngine.NPC = levelXML.getElementsByTagName("SLVDEngine.NPC");
+	for(var i = 0; i < SLVDEngine.NPC.length; i++)
 	{
 //var a = new Date();
-		createObject("NPC", true, i);
+		createObject("SLVDEngine.NPC", true, i);
 //var b = new Date();
-		updateObject("NPC", i);
+		updateObject("SLVDEngine.NPC", i);
 //var c = new Date();
 //console.log("a to b: " + (b.getTime() - a.getTime()));
 //console.log("b to c: " + (c.getTime() - b.getTime()));
@@ -254,14 +254,14 @@ function generateLayerMenu()
 		node.id = "boardObj" + i + "Handle";
 	}
 	
-	var NPC = levelXML.getElementsByTagName("NPC");
+	var SLVDEngine.NPC = levelXML.getElementsByTagName("SLVDEngine.NPC");
 	
-	for(var i = 0; i < NPC.length; i++)
+	for(var i = 0; i < SLVDEngine.NPC.length; i++)
 	{
-		var node = implantMenuItem(NPC[i]);
-		node.setAttribute("class", "NPC");
-		node.innerHTML = "NPC " + i;
-		node.id = "NPC" + i + "Handle";
+		var node = implantMenuItem(SLVDEngine.NPC[i]);
+		node.setAttribute("class", "SLVDEngine.NPC");
+		node.innerHTML = "SLVDEngine.NPC " + i;
+		node.id = "SLVDEngine.NPC" + i + "Handle";
 	}
 	
 	var boardProgram = levelXML.getElementsByTagName("boardPrg");
@@ -313,12 +313,12 @@ function helpXML()
 	msg += "Second to these, you should have dir, img, xres, and yres assigned. However, you may choose to use a template for these.\n";
 	msg += "In the template box, you may put a filename for a .txt file which assigns these variables. This file must be in the same folder as this application.\n\n";
 	msg += "Vectors are probably one of the more confusing things. When you edit the specifics of a vector, it is probably best to only touch the 'template.' ";
-	msg += "The template of a vector is the color of the vector. This color tells the engine how the player should interact with the vector. ";
-	msg += "Basically, rgb(255, 0, 0) is solid (like a wall), rgb(255, 255, 0) is open air (i.e. player cannot walk here, but projectiles can traverse it), ";
+	msg += "The template of a vector is the color of the vector. This color tells the engine how the SLVDEngine.player should interact with the vector. ";
+	msg += "Basically, rgb(255, 0, 0) is solid (like a wall), rgb(255, 255, 0) is open air (i.e. SLVDEngine.player cannot walk here, but projectiles can traverse it), ";
 	msg += "and rgb(100, __, __) triggers a board program. The second blank is just the number of the board program to be run. The first blank is the condition upon which the program is run.\n";
 	msg += "- 0 means that any character triggers the program every pixel they travel. This should only really be used for vectors that are 1 pixel (e.g. in TRPG) or small graphic adjustments or sound effects.\n";
-	msg += "- 1 means that a player character may trigger the program the first time they step on it. After the player steps off of the vector, it may be triggered again.\n";
-	msg += "- 2 means that a player character may trigger the program if ENTER or SPACE is pressed while on the vector.\n";
+	msg += "- 1 means that a SLVDEngine.player character may trigger the program the first time they step on it. After the SLVDEngine.player steps off of the vector, it may be triggered again.\n";
+	msg += "- 2 means that a SLVDEngine.player character may trigger the program if ENTER or SPACE is pressed while on the vector.\n";
 	
 	alert(msg);
 }
@@ -359,7 +359,7 @@ function updateObject(type, index)
 	HTMLImg = HTMLNode.getElementsByTagName("img")[0];
 
 	var template = XMLNode.getAttribute("template");
-	var t = loadSpriteFromTemplate(template);//new SpriteTemplate[template]() || new Sprite();
+	var t = loadSpriteFromTemplate(template);//new SLVDEngine.SpriteTemplate[template]() || new SLVDEngine.Sprite();
 	
 	var code = XMLNode.textContent;
 	
@@ -439,7 +439,7 @@ function createLevel(name, type)
 		type = prompt("Type: (zelda or TRPG)");
 	}
 	
-	var XML = (new DOMParser()).parseFromString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><level></level>", "text/xml");
+	var XML = (new DOMParser()).parseFromString("<?xml version=\"1.0\" encoding=\"UTF-8\"?><SLVDEngine.level></SLVDEngine.level>", "text/xml");
 	
 	var nameNode = XML.createElement("name");
 	nameNode.textContent = name;
@@ -559,8 +559,8 @@ function createObject(type, skipXML, index)
 		openXMLEditor(XMLNPC);
 	}
 	
-/*	typeSelected = "NPC";
-	indexSelected = levelXML.getElementsByTagName("NPC").length - 1;
+/*	typeSelected = "SLVDEngine.NPC";
+	indexSelected = levelXML.getElementsByTagName("SLVDEngine.NPC").length - 1;
 	
 	$("#XMLEditor").show();
 	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);*/
@@ -583,13 +583,13 @@ function exportLevel(XML)
 
 function loadSpriteFromTemplate(templateName) {
 	if(!templateName) {
-		return new Sprite();
+		return new SLVDEngine.Sprite();
 	}
-	else if(!(templateName in SpriteTemplate)) {
+	else if(!(templateName in SLVDEngine.SpriteTemplate)) {
 		alert("Invalid sprite template!");
-		return new Sprite();
+		return new SLVDEngine.Sprite();
 	}
 	else {
-		return new SpriteTemplate[templateName]();
+		return new SLVDEngine.SpriteTemplate[templateName]();
 	}
 }

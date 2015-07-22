@@ -1,6 +1,6 @@
 SLVDEngine.showImage = function(file, duration, waitForEnterSpace) {
 	//SLVDEngine.process = "wait";
-	see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
+	SLVDEngine.see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	return SLVDEngine.delay(duration).then(function() {
 		if(waitForEnterSpace)
 		{
@@ -48,9 +48,9 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 	/*Basically, the code finds the closest point (in the direction of the key press 
 	to the current point that is within a 90 degree viewing angle from the point in that direction.*/
 	//Draw menu background
-//	see.drawImage(this.background, 0, 0);
+//	SLVDEngine.see.drawImage(this.background, 0, 0);
 	//Draw cursor
-//	see.drawImage(this.cursor, this.point[this.currentPoint].x, this.point[this.currentPoint].y);
+//	SLVDEngine.see.drawImage(this.cursor, this.point[this.currentPoint].x, this.point[this.currentPoint].y);
 	var prevPoint = this.currentPoint;
 	var iPoint = prevPoint;
 	var bestPoint = iPoint;
@@ -205,17 +205,17 @@ SLVDEngine.menu.prototype.handleMenu = function() {
 	}
 }
 
-function showImage(file, duration) {
+SLVDEngine.showImage = function(file, duration) {
 	SLVDEngine.process = "wait";
-	see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
+	SLVDEngine.see.drawImage(file, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 	SLVDEngine.countdown = 50*duration;
 	
 	SLVDEngine.mainPromise = new SLVD.promise();
 	
 	return SLVDEngine.mainPromise;
-}
+};
 
-function menu() {
+SLVDEngine.menu = function() {
 	this.cursor;
 	this.point = new Array();
 	
@@ -244,17 +244,17 @@ function menu() {
 	}
 	
 	this.update = null; //Customizable function; run every frame
-}
+};
 
 //Primarily handles arrow key presses
-function handleMenu() {
+SLVDEngine.handleMenu = function() {
 	/*This menu system navigates on a grid even though points are listed linearly.
 	/*Basically, the code finds the closest point (in the direction of the key press 
 	to the current point that is within a 90 degree viewing angle from the point in that direction.*/
 	//Draw menu background
-//	see.drawImage(opMenu.background, 0, 0);
+//	SLVDEngine.see.drawImage(opMenu.background, 0, 0);
 	//Draw cursor
-//	see.drawImage(opMenu.cursor, opMenu.point[opMenu.currentPoint].x, opMenu.point[opMenu.currentPoint].y);
+//	SLVDEngine.see.drawImage(opMenu.cursor, opMenu.point[opMenu.currentPoint].x, opMenu.point[opMenu.currentPoint].y);
 	var prevPoint = opMenu.currentPoint;
 	var iPoint = prevPoint;
 	var bestPoint = iPoint;
@@ -407,70 +407,70 @@ function handleMenu() {
 		opMenu.currentPoint = bestPoint;
 //		opMenu.currentPoint = (opMenu.currentPoint + 1)%opMenu.point.length;
 	}
-}
+};
 
 //File selection menu
-function setupFileSelect() {
+SLVDEngine.setupFileSelect = function() {
 	opMenu.killPoints();
-	opMenu.cursor = image["torchCursor.png"];
-	opMenu.background = buffer;
+	opMenu.cursor = SLVDEngine.image["torchCursor.png"];
+	opMenu.background = SLVDEngine.buffer;
 
-	SLVDEngine.canvasBlackout(bufferCtx);
-	bufferCtx.fillStyle = "#FFFFFF";
-	bufferCtx.font = "20px Arial";
-	bufferCtx.fillText("Select a file.", 10, 30);
+	SLVDEngine.canvasBlackout(SLVDEngine.bufferCtx);
+	SLVDEngine.bufferCtx.fillStyle = "#FFFFFF";
+	SLVDEngine.bufferCtx.font = "20px Arial";
+	SLVDEngine.bufferCtx.fillText("Select a file.", 10, 30);
 	for(var col = 0; col < 3; col++)
 	{
 		for(var index = 1; index <= 7; index++)
 		{
 			var fileName = (index + col*7);
-			bufferCtx.fillText(fileName, 40 + 200*col, 10 + 60*index);
+			SLVDEngine.bufferCtx.fillText(fileName, 40 + 200*col, 10 + 60*index);
 			opMenu.addPoint(10 + 200*col, 60*index);
 			try
 			{
 				var item = localStorage.getItem(GAMEID + "_" + fileName + "_SAVE");
 				var tSAVE = JSON.parse(item);
-				bufferCtx.fillText(tSAVE.timeDays + "." + tSAVE.timeHours + "." + tSAVE.timeMinutes + "." + tSAVE.timeSeconds, 40 + 200*col, 35 + 60*index);
+				SLVDEngine.bufferCtx.fillText(tSAVE.timeDays + "." + tSAVE.timeHours + "." + tSAVE.timeMinutes + "." + tSAVE.timeSeconds, 40 + 200*col, 35 + 60*index);
 			}
 			catch(e)
 			{
-				bufferCtx.fillText("No Save Data", 40 + 200*col, 35 + 60*index);
+				SLVDEngine.bufferCtx.fillText("No Save Data", 40 + 200*col, 35 + 60*index);
 			}
 		}
 	}
-}
+};
 
-function setupActionMenu() {
+SLVDEngine.setupActionMenu = function() {
 	opMenu.killPoints();
-	opMenu.cursor = image["blueSquare.png"];
-	opMenu.background = buffer;
+	opMenu.cursor = SLVDEngine.image["blueSquare.png"];
+	opMenu.background = SLVDEngine.buffer;
 
-	SLVDEngine.canvasBlackout(bufferCtx);
-	bufferCtx.fillStyle = "#FFFFFF";
-	bufferCtx.font = "20px Arial";
-	bufferCtx.fillText("Select a file.", 10, 30);
+	SLVDEngine.canvasBlackout(SLVDEngine.bufferCtx);
+	SLVDEngine.bufferCtx.fillStyle = "#FFFFFF";
+	SLVDEngine.bufferCtx.font = "20px Arial";
+	SLVDEngine.bufferCtx.fillText("Select a file.", 10, 30);
 	for(var col = 0; col < 3; col++)
 	{
 		for(var index = 1; index <= 7; index++)
 		{
 			var fileName = "File " + (index + col*7);
-			bufferCtx.fillText(fileName, 40 + 200*col, 10 + 60*index);
+			SLVDEngine.bufferCtx.fillText(fileName, 40 + 200*col, 10 + 60*index);
 			opMenu.addPoint(10 + 200*col, 60*index);
 			try
 			{
 				var item = localStorage.getItem("FULLMAVEN_" + fileName + "_SAVE");
 				var tSAVE = JSON.parse(item);
-				bufferCtx.fillText(tSAVE.timeDays + "." + tSAVE.timeHours + "." + tSAVE.timeMinutes + "." + tSAVE.timeSeconds, 40 + 200*col, 35 + 60*index);
+				SLVDEngine.bufferCtx.fillText(tSAVE.timeDays + "." + tSAVE.timeHours + "." + tSAVE.timeMinutes + "." + tSAVE.timeSeconds, 40 + 200*col, 35 + 60*index);
 			}
 			catch(e)
 			{
-				bufferCtx.fillText("No Save Data", 40 + 200*col, 35 + 60*index);
+				SLVDEngine.bufferCtx.fillText("No Save Data", 40 + 200*col, 35 + 60*index);
 			}
 		}
 	}
-}
+};
 
-function drawAwesomeRect(sx, sy, ex, ey, context, px, py, down) {
+SLVDEngine.drawAwesomeRect = function(sx, sy, ex, ey, context, px, py, down) {
 	context.beginPath();
 	context.moveTo(sx + 10, sy);
 	if(px && py && down)
@@ -505,9 +505,9 @@ function drawAwesomeRect(sx, sy, ex, ey, context, px, py, down) {
 	grd.addColorStop(1, "rgba(50, 100, 200, .4)");
 	context.fillStyle = grd;
 	context.fill();
-}
+};
 
-function personSays(persOb, message, overrideName) {
+SLVDEngine.personSays = function(persOb, message, overrideName) {
 	renderBoardState(); //in main.js
 
 	var tSpkr = overrideName || persOb.name;
@@ -516,14 +516,14 @@ function personSays(persOb, message, overrideName) {
 	//if(persOb.y - SLVDEngine.wY < 220) py = persOb.y - SLVDEngine.wY - persOb.yres + 40;
 	
 	speechBubble(message, tSpkr, persOb.x - SLVDEngine.wX + 8, py); 
-}
+};
 
-function say(message) {
+SLVDEngine.say = function(message) {
 	renderBoardState();
 	speechBubble(message);
-}
+};
 
-function speechBubble(msg, spkr, px, py) {
+SLVDEngine.speechBubble = function(msg, spkr, px, py) {
 	var line = [];
 	if(msg.length > 0)
 	{			
@@ -552,25 +552,25 @@ function speechBubble(msg, spkr, px, py) {
 	if(!py) yShift = 0;
 	
 	//Text box
-	drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, see, px, py, (linNum - 1)*20 + 50 > py);
+	drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, SLVDEngine.see, px, py, (linNum - 1)*20 + 50 > py);
 
-	see.fillStyle="#FFFFFF";
-	see.font="18px Verdana";
+	SLVDEngine.see.fillStyle="#FFFFFF";
+	SLVDEngine.see.font="18px Verdana";
 	if(line[0] != null)
 	{
 		//Lines
-		for(var index = 0; index < linNum - 1; index++) see.fillText(line[index], SLVDEngine.SCREENX/2 - 290, yShift + 20*index + 50);
+		for(var index = 0; index < linNum - 1; index++) SLVDEngine.see.fillText(line[index], SLVDEngine.SCREENX/2 - 290, yShift + 20*index + 50);
 	}
 	
 	if(spkr)
 	{
 		//Name box
-		drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift, see.measureText(spkr).width + SLVDEngine.SCREENX/2 - 260, yShift + 30, see);
+		drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift, SLVDEngine.see.measureText(spkr).width + SLVDEngine.SCREENX/2 - 260, yShift + 30, SLVDEngine.see);
 
-		see.fillStyle="#FFFFFF";
-		see.font="18px Verdana";
+		SLVDEngine.see.fillStyle="#FFFFFF";
+		SLVDEngine.see.font="18px Verdana";
 		
 		//Name
-		see.fillText(spkr, SLVDEngine.SCREENX/2 - 280, yShift + 20);
+		SLVDEngine.see.fillText(spkr, SLVDEngine.SCREENX/2 - 280, yShift + 20);
 	}
-}
+};

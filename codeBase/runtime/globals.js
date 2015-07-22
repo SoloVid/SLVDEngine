@@ -4,39 +4,38 @@ var t;
 
 var SLVDEngine = { counter: 0 };
 
-//implied SAVE object from load.js
-var SAVE = {};
+//implied SLVDEngine.SAVE object from load.js
+SLVDEngine.SAVE = {};
 
-var seeB, see, buffer, bufferCtx, snapShot, snapShotCtx;
-var image = [];
-var audio = [];
-var level = [];
+//var SLVDEngine.seeB, SLVDEngine.see, SLVDEngine.buffer, SLVDEngine.bufferCtx, SLVDEngine.snapShot, SLVDEngine.snapShotCtx;
+SLVDEngine.image = [];
+SLVDEngine.audio = [];
+SLVDEngine.level = [];
 
-var player = [];
-var NPC = [] //Universal, absolute list of NPC objects (on all boards)
+SLVDEngine.player = [];
+SLVDEngine.NPC = [] //Universal, absolute list of SLVDEngine.NPC objects (on all boards)
 SLVDEngine.boardAgent = []; //NPCs and players, for functional interaction
 SLVDEngine.boardSprite = []; //NPCs, players, and boardObjs, for drawing purposes
-var Teams = {};
+SLVDEngine.Teams = {};
 
-SLVDEngine.process = "loading"; //Input of master setInterval switch-case
-var opMenu;// = new menu();
+SLVDEngine.process = "SLVDEngine.loading"; //Input of master setInterval switch-case
 
-var currentAudio;
-var volume = 1;
+SLVDEngine.currentAudio;
+SLVDEngine.volume = 1;
 
 SLVDEngine.frameClock = 0; //= 1 every 8 ticks
-SAVE.timeSeconds = 0; //Second hand displayed on clock out of 2560
-SAVE.timeMinutes = 0;
-SAVE.timeHours = 0;
-SAVE.timeDays = 0;
+SLVDEngine.SAVE.timeSeconds = 0; //Second hand displayed on clock out of 2560
+SLVDEngine.SAVE.timeMinutes = 0;
+SLVDEngine.SAVE.timeHours = 0;
+SLVDEngine.SAVE.timeDays = 0;
 
 SLVDEngine.keyDown = {}; //1 if down, null if up
 
-var currentPlayer = 0;
-var cTeam; //For TRPG, either player or boardNPC
+SLVDEngine.currentPlayer = 0;
+SLVDEngine.cTeam; //For TRPG, either SLVDEngine.player or boardNPC
 
-var loading = 0;
-var loadCheck = [];
+SLVDEngine.loading = 0;
+SLVDEngine.loadCheck = [];
 
 SLVDEngine.weather = { rain: false, clouds: false, dark: 0};
 

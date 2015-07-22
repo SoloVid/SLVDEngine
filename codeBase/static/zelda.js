@@ -1,4 +1,4 @@
-function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's movement in Zelda mode.
+SLVDEngine.zeldaNPCMotion = function() //Function for all non-SLVDEngine.player SLVDEngine.boardSprite's movement in Zelda mode.
 {
 	if(SLVDEngine.process != "zelda")
 	{
@@ -15,7 +15,7 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 		}
 		//If at invalid index (bc death ran to end of SLVDEngine.boardSprite array), don't continue
 		if(index >= SLVDEngine.boardSprite.length) return;
-		if(SLVDEngine.boardSprite[index] != player[currentPlayer])
+		if(SLVDEngine.boardSprite[index] != SLVDEngine.player[SLVDEngine.currentPlayer])
 		{					
 			var cNPC = SLVDEngine.boardSprite[index];
 		
@@ -34,11 +34,11 @@ function zeldaNPCMotion() //Function for all non-player SLVDEngine.boardSprite's
 			}
 		}
 	}
-}
+};
 
-function zeldaPlayerMotion() //Function for current player's motion and other key handlings in Zelda mode.
+SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.player's motion and other key handlings in Zelda mode.
 {
-	var person = player[currentPlayer];
+	var person = SLVDEngine.player[SLVDEngine.currentPlayer];
 
 	if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space")
 	{
@@ -54,19 +54,19 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	}
 	if(SLVDEngine.keyFirstDown == "k" && person.act.length === 0 && !person.inAir)
 	{ 
-		var prevPlayer = currentPlayer;
-		currentPlayer = (currentPlayer + 1)%player.length;
+		var prevPlayer = SLVDEngine.currentPlayer;
+		SLVDEngine.currentPlayer = (SLVDEngine.currentPlayer + 1)%SLVDEngine.player.length;
 		//Only switch between players on this map
-		while(player[currentPlayer].lvl != player[prevPlayer].lvl)
+		while(SLVDEngine.player[SLVDEngine.currentPlayer].lvl != SLVDEngine.player[prevPlayer].lvl)
 		{
-			currentPlayer = (currentPlayer + 1)%player.length;
+			SLVDEngine.currentPlayer = (SLVDEngine.currentPlayer + 1)%SLVDEngine.player.length;
 		}
-		person = player[currentPlayer];
-		person.x = player[prevPlayer].x;
-		person.y = player[prevPlayer].y;
-		person.layer = player[prevPlayer].layer;
-		person.dir = player[prevPlayer].dir;
-		deleteBoardC(player[prevPlayer]);
+		person = SLVDEngine.player[SLVDEngine.currentPlayer];
+		person.x = SLVDEngine.player[prevPlayer].x;
+		person.y = SLVDEngine.player[prevPlayer].y;
+		person.layer = SLVDEngine.player[prevPlayer].layer;
+		person.dir = SLVDEngine.player[prevPlayer].dir;
+		deleteBoardC(SLVDEngine.player[prevPlayer]);
 		insertBoardC(person);
 		delete SLVDEngine.keyFirstDown;
 	}
@@ -102,79 +102,79 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		resumeCue = die(1);
 		return;
 	}
-/*		if(player[currentPlayer].act == "jumping")
+/*		if(SLVDEngine.player[SLVDEngine.currentPlayer].act == "jumping")
 		{
 			//actionCountdown goes from 32 to -32 before this is not needed 
 			//First (>0), move north using upper layer collisions to emulate jumping graphic
-			//Second (==0), check if able to land on upper level, if so land; otherwise if not able to land on lower level, path back to jumping start place and end jump
+			//Second (==0), check if able to land on upper SLVDEngine.level, if so land; otherwise if not able to land on lower SLVDEngine.level, path back to jumping start place and end jump
 			//Third (<0), move south using lower layer 
 			//Finally, end at ==-32
-			if(player[currentPlayer].actCountdown > 0)
+			if(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown > 0)
 			{
 				//Move north
-				zeldaBump(player[currentPlayer], 8, 1);
-				//player[currentPlayer].y--;
+				zeldaBump(SLVDEngine.player[SLVDEngine.currentPlayer], 8, 1);
+				//SLVDEngine.player[SLVDEngine.currentPlayer].y--;
 			}
-			else if(player[currentPlayer].actCountdown == 0)
+			else if(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown == 0)
 			{
-				if(player[currentPlayer].canBeHere(0))
+				if(SLVDEngine.player[SLVDEngine.currentPlayer].canBeHere(0))
 				{
-					delete player[currentPlayer].inAir;
+					delete SLVDEngine.player[SLVDEngine.currentPlayer].inAir;
 				}
 				else
 				{
-					player[currentPlayer].layer--;
-					player[currentPlayer].y += 64;
+					SLVDEngine.player[SLVDEngine.currentPlayer].layer--;
+					SLVDEngine.player[SLVDEngine.currentPlayer].y += 64;
 		//??????????????Compliments of department of redundancy department?
-					if(player[currentPlayer].canBeHere(0)) { }
+					if(SLVDEngine.player[SLVDEngine.currentPlayer].canBeHere(0)) { }
 					else
 					{
-						delete player[currentPlayer].act;
-						delete player[currentPlayer].inAir;
-						player[currentPlayer].path.x[0] = player[currentPlayer].ix;
-						player[currentPlayer].path.y[0] = player[currentPlayer].iy;
+						delete SLVDEngine.player[SLVDEngine.currentPlayer].act;
+						delete SLVDEngine.player[SLVDEngine.currentPlayer].inAir;
+						SLVDEngine.player[SLVDEngine.currentPlayer].path.x[0] = SLVDEngine.player[SLVDEngine.currentPlayer].ix;
+						SLVDEngine.player[SLVDEngine.currentPlayer].path.y[0] = SLVDEngine.player[SLVDEngine.currentPlayer].iy;
 					}
-					player[currentPlayer].y -= 64;
+					SLVDEngine.player[SLVDEngine.currentPlayer].y -= 64;
 				}
 			}
-			else if(player[currentPlayer].actCountdown >= -32)
+			else if(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown >= -32)
 			{
-				player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
-				zeldaBump(player[currentPlayer], 8, 3);
-				player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
-				//player[currentPlayer].y++;
+				SLVDEngine.player[SLVDEngine.currentPlayer].y += 2*(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown + 32);
+				zeldaBump(SLVDEngine.player[SLVDEngine.currentPlayer], 8, 3);
+				SLVDEngine.player[SLVDEngine.currentPlayer].y -= 2*(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown + 32);
+				//SLVDEngine.player[SLVDEngine.currentPlayer].y++;
 			}
 			else
 			{
-				delete player[currentPlayer].act;
-				delete player[currentPlayer].inAir;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].act;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].inAir;
 			}
-			player[currentPlayer].actCountdown -= 4;
+			SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown -= 4;
 		}
-		else if(player[currentPlayer].act == "homing")
+		else if(SLVDEngine.player[SLVDEngine.currentPlayer].act == "homing")
 		{
 			var done = 0;
-			zeldaLockOnPoint(player[currentPlayer], player[currentPlayer].target.x, player[currentPlayer].target.y); //Lock direction on target
-			var dist = Math.sqrt(Math.pow(player[currentPlayer].target.x - player[currentPlayer].x, 2) + Math.pow(player[currentPlayer].target.y - player[currentPlayer].y, 2))
+			zeldaLockOnPoint(SLVDEngine.player[SLVDEngine.currentPlayer], SLVDEngine.player[SLVDEngine.currentPlayer].target.x, SLVDEngine.player[SLVDEngine.currentPlayer].target.y); //Lock direction on target
+			var dist = Math.sqrt(Math.pow(SLVDEngine.player[SLVDEngine.currentPlayer].target.x - SLVDEngine.player[SLVDEngine.currentPlayer].x, 2) + Math.pow(SLVDEngine.player[SLVDEngine.currentPlayer].target.y - SLVDEngine.player[SLVDEngine.currentPlayer].y, 2))
 			if(dist <= 32) //If closing in, knock back target
 			{
-				var tDir = player[currentPlayer].target.dir;
-				player[currentPlayer].target.dir = player[currentPlayer].dir;
-				zeldaStep(player[currentPlayer].target, 32);
-				player[currentPlayer].target.dir = tDir;
-				player[currentPlayer].target.status = "stunned"; //stun
-				delete player[currentPlayer].target.act; //stop action (e.g. slashing)
-				player[currentPlayer].target.statusCountdown = 100;
+				var tDir = SLVDEngine.player[SLVDEngine.currentPlayer].target.dir;
+				SLVDEngine.player[SLVDEngine.currentPlayer].target.dir = SLVDEngine.player[SLVDEngine.currentPlayer].dir;
+				zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer].target, 32);
+				SLVDEngine.player[SLVDEngine.currentPlayer].target.dir = tDir;
+				SLVDEngine.player[SLVDEngine.currentPlayer].target.status = "stunned"; //stun
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].target.act; //stop action (e.g. slashing)
+				SLVDEngine.player[SLVDEngine.currentPlayer].target.statusCountdown = 100;
 				done = 1;
 			}
-			if(zeldaStep(player[currentPlayer], 32) == -1 || done == 1)
+			if(zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer], 32) == -1 || done == 1)
 			{
-				delete player[currentPlayer].target;
-				delete player[currentPlayer].inAir;
-				delete player[currentPlayer].status;
-				delete player[currentPlayer].act;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].target;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].inAir;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].status;
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].act;
 			}
-//			pathMotion(player[currentPlayer], 32);
+//			pathMotion(SLVDEngine.player[SLVDEngine.currentPlayer], 32);
 		}*/
 //	}
 	if(person.path.length === 0)
@@ -182,9 +182,9 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		if(figurePlayerDirection()) //If pressing direction(s), step
 		{
 			person.updateFrame();
-//			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y += 2*(player[currentPlayer].actCountdown + 32);
+//			if(SLVDEngine.player[SLVDEngine.currentPlayer].act == "jumping" && SLVDEngine.player[SLVDEngine.currentPlayer].inAir == 1 && SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown < 0) SLVDEngine.player[SLVDEngine.currentPlayer].y += 2*(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown + 32);
 			if(person.zeldaStep(person.spd) < 0) {}//console.log("stopped");
-//			if(player[currentPlayer].act == "jumping" && player[currentPlayer].inAir == 1 && player[currentPlayer].actCountdown < 0) player[currentPlayer].y -= 2*(player[currentPlayer].actCountdown + 32);
+//			if(SLVDEngine.player[SLVDEngine.currentPlayer].act == "jumping" && SLVDEngine.player[SLVDEngine.currentPlayer].inAir == 1 && SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown < 0) SLVDEngine.player[SLVDEngine.currentPlayer].y -= 2*(SLVDEngine.player[SLVDEngine.currentPlayer].actCountdown + 32);
 		}
 		else
 		{
@@ -195,38 +195,38 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		{
 			for(var sec = -limit; sec < limit; sec++)
 			{
-				var i = pixCoordToIndex(player[currentPlayer].x + sec, player[currentPlayer].y + ind, SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer]);
-				if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i] == 100)
+				var i = pixCoordToIndex(SLVDEngine.player[SLVDEngine.currentPlayer].x + sec, SLVDEngine.player[SLVDEngine.currentPlayer].y + ind, SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer]);
+				if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i] == 100)
 				{
-					player[currentPlayer].onPrg = SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 2];
-					resumeFunc = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg];
-					if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 1)
+					SLVDEngine.player[SLVDEngine.currentPlayer].onPrg = SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i + 2];
+					resumeFunc = SLVDEngine.currentLevel.boardProgram[SLVDEngine.player[SLVDEngine.currentPlayer].onPrg];
+					if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i + 1] == 1)
 					{
-						if(player[currentPlayer].wasOnPrg != player[currentPlayer].onPrg) //ensure program is not run twice
+						if(SLVDEngine.player[SLVDEngine.currentPlayer].wasOnPrg != SLVDEngine.player[SLVDEngine.currentPlayer].onPrg) //ensure program is not run twice
 						{
-							resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+							resumeCue = SLVDEngine.currentLevel.boardProgram[SLVDEngine.player[SLVDEngine.currentPlayer].onPrg](0);
 						}
 						//alert("program");
 					}
-					else if(SLVDEngine.currentLevel.layerFuncData[player[currentPlayer].layer].data[i + 1] == 2)
+					else if(SLVDEngine.currentLevel.layerFuncData[SLVDEngine.player[SLVDEngine.currentPlayer].layer].data[i + 1] == 2)
 					{
 						if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //require ENTER or SPACE to run program
 						{
 							delete SLVDEngine.keyFirstDown;
-							resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+							resumeCue = SLVDEngine.currentLevel.boardProgram[SLVDEngine.player[SLVDEngine.currentPlayer].onPrg](0);
 						}	
 					}
 					else //Just run program if on
 					{
-						resumeCue = SLVDEngine.currentLevel.boardProgram[player[currentPlayer].onPrg](0);
+						resumeCue = SLVDEngine.currentLevel.boardProgram[SLVDEngine.player[SLVDEngine.currentPlayer].onPrg](0);
 					}
 					ind = 9;
 					sec = 17;
 				}
 			}
 		}
-		player[currentPlayer].wasOnPrg = player[currentPlayer].onPrg;
-		player[currentPlayer].onPrg = -1;
+		SLVDEngine.player[SLVDEngine.currentPlayer].wasOnPrg = SLVDEngine.player[SLVDEngine.currentPlayer].onPrg;
+		SLVDEngine.player[SLVDEngine.currentPlayer].onPrg = -1;
 	}
 	else
 	{
@@ -235,90 +235,90 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 	}
 
 	//Pet motion
-/*	if(player[currentPlayer].pet != null) //If pet is in use
+/*	if(SLVDEngine.player[SLVDEngine.currentPlayer].pet != null) //If pet is in use
 	{
-		if(player[currentPlayer].pet.status == "active") //If pet is in active state
+		if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.status == "active") //If pet is in active state
 		{
-			delete player[currentPlayer].pet.target; //reset target
+			delete SLVDEngine.player[SLVDEngine.currentPlayer].pet.target; //reset target
 			var tDist = 97; //initialize currently closest distance
-			for(var index = 0; index < boardNPC.length; index++) //Cycle through boardNPC to determine closest one to player within 64 pixels
+			for(var index = 0; index < boardNPC.length; index++) //Cycle through boardNPC to determine closest one to SLVDEngine.player within 64 pixels
 			{
-				var dist = Math.sqrt(Math.pow(boardNPC[index].x - player[currentPlayer].x, 2) + Math.pow(boardNPC[index].y - player[currentPlayer].y, 2));
-				if(dist <= 96 && player[currentPlayer].layer == boardNPC[index].layer)
+				var dist = Math.sqrt(Math.pow(boardNPC[index].x - SLVDEngine.player[SLVDEngine.currentPlayer].x, 2) + Math.pow(boardNPC[index].y - SLVDEngine.player[SLVDEngine.currentPlayer].y, 2));
+				if(dist <= 96 && SLVDEngine.player[SLVDEngine.currentPlayer].layer == boardNPC[index].layer)
 				{
-					if(player[currentPlayer].pet.target == null || dist < tDist)
+					if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.target == null || dist < tDist)
 					{
-						player[currentPlayer].pet.target = boardNPC[index];
+						SLVDEngine.player[SLVDEngine.currentPlayer].pet.target = boardNPC[index];
 						tDist = dist;
 					}
 				}
 			}
-			if(player[currentPlayer].pet.target != null) //If target was found
+			if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.target != null) //If target was found
 			{
-				zeldaLockOnPoint(player[currentPlayer].pet, player[currentPlayer].pet.target.x, player[currentPlayer].pet.target.y); //Orient pet toward target
-				zeldaStep(player[currentPlayer].pet, player[currentPlayer].spd + 2); //Step toward target
+				zeldaLockOnPoint(SLVDEngine.player[SLVDEngine.currentPlayer].pet, SLVDEngine.player[SLVDEngine.currentPlayer].pet.target.x, SLVDEngine.player[SLVDEngine.currentPlayer].pet.target.y); //Orient pet toward target
+				zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer].pet, SLVDEngine.player[SLVDEngine.currentPlayer].spd + 2); //Step toward target
 				//Start slashing as fast as possible
-				if(player[currentPlayer].pet.rcvr == 0 && player[currentPlayer].pet.act != "slash") 
+				if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.rcvr == 0 && SLVDEngine.player[SLVDEngine.currentPlayer].pet.act != "slash") 
 				{
-					player[currentPlayer].pet.act = "slash";
-					player[currentPlayer].pet.actCountdown = 4;
+					SLVDEngine.player[SLVDEngine.currentPlayer].pet.act = "slash";
+					SLVDEngine.player[SLVDEngine.currentPlayer].pet.actCountdown = 4;
 				}
-				else if(player[currentPlayer].pet.rcvr != 0)
+				else if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.rcvr != 0)
 				{
-					player[currentPlayer].pet.rcvr--;
-					if(player[currentPlayer].pet.rcvr < 0)
+					SLVDEngine.player[SLVDEngine.currentPlayer].pet.rcvr--;
+					if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.rcvr < 0)
 					{
-						player[currentPlayer].pet.rcvr = 0;
+						SLVDEngine.player[SLVDEngine.currentPlayer].pet.rcvr = 0;
 					}
 				}
 			}
-			else if(SLVDEngine.keyDown[73]) //Move toward player if not attacking and I is pressed
+			else if(SLVDEngine.keyDown[73]) //Move toward SLVDEngine.player if not attacking and I is pressed
 			{
-				zeldaLockOnPoint(player[currentPlayer].pet, player[currentPlayer].x, player[currentPlayer].y);
-				zeldaStep(player[currentPlayer].pet, player[currentPlayer].spd - 2);
+				zeldaLockOnPoint(SLVDEngine.player[SLVDEngine.currentPlayer].pet, SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
+				zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer].pet, SLVDEngine.player[SLVDEngine.currentPlayer].spd - 2);
 			}
 			else
 			{
-				if(randomInt(50) == 1)
+				if(SLVD.randomInt(50) == 1)
 				{
-					player[currentPlayer].pet.dir = randomInt(4) - 1;
-					zeldaStep(player[currentPlayer].pet, 1);
+					SLVDEngine.player[SLVDEngine.currentPlayer].pet.dir = SLVD.randomInt(4) - 1;
+					zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer].pet, 1);
 				}
 			}
 			//Update frame
-			if(SLVDEngine.frameClock == 1) player[currentPlayer].pet.frame = (player[currentPlayer].pet.frame + 1)%4;
+			if(SLVDEngine.frameClock == 1) SLVDEngine.player[SLVDEngine.currentPlayer].pet.frame = (SLVDEngine.player[SLVDEngine.currentPlayer].pet.frame + 1)%4;
 			//Trend toward inactivity
-			player[currentPlayer].pet.statusCountdown--;
-			if(player[currentPlayer].pet.statusCountdown <= 0)
+			SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown--;
+			if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown <= 0)
 			{
-				player[currentPlayer].pet.status = "inactive";
-				player[currentPlayer].pet.statusCountdown = 50;
+				SLVDEngine.player[SLVDEngine.currentPlayer].pet.status = "inactive";
+				SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown = 50;
 			}
 		}
 		else
 		{
-			player[currentPlayer].pet.statusCountdown--;
-			if(player[currentPlayer].pet.statusCountdown <= 0)
+			SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown--;
+			if(SLVDEngine.player[SLVDEngine.currentPlayer].pet.statusCountdown <= 0)
 			{
-				deleteBoardC(player[currentPlayer].pet);
-				delete player[currentPlayer].pet;
+				deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].pet);
+				delete SLVDEngine.player[SLVDEngine.currentPlayer].pet;
 			}
 		}
 	}*/
 	
 	//Projectile motion
-/*	if(player[currentPlayer].dart.img != null && player[currentPlayer].dart.layer != null)
+/*	if(SLVDEngine.player[SLVDEngine.currentPlayer].dart.img != null && SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer != null)
 	{
 		//Move projectile
-		var moved = zeldaStep(player[currentPlayer].dart, player[currentPlayer].dart.spd);
+		var moved = zeldaStep(SLVDEngine.player[SLVDEngine.currentPlayer].dart, SLVDEngine.player[SLVDEngine.currentPlayer].dart.spd);
 		for(var index = 0; index < boardNPC.length; index++)
 		{
-			if((Math.abs(player[currentPlayer].dart.y - (boardNPC[index].y - 24)) < 32) && (Math.abs(player[currentPlayer].dart.x - boardNPC[index].x) < 16))
+			if((Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.y - (boardNPC[index].y - 24)) < 32) && (Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.x - boardNPC[index].x) < 16))
 			{
-				damage(player[currentPlayer].dart, boardNPC[index]); //damage hit opponent
-				player[currentPlayer].dart.layer = null; //remove image
-				player[currentPlayer].dart.frame = 0; //reset frame
-				deleteBoardC(player[currentPlayer].dart);
+				damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //damage hit opponent
+				SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null; //remove SLVDEngine.image
+				SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0; //reset frame
+				deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
 				boardNPC[index].status = "hurt"; //"hurt" opponent
 				boardNPC[index].statusCountdown = 4; //"hurt" blinks
 				index = boardNPC.length; //break out of loop
@@ -327,14 +327,14 @@ function zeldaPlayerMotion() //Function for current player's motion and other ke
 		//If hit terrain
 		if(moved == -1)
 		{
-			player[currentPlayer].dart.layer = null;
-			player[currentPlayer].dart.frame = 0;
-			deleteBoardC(player[currentPlayer].dart);
+			SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null;
+			SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0;
+			deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);
 		}
 		//Update frame
 		if(SLVDEngine.frameClock == 1)
 		{
-			player[currentPlayer].dart.frame = (player[currentPlayer].dart.frame + 1)%4;
+			SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = (SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame + 1)%4;
 		}
 	}*/
-}
+};

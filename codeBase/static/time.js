@@ -2,16 +2,16 @@
 Primarily, events will be queued in sprite template files using registerWalkEvent() (in sprite.js).
 */
 
-var Time = {};
-Time.daily = [];
-Time.once = [];
+SLVDEngine.Time = {};
+SLVDEngine.Time.daily = [];
+SLVDEngine.Time.once = [];
 
-Time.componentToAbsolute = function(day, hour, minute, second) {
+SLVDEngine.Time.componentToAbsolute = function(day, hour, minute, second) {
 	return day*60*60*24 + hour*60*60 + minute*60 + second;
 }
 
-Time.registerEvent = function(event, isDaily, time) {
-	var eventQueue = (isDaily ? Time.daily : Time.once);
+SLVDEngine.Time.registerEvent = function(event, isDaily, time) {
+	var eventQueue = (isDaily ? SLVDEngine.Time.daily : SLVDEngine.Time.once);
 	
 	if(eventQueue[time] == null)
 	{
@@ -21,61 +21,61 @@ Time.registerEvent = function(event, isDaily, time) {
 	eventQueue[time].push(event);
 }
 
-Time.advance = function(seconds) {
+SLVDEngine.Time.advance = function(seconds) {
 	for(var index = 0; index < seconds; index++)
 	{
-		SAVE.timeSeconds = (SAVE.timeSeconds + 1)%60;
-		if(SAVE.timeSeconds == 0)
+		SLVDEngine.SAVE.timeSeconds = (SLVDEngine.SAVE.timeSeconds + 1)%60;
+		if(SLVDEngine.SAVE.timeSeconds == 0)
 		{
-			SAVE.timeMinutes = (SAVE.timeMinutes + 1)%60;
-			if(SAVE.timeMinutes == 0)
+			SLVDEngine.SAVE.timeMinutes = (SLVDEngine.SAVE.timeMinutes + 1)%60;
+			if(SLVDEngine.SAVE.timeMinutes == 0)
 			{
-				SAVE.timeHours = (SAVE.timeHours + 1)%24;
-				if(SAVE.timeHours == 0) SAVE.timeDays++;
+				SLVDEngine.SAVE.timeHours = (SLVDEngine.SAVE.timeHours + 1)%24;
+				if(SLVDEngine.SAVE.timeHours == 0) SLVDEngine.SAVE.timeDays++;
 			}
 			
 			//One-time events
-			var cTime = SAVE.timeDays*60*60*24 + SAVE.timeHours*60*60 + SAVE.timeMinutes*60 + SAVE.timeSeconds;
-			if(cTime in Time.once)
+			var cTime = SLVDEngine.SAVE.timeDays*60*60*24 + SLVDEngine.SAVE.timeHours*60*60 + SLVDEngine.SAVE.timeMinutes*60 + SLVDEngine.SAVE.timeSeconds;
+			if(cTime in SLVDEngine.Time.once)
 			{
-				for(var i = 0; i < Time.once[cTime].length; i++)
+				for(var i = 0; i < SLVDEngine.Time.once[cTime].length; i++)
 				{
-					Time.once[cTime][i]();
+					SLVDEngine.Time.once[cTime][i]();
 				}
 			}
 			
 			//Daily events
-			var cTime = SAVE.timeHours*60*60 + SAVE.timeMinutes*60 + SAVE.timeSeconds;	
-			if(cTime in Time.daily)
+			var cTime = SLVDEngine.SAVE.timeHours*60*60 + SLVDEngine.SAVE.timeMinutes*60 + SLVDEngine.SAVE.timeSeconds;	
+			if(cTime in SLVDEngine.Time.daily)
 			{
-				for(var i = 0; i < Time.daily[cTime].length; i++)
+				for(var i = 0; i < SLVDEngine.Time.daily[cTime].length; i++)
 				{
-					Time.daily[cTime][i]();
+					SLVDEngine.Time.daily[cTime][i]();
 				}
 			}
 		}
 	}
 }
 
-Time.renderClock = function(context) {
-	context.drawImage(image["clock.png"], SLVDEngine.SCREENX - 140, 0);
+SLVDEngine.Time.renderClock = function(context) {
+	context.drawImage(SLVDEngine.image["clock.png"], SLVDEngine.SCREENX - 140, 0);
 	context.lineWidth = 1;
 	context.strokeStyle="#DDDDDD";
-	var hand = Math.PI/2 - (2*(SAVE.timeSeconds/60)*Math.PI);
+	var hand = Math.PI/2 - (2*(SLVDEngine.SAVE.timeSeconds/60)*Math.PI);
 	context.beginPath();
 	context.moveTo(SLVDEngine.SCREENX - 70, 70);
 	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
 	context.stroke();
 	context.lineWidth = 2
 	context.strokeStyle="#000000";
-	hand = Math.PI/2 - (2*(SAVE.timeMinutes/60)*Math.PI);
+	hand = Math.PI/2 - (2*(SLVDEngine.SAVE.timeMinutes/60)*Math.PI);
 	context.beginPath();
 	context.moveTo(SLVDEngine.SCREENX - 70, 70);
 	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));
 	context.stroke();
 	context.strokeStyle="#EE0000";
 	context.lineWidth = 3;
-	hand = Math.PI/2 - (2*(SAVE.timeHours/12)*Math.PI);
+	hand = Math.PI/2 - (2*(SLVDEngine.SAVE.timeHours/12)*Math.PI);
 	context.beginPath();
 	context.moveTo(SLVDEngine.SCREENX - 70, 70);
 	context.lineTo(SLVDEngine.SCREENX - 70 + 50*Math.cos(hand), 70 - 50*Math.sin(hand));

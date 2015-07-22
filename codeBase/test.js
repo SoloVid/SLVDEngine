@@ -1,0 +1,3 @@
+wX
+wY
+	audioPlay

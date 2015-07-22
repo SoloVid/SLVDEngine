@@ -1,72 +1,71 @@
-function Sprite(name, spriteSheet, team)
+SLVDEngine.Sprite = function(name, spriteSheet, team)
 {
 	this.name = name;
 	this.img = spriteSheet;
 	
 //	this.dart = {};
 //	this.dart.prototype = this;
-}
-var SpriteTemplate = {};
-var SpriteFunctions = function() {};
+};
+SLVDEngine.SpriteTemplate = {};
 
-Sprite.prototype.xres = 32;
-Sprite.prototype.yres = 64;
+SLVDEngine.Sprite.prototype.xres = 32;
+SLVDEngine.Sprite.prototype.yres = 64;
 
-//The Sprite's base is the collision area of the Sprite
-Sprite.prototype.baseLength = 16;
-Sprite.prototype.baseX = 16;
-Sprite.prototype.baseY = 8;
+//The SLVDEngine.Sprite's base is the collision area of the SLVDEngine.Sprite
+SLVDEngine.Sprite.prototype.baseLength = 16;
+SLVDEngine.Sprite.prototype.baseX = 16;
+SLVDEngine.Sprite.prototype.baseY = 8;
 //Standard offset of the base is 0--that is, x=0 is centered and y=0 is at bottom
-Sprite.prototype.baseOffX = 0;
-Sprite.prototype.baseOffY = 0;
+SLVDEngine.Sprite.prototype.baseOffX = 0;
+SLVDEngine.Sprite.prototype.baseOffY = 0;
 
-Sprite.prototype.omniDir = false;
-Sprite.prototype.rotate = 0;
+SLVDEngine.Sprite.prototype.omniDir = false;
+SLVDEngine.Sprite.prototype.rotate = 0;
 
-Sprite.prototype.lvl;
-Sprite.prototype.team = "neutral";
-Sprite.prototype.x = 100;
-Sprite.prototype.y = 100;
-Sprite.prototype.offX = 0;
-Sprite.prototype.offY = 0;
-Sprite.prototype.layer = 0;
-//Sprite.prototype.inAir = null;
-//Sprite.prototype.mvmt = 1; //0 - still; 1 - random moving; 2 - back and forth; 4 - square
-//Sprite.prototype.speech; //0/"" or message
-Sprite.prototype.dmnr = 1; //0 - peaceful; 1 - excitable; 2 - aggressive
-Sprite.prototype.dir = 3;
-Sprite.prototype.steps = 0;// = 5;
-Sprite.prototype.wait;// = 0;
+SLVDEngine.Sprite.prototype.lvl;
+SLVDEngine.Sprite.prototype.team = "neutral";
+SLVDEngine.Sprite.prototype.x = 100;
+SLVDEngine.Sprite.prototype.y = 100;
+SLVDEngine.Sprite.prototype.offX = 0;
+SLVDEngine.Sprite.prototype.offY = 0;
+SLVDEngine.Sprite.prototype.layer = 0;
+//SLVDEngine.Sprite.prototype.inAir = null;
+//SLVDEngine.Sprite.prototype.mvmt = 1; //0 - still; 1 - random moving; 2 - back and forth; 4 - square
+//SLVDEngine.Sprite.prototype.speech; //0/"" or message
+SLVDEngine.Sprite.prototype.dmnr = 1; //0 - peaceful; 1 - excitable; 2 - aggressive
+SLVDEngine.Sprite.prototype.dir = 3;
+SLVDEngine.Sprite.prototype.steps = 0;// = 5;
+SLVDEngine.Sprite.prototype.wait;// = 0;
 
-Sprite.prototype.act = [];
-Sprite.prototype.pushAct = function(item) {
+SLVDEngine.Sprite.prototype.act = [];
+SLVDEngine.Sprite.prototype.pushAct = function(item) {
 	if(this.act.length == 0) {
 		this.act = [];
 	}
 	this.act.push(item);
 };
-Sprite.prototype.spliceAct = function(index, length) {
+SLVDEngine.Sprite.prototype.spliceAct = function(index, length) {
 	this.act.splice(index, length);
 	if(this.act.length <= 0)
 	{
 		delete this.act;
 	}
 };
-Sprite.prototype.actSet = [];
-Sprite.prototype.rcvr = 0;
-Sprite.prototype.getAct = function(index) {
+SLVDEngine.Sprite.prototype.actSet = [];
+SLVDEngine.Sprite.prototype.rcvr = 0;
+SLVDEngine.Sprite.prototype.getAct = function(index) {
 	return this.act[index];
 };
-Sprite.prototype.getActTime = function(index) {
+SLVDEngine.Sprite.prototype.getActTime = function(index) {
 	return this.act[index][1];
 }
-Sprite.prototype.getActOpt = function(index) {
+SLVDEngine.Sprite.prototype.getActOpt = function(index) {
 	return this.actSet[index];
 };
-Sprite.prototype.getActOptProb = function(index) {
+SLVDEngine.Sprite.prototype.getActOptProb = function(index) {
 	return this.actSet[index].prob;
 };
-Sprite.prototype.handleAction = function() {
+SLVDEngine.Sprite.prototype.handleAction = function() {
 	if(this.canAct)
 	{
 		//Start new action
@@ -93,7 +92,7 @@ Sprite.prototype.handleAction = function() {
 		}
 	}
 };
-Sprite.prototype.pickAction = function() {
+SLVDEngine.Sprite.prototype.pickAction = function() {
 	var actSet = [];
 	var rand;
 	var totProb = 0;
@@ -127,7 +126,7 @@ Sprite.prototype.pickAction = function() {
 	}
 	
 	//Pick random action based on probabilities
-	var rand = randomInt(totProb);
+	var rand = SLVD.randomInt(totProb);
 	var partProb = 0;
 	for(var i = 0; i < actSet.length; i++)
 	{
@@ -139,7 +138,7 @@ Sprite.prototype.pickAction = function() {
 	}
 	return null;
 };
-Sprite.prototype.requestAction = function(action) {
+SLVDEngine.Sprite.prototype.requestAction = function(action) {
 	if(this.canAct)
 	{
 		var typeTaken = false;
@@ -158,15 +157,15 @@ Sprite.prototype.requestAction = function(action) {
 		}
 	}
 };
-Sprite.prototype.seeAction = function() {
+SLVDEngine.Sprite.prototype.seeAction = function() {
 	for(var i = 0; i < this.act.length; i++)
 	{
-		this.act[i].see(this);
+		this.act[i].SLVDEngine.see(this);
 	}	
 };
 
-Sprite.prototype.status = [];
-Sprite.prototype.handleStatus = function() {
+SLVDEngine.Sprite.prototype.status = [];
+SLVDEngine.Sprite.prototype.handleStatus = function() {
 	if(this.status.length > 0)
 	{
 		for(var i = 0; i < this.status.length; i++)
@@ -181,23 +180,23 @@ Sprite.prototype.handleStatus = function() {
 		}
 	}
 };
-Sprite.prototype.seeStatus = function() {
+SLVDEngine.Sprite.prototype.seeStatus = function() {
 	for(var i = 0; i < this.status.length; i++)
 	{
-		this.status[i].see(this);
+		this.status[i].SLVDEngine.see(this);
 	}
 };
 
-//Sprite.prototype.moveSet = [];
+//SLVDEngine.Sprite.prototype.moveSet = [];
 
-Sprite.prototype.keyFunc = {};
+SLVDEngine.Sprite.prototype.keyFunc = {};
 
-Sprite.prototype.pushy = true;
+SLVDEngine.Sprite.prototype.pushy = true;
 
-Sprite.prototype.frame = 0;
+SLVDEngine.Sprite.prototype.frame = 0;
 
-Sprite.prototype.stance = 0;
-Sprite.prototype.defaultStance = function() {
+SLVDEngine.Sprite.prototype.stance = 0;
+SLVDEngine.Sprite.prototype.defaultStance = function() {
 	if(!this.omniDir)
 	{
 		this.stance = determineColumn(this.dir);
@@ -207,22 +206,22 @@ Sprite.prototype.defaultStance = function() {
 		this.stance = 0;
 	}
 };
-Sprite.prototype.getStance = function() {
+SLVDEngine.Sprite.prototype.getStance = function() {
 	return this.stance;
 };
-Sprite.prototype.requestStance = function(col) {
+SLVDEngine.Sprite.prototype.requestStance = function(col) {
 	this.stance = col;
 };
-Sprite.prototype.resetStance = function() {
+SLVDEngine.Sprite.prototype.resetStance = function() {
 	delete this.stance;
 };
 
-Sprite.prototype.hp = 100;
-Sprite.prototype.strg = 5;
-Sprite.prototype.spd = 2;
+SLVDEngine.Sprite.prototype.hp = 100;
+SLVDEngine.Sprite.prototype.strg = 5;
+SLVDEngine.Sprite.prototype.spd = 2;
 
-Sprite.prototype.path = [];
-Sprite.prototype.addPointToPath = function(x, y) {
+SLVDEngine.Sprite.prototype.path = [];
+SLVDEngine.Sprite.prototype.addPointToPath = function(x, y) {
 	if(this.path.x.length === 0)
 	{
 		this.path = [];
@@ -230,71 +229,71 @@ Sprite.prototype.addPointToPath = function(x, y) {
 	this.path.unshift({x: x, y: y});
 };
 
-Sprite.prototype.canAct = true;
-//Sprite.prototype.canMove = true;
-Sprite.prototype.canSeeAct = true;
-//Sprite.prototype.canSeeMove = true;
-Sprite.prototype.canSeeStatus = true;
-Sprite.prototype.canSee = true;
+SLVDEngine.Sprite.prototype.canAct = true;
+//SLVDEngine.Sprite.prototype.canMove = true;
+SLVDEngine.Sprite.prototype.canSeeAct = true;
+//SLVDEngine.Sprite.prototype.canSeeMove = true;
+SLVDEngine.Sprite.prototype.canSeeStatus = true;
+SLVDEngine.Sprite.prototype.canSee = true;
 
-Sprite.prototype.getHp = function() {
+SLVDEngine.Sprite.prototype.getHp = function() {
 	return this.hp;
 };
-Sprite.prototype.getImage = function() {
+SLVDEngine.Sprite.prototype.getImage = function() {
 	if(this.img)
 	{
-		if(!(this.img in image))
+		if(!(this.img in SLVDEngine.image))
 		{
-			image[this.img] = new Image();
-			image[this.img].src = "files/images/" + this.img.replace(/\"/g, "");
+			SLVDEngine.image[this.img] = new Image();
+			SLVDEngine.image[this.img].src = "files/images/" + this.img.replace(/\"/g, "");
 		}
-		//this.img = image[this.img];
+		//this.img = SLVDEngine.image[this.img];
 	}
-	return image[this.img];
+	return SLVDEngine.image[this.img];
 }
-Sprite.prototype.getMaxHp = function() {
+SLVDEngine.Sprite.prototype.getMaxHp = function() {
 	return 100;
 };
-Sprite.prototype.getPosition = function() {
+SLVDEngine.Sprite.prototype.getPosition = function() {
 	var pos = {};
 	pos.x = this.x;
 	pos.y = this.y;
 	pos.layer = this.layer;
 	return pos;
 };	
-Sprite.prototype.getShownPosition = function() {
+SLVDEngine.Sprite.prototype.getShownPosition = function() {
 	var pos = {};
 	pos.x = this.x;
 	pos.y = this.y;
 	pos.layer = this.layer;
 	return pos;
 };
-Sprite.prototype.getShownX = function() {
+SLVDEngine.Sprite.prototype.getShownX = function() {
 	return this.x;
 };
-Sprite.prototype.getShownY = function() {
+SLVDEngine.Sprite.prototype.getShownY = function() {
 	return this.y;
 };
-Sprite.prototype.getSpeed = function() {
+SLVDEngine.Sprite.prototype.getSpeed = function() {
 	return this.spd;
 };
-Sprite.prototype.getStrength = function() {
+SLVDEngine.Sprite.prototype.getStrength = function() {
 	return this.strg;
 };
-Sprite.prototype.getTeam = function() {
-	return Teams[this.team];
+SLVDEngine.Sprite.prototype.getTeam = function() {
+	return SLVDEngine.Teams[this.team];
 }
 
-Sprite.prototype.preventAction = function() { this.canAct = false; };
-Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; };
-Sprite.prototype.preventStatusSee = function() { this.canSeeStatus = false; };
-Sprite.prototype.preventRender = function() { this.canSee = false; };
-Sprite.prototype.resetCans = function() { delete this.canSee; delete this.canAct; delete this.canSeeAct; delete this.canSeeStatus; };
+SLVDEngine.Sprite.prototype.preventAction = function() { this.canAct = false; };
+SLVDEngine.Sprite.prototype.preventActionSee = function() { this.canSeeAct = false; };
+SLVDEngine.Sprite.prototype.preventStatusSee = function() { this.canSeeStatus = false; };
+SLVDEngine.Sprite.prototype.preventRender = function() { this.canSee = false; };
+SLVDEngine.Sprite.prototype.resetCans = function() { delete this.canSee; delete this.canAct; delete this.canSeeAct; delete this.canSeeStatus; };
 
-Sprite.prototype.dart = {};
+SLVDEngine.Sprite.prototype.dart = {};
 
-//Checks if the a Sprite's location is valid (based on current location and layer func data)
-Sprite.prototype.canBeHere = function(allowInAir) {
+//Checks if the a SLVDEngine.Sprite's location is valid (based on current location and layer func data)
+SLVDEngine.Sprite.prototype.canBeHere = function(allowInAir) {
 	for(var ind = 0; ind < 8; ind++)
 	{
 		for(var sec = 0; sec < 16; sec++)
@@ -310,17 +309,17 @@ Sprite.prototype.canBeHere = function(allowInAir) {
 	return 1;
 };
 
-Sprite.prototype.canSeePlayer = function() {
-	var tDir = dirFromTo(this.x, this.y, player[currentPlayer].x, player[currentPlayer].y);
+SLVDEngine.Sprite.prototype.canSeePlayer = function() {
+	var tDir = dirFromTo(this.x, this.y, SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
 	return (Math.abs(tDir - this.dir) < 1 || Math.abs(tDir - this.dir) > 3)
 };
 
-Sprite.prototype.damage = function(amount) {
+SLVDEngine.Sprite.prototype.damage = function(amount) {
 	this.hp -= amount;
 };
 
 //All of the "give" functions are intended to be passed a "new" object
-Sprite.prototype.giveAction = function(action, keyFuncHandle) {
+SLVDEngine.Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 	if(this.actSet.length == 0)
 	{
 		this.actSet = [];
@@ -328,7 +327,7 @@ Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 	
 	if((typeof action) == "string")
 	{
-		action = new Action[action];
+		action = new SLVDEngine.Action[action];
 	}
 	
 	this.actSet.push(action);
@@ -354,7 +353,7 @@ Sprite.prototype.giveAction = function(action, keyFuncHandle) {
 		this.keyFunc = tempKeyFunc;
 	}
 };
-Sprite.prototype.giveStatus = function(status) {
+SLVDEngine.Sprite.prototype.giveStatus = function(status) {
 	if(this.status.length == 0)
 	{
 		this.status = [];
@@ -362,16 +361,16 @@ Sprite.prototype.giveStatus = function(status) {
 	
 	if((typeof status) == "string")
 	{
-		status = new Status[status];
+		status = new SLVDEngine.Status[status];
 	}
 	
 	this.status.push(status); 
 };
 
-Sprite.prototype.hasStatus = function(status) {
+SLVDEngine.Sprite.prototype.hasStatus = function(status) {
 	if((typeof status) == "string")
 	{
-		status = Status[status];
+		status = SLVDEngine.Status[status];
 	}
 
 	for(var i = 0; i < this.status.length; i++)
@@ -385,13 +384,13 @@ Sprite.prototype.hasStatus = function(status) {
 };
 
 //Move a person along their set path at given speed.
-Sprite.prototype.pathMotion = function(spd) {
+SLVDEngine.Sprite.prototype.pathMotion = function(spd) {
 	var dist = Math.sqrt(Math.pow(this.x - this.path[0].x, 2) + Math.pow(this.y - this.path[0].y, 2))
 	if(dist == 0)
 	{
 		this.path.shift();
 
-		if(this == cTeam[currentPlayer] && this.path.length == 0)
+		if(this == SLVDEngine.cTeam[SLVDEngine.currentPlayer] && this.path.length == 0)
 		{
 			if(!resumeCue)	{ }
 			else { resumeCue = resumeFunc(resumeCue); }
@@ -409,8 +408,8 @@ Sprite.prototype.pathMotion = function(spd) {
 	}
 };
 
-//Based in time.js, this function provides simple interface for setting a timed sequence of movement events for Sprites 
-Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute, second) {
+//Based in time.js, this SLVDEngine.provides = function simple interface for setting a timed sequence of movement events for Sprites 
+SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute, second) {
 	/*eventA should be an array with specific sequences of "arguments". Acceptable forms:
 		coordinates: x, y
 		abrupt relocation: "put", x, y, z
@@ -421,7 +420,7 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 	{
 		day = 0;
 	}
-	var cTime = Time.componentToAbsolute(day, hour, minute, second);
+	var cTime = SLVDEngine.Time.componentToAbsolute(day, hour, minute, second);
 	var nTime = cTime;
 	
 	var i = 0;
@@ -463,7 +462,7 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 			if(ptA.length > 0)
 			{
 				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.walkPath(" + ptA.toString() + ");");
-				Time.registerEvent(event, isDaily, cTime);
+				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				ptA.length = 0;
 				cTime = nTime + 8; //tack on a few extra frames to be safe
 			}
@@ -471,7 +470,7 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 			if(eventA[i] == "put")
 			{
 				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.x = " + eventA[i + 1] + "; tNPC.y = " + eventA[i + 2] + "; tNPC.layer = " + eventA[i + 3] + ";");
-				Time.registerEvent(event, isDaily, cTime);
+				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				i += 4;
 				
 				nx = eventA[i + 1];
@@ -480,7 +479,7 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 			else if(eventA[i] == "send")
 			{
 				var event = new Function("var tNPC = getNPCByName(\"" + this.name + "\"); tNPC.lvl = " + eventA[i + 1] + "; tNPC.x = " + eventA[i + 2] + "; tNPC.y = " + eventA[i + 3] + "; tNPC.layer = " + eventA[i + 4] + ";");
-				Time.registerEvent(event, isDaily, cTime);
+				SLVDEngine.Time.registerEvent(event, isDaily, cTime);
 				i += 5;
 				
 				nx = eventA[i + 2];
@@ -488,22 +487,22 @@ Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, hour, minute
 			}
 			else if(eventA[i] == "function")
 			{
-				Time.registerEvent(eventA[i + 1], isDaily, cTime);
+				SLVDEngine.Time.registerEvent(eventA[i + 1], isDaily, cTime);
 			}
 		}
 	}
-};
+};;
 
-Sprite.prototype.see = function(ctx) {
+SLVDEngine.Sprite.prototype.see = function(ctx) {
 	if(!ctx)
 	{
-		ctx = see;
+		ctx = SLVDEngine.see;
 	}
 	
 	if(!this.canSee) return;
 	
-	var canvSeeX = this.x - SLVDEngine.wX - SLVDEngine.SCREENX/2 + this.offX - player[currentPlayer].offX;
-	var canvSeeY = this.y - SLVDEngine.wY - SLVDEngine.SCREENY/2 + this.offY - player[currentPlayer].offY;
+	var canvSeeX = this.x - SLVDEngine.wX - SLVDEngine.SCREENX/2 + this.offX - SLVDEngine.player[SLVDEngine.currentPlayer].offX;
+	var canvSeeY = this.y - SLVDEngine.wY - SLVDEngine.SCREENY/2 + this.offY - SLVDEngine.player[SLVDEngine.currentPlayer].offY;
 	
 	if(canvSeeX < -SLVDEngine.SCREENX || canvSeeY < -SLVDEngine.SCREENY || canvSeeX > SLVDEngine.SCREENX || canvSeeY > SLVDEngine.SCREENY)
 	{
@@ -512,7 +511,7 @@ Sprite.prototype.see = function(ctx) {
 	
 //	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	
-	ctx.translate(this.x - SLVDEngine.wX + this.offX - player[currentPlayer].offX, this.y - SLVDEngine.wY + this.offY - player[currentPlayer].offY);
+	ctx.translate(this.x - SLVDEngine.wX + this.offX - SLVDEngine.player[SLVDEngine.currentPlayer].offX, this.y - SLVDEngine.wY + this.offY - SLVDEngine.player[SLVDEngine.currentPlayer].offY);
 	
 	ctx.rotate(this.rotate);
 	
@@ -540,7 +539,7 @@ Sprite.prototype.see = function(ctx) {
 	delete this.rotate;
 };
 
-Sprite.prototype.updateFrame = function() {
+SLVDEngine.Sprite.prototype.updateFrame = function() {
 	//Only update on frame tick
 	if(SLVDEngine.frameClock == 1)
 	{
@@ -553,8 +552,8 @@ Sprite.prototype.updateFrame = function() {
 };
 
 //(x1, y1, x2, y2, ...)
-Sprite.prototype.walkPath = function() {
-	if(SLVDEngine.currentLevel == this.level)
+SLVDEngine.Sprite.prototype.walkPath = function() {
+	if(SLVDEngine.currentLevel == this.SLVDEngine.level)
 	{
 		var spd = this.spd;
 		for(var i = 0; i < arguments.length; i += 2)
@@ -570,7 +569,7 @@ Sprite.prototype.walkPath = function() {
 };
 
 //zeldaStep but with input direction
-Sprite.prototype.zeldaBump = function(distance, direction) {
+SLVDEngine.Sprite.prototype.zeldaBump = function(distance, direction) {
 	//Save direction
 	var tDir = this.dir;
 	//Set direction
@@ -581,7 +580,7 @@ Sprite.prototype.zeldaBump = function(distance, direction) {
 	this.dir = tDir;
 };
 
-Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
+SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	var pixel;
 	var coords = {};	
 
@@ -637,11 +636,11 @@ Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	return false;
 }
 
-Sprite.prototype.zeldaLockOnPlayer = function() {
-	this.zeldaLockOnPoint(player[currentPlayer].x, player[currentPlayer].y);
+SLVDEngine.Sprite.prototype.zeldaLockOnPlayer = function() {
+	this.zeldaLockOnPoint(SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
 };
 	
-Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
+SLVDEngine.Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	this.dir = dirFromTo(this.x, this.y, qx, qy);
 /*	this.dir = Math.atan(-(this.y - qy)/(this.x - qx))/(Math.PI/2);
 	if(this.x > qx)
@@ -658,8 +657,8 @@ Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	}*/
 };
 
-//*********Advances Sprite person up to distance distance as far as is legal. Includes pushing other Sprites out of the way? Returns -1 if stopped before distance?
-Sprite.prototype.zeldaStep = function(distance) {
+//*********Advances SLVDEngine.Sprite person up to distance distance as far as is legal. Includes pushing other Sprites out of the way? Returns -1 if stopped before distance?
+SLVDEngine.Sprite.prototype.zeldaStep = function(distance) {
 	var stopped = false;
 	var stoppedTemp = false;
 	var out = false;
@@ -753,5 +752,3 @@ Sprite.prototype.zeldaStep = function(distance) {
 	out = false;
 	return ret;
 };
-
-var SpriteF = new SpriteFunctions();

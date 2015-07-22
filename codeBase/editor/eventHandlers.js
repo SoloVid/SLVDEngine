@@ -21,7 +21,7 @@ $(document).keypress(function(event)
 {
 	if(event.which == 32)
 	{
-		console.log("export of level XML:");
+		console.log("export of SLVDEngine.level XML:");
 		exportLevel(levelXML);
 		
 		//console.log(JSON.stringify(document.getElementsByClassName("whiteboard")[0].getContext("2d").getImageData(0, 0, BOARDX/getPixelsPerPixel(), BOARDY/getPixelsPerPixel()), null, '\t'));
@@ -39,14 +39,14 @@ $(document).keyup(function(event) {
 var BOARDX = 100, BOARDY = 100;
 var PPP = 1; //pixels per pixel
 
-var mode = "NPC";
+var mode = "SLVDEngine.NPC";
 
 var typeSelected;
 var indexSelected;
 
 $("#XMLEditor").hide();
 
-t = new Sprite();
+t = new SLVDEngine.Sprite();
 
 var subImg = document.getElementById("subImg");
 var ctx = subImg.getContext("2d");
@@ -242,7 +242,7 @@ $(document.body).on("mousedown", "#layers", function(event)
 		
 		drawVectors();
 	}
-	else if(mode == "NPC" || mode == "boardObj")
+	else if(mode == "SLVDEngine.NPC" || mode == "boardObj")
 	{
 		if(event.which == 1)
 		{
@@ -270,7 +270,7 @@ $("#layerMenu").on("dblclick", ".layerLabel", function(event)
 		i++;
 	}
 	
-	levelXML.getElementsByTagName("background")[i].textContent = prompt("Background image:", levelXML.getElementsByTagName("background")[i].textContent);
+	levelXML.getElementsByTagName("background")[i].textContent = prompt("Background SLVDEngine.image:", levelXML.getElementsByTagName("background")[i].textContent);
 
 	document.getElementsByClassName("background")[i].onload = function()
 	{
@@ -370,28 +370,28 @@ $("#layerMenu").on("click", ".boardObj", function(event) {
 	$("#hardCode").val(levelXML.getElementsByTagName(typeSelected)[indexSelected].textContent);
 });
 
-$("#layerMenu").on("mouseenter", ".NPC", function(event) {
-	typeSelected = "NPC";
+$("#layerMenu").on("mouseenter", ".SLVDEngine.NPC", function(event) {
+	typeSelected = "SLVDEngine.NPC";
 	
 	var i = /[\d]+/.exec(this.id)[0]
 	
-	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	$("#SLVDEngine.NPC" + i).css("background-color", "rgba(255, 255, 0, 1)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 	
-//	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
+//	$(document.getElementById("layers").getElementsByClassName("SLVDEngine.NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
 });
-$("#layerMenu").on("mouseleave", ".NPC", function(event) {
-	typeSelected = "NPC";
+$("#layerMenu").on("mouseleave", ".SLVDEngine.NPC", function(event) {
+	typeSelected = "SLVDEngine.NPC";
 	
 	var vectorList = document.getElementById("layerMenu").getElementsByClassName(typeSelected);
 	
 	var i = /[\d]+/.exec(this.id)[0]
 
-	$("#NPC" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
+	$("#SLVDEngine.NPC" + i).css("background-color", "rgba(255, 255, 0, 0)");//.effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
 	
-//	$(document.getElementById("layers").getElementsByClassName("NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
+//	$(document.getElementById("layers").getElementsByClassName("SLVDEngine.NPC")[i]).effect( "highlight", {color:"#FFFFAA"}, 3000 );
 });
-$("#layerMenu").on("click", ".NPC", function(event) {
-	typeSelected = "NPC";
+$("#layerMenu").on("click", ".SLVDEngine.NPC", function(event) {
+	typeSelected = "SLVDEngine.NPC";
 	
 	var i = /[\d]+/.exec(this.id)[0]
 	
@@ -435,7 +435,7 @@ $("#saveChanges").click(function(event)
 	$("#XMLEditor").hide();
 	
 	//Update graphics
-	if(typeSelected == "NPC" || typeSelected == "boardObj")
+	if(typeSelected == "SLVDEngine.NPC" || typeSelected == "boardObj")
 	{
 		updateObject(typeSelected, indexSelected);
 		generateLayerMenu();

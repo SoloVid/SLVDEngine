@@ -62,3 +62,52 @@ SLVD.speedCheck.prototype.logUnusual = function(allow) {
 		//console.log(this.name + " took " + this.getTime() + " milliseconds");
 	}
 };
+
+//random integer between 1 and num
+SLVD.randomInt = function(num) {
+	return Math.floor((Math.random() * num) + 1);
+};
+
+SLVD.randomSeed = function() {
+	var limit = (new Date()).getTime() % 1000000;
+	for(var i = 0; i < limit; i++)
+	{
+		Math.random();
+	}
+};
+
+//Get XML DOM from file; returns SLVD promise
+SLVD.getXML = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseXML); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
+};  
+
+//Get text from file; returns SLVD promise
+SLVD.getTXT = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseText); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
+};

@@ -315,7 +315,7 @@ document.onkeyup = function(e) {
 }
 
 //Set SLVDEngine.wX and SLVDEngine.wY (references for relative SLVDEngine.image drawing) based on current SLVDEngine.player's (or in some cases SLVDEngine.NPC's) position.
-SLVDEngine.orientScreen = function() {
+function orientScreen() {
 	var person = SLVDEngine.cTeam[SLVDEngine.currentPlayer];
 	var x = person.x + person.offX;
 	var y = person.y + person.offY;
@@ -344,10 +344,10 @@ SLVDEngine.orientScreen = function() {
   else {
     SLVDEngine.wY = 0;
   }
-};
+}
 
 //Sort all board characters into the array SLVDEngine.boardSprite in order of y location (in order to properly render sprite overlap).
-SLVDEngine.restartBoardC = function() {
+function restartBoardC() {
 	SLVDEngine.boardSprite.length = 0;
 	
 	//Figure out which NPCs are onboard
@@ -373,10 +373,10 @@ SLVDEngine.restartBoardC = function() {
 	{
 		if(index == SLVDEngine.currentPlayer || SLVDEngine.currentLevel.type == "TRPG") insertBoardC(SLVDEngine.player[index]);
 	}
-};
+}
 
 //Sort the array SLVDEngine.boardSprite in order of y location (in order to properly render sprite overlap).
-SLVDEngine.sortBoardC = function() {
+function sortBoardC() {
 	if(SLVDEngine.boardSprite.length == 0) restartBoardC();
 	else
 	{
@@ -392,9 +392,9 @@ SLVDEngine.sortBoardC = function() {
 			}
 		}
 	}
-};
+}
 
-SLVDEngine.insertBoardC = function(element) {
+function insertBoardC(element) {
 	var index = 0;
 	while(index < SLVDEngine.boardSprite.length && element.y > SLVDEngine.boardSprite[index].y)
 	{
@@ -413,9 +413,9 @@ SLVDEngine.insertBoardC = function(element) {
 		}
 		second--;
 	}*/
-};
+}
 
-SLVDEngine.deleteBoardC = function(element) {
+function deleteBoardC(element) {
 	for(var index = 0; index < SLVDEngine.boardSprite.length; index++)
 	{
 		if(element == SLVDEngine.boardSprite[index])
@@ -424,10 +424,10 @@ SLVDEngine.deleteBoardC = function(element) {
 			index = SLVDEngine.boardSprite.length;
 		}
 	}
-};
+}
 
 //Based on keys down (ASDW and arrows), set current SLVDEngine.player's direction. Used in zeldaPlayerMotion().
-SLVDEngine.figurePlayerDirection = function() {
+function figurePlayerDirection() {
 	var dKeys = 0;
 	var dir = 0;
 	if(SLVDEngine.keyDown['a'] || SLVDEngine.keyDown['left']) //West
@@ -463,9 +463,9 @@ SLVDEngine.figurePlayerDirection = function() {
 		return true;
 	}
 	return false;
-};
+}
 
-SLVDEngine.renderBoardState = function() {
+function renderBoardState() {
 	orientScreen();
 	var lightedThing = [];
 	
@@ -574,4 +574,4 @@ SLVDEngine.renderBoardState = function() {
 	
 	//Save screen into SLVDEngine.snapShot
 	SLVDEngine.snapShotCtx.drawImage(SLVDEngine.seeB, 0, 0);
-};
+}

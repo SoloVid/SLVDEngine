@@ -164,11 +164,11 @@ SLVDEngine.evalObj = function(template, code) {
 	var obj;
 	if(template)
 	{
-		obj = new SLVDEngine.SpriteTemplate[template]();
+		obj = new SpriteTemplate[template]();
 	}
 	else
 	{
-		obj = new SLVDEngine.Sprite(null, null);
+		obj = new Sprite(null, null);
 	}
 	
 	eval(code);
@@ -245,6 +245,42 @@ SLVDEngine.getScriptAlt = function(url, callback) {
 
 	// We handle everything using the script element injection
 	return undefined;
+};
+
+//Get XML DOM from file; returns SLVD promise
+SLVD.getXML = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseXML); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
+};  
+
+//Get text from file; returns SLVD promise
+SLVD.getTXT = function(fil) {
+	var promise = new SLVD.promise();
+
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() { if(xmlhttp.readyState == 4) promise.resolve(xmlhttp.responseText); };
+	xmlhttp.open("GET",fil,true);
+	xmlhttp.send();
+	return promise;
 };
 
 //Gets the index on canvas data of given coordinates

@@ -1,11 +1,11 @@
-//Team is a class that will be used to separate out different Sprites in the game
+//SLVDEngine.Team is a class that will be used to separate out different Sprites in the game
 
-function Team(name) {
+SLVDEngine.Team = function(name) {
 	this.name = name;
 	this.alliances = [];
-}
+};
 
-Team.prototype.isAllied = function(otherTeam) {
+SLVDEngine.Team.prototype.isAllied = function(otherTeam) {
 	//Self is ally
 	if(otherTeam == this) 
 	{
@@ -24,7 +24,7 @@ Team.prototype.isAllied = function(otherTeam) {
 	}
 };
 
-Team.prototype.removeAlly = function(otherTeam) {
+SLVDEngine.Team.prototype.removeAlly = function(otherTeam) {
 	for(var i = 0; i < this.alliances.length; i++)
 	{
 		if(this.alliances[i] == otherTeam) {
@@ -34,16 +34,16 @@ Team.prototype.removeAlly = function(otherTeam) {
 	}
 };
 
-function allyTeams(team1, team2) {
+SLVDEngine.allyTeams = function(team1, team2) {
 	team1.alliances.push(team2);
 	team2.alliances.push(team1);
-}
+};
 
-function unallyTeams(team1, team2) {
+SLVDEngine.unallyTeams = function(team1, team2) {
 	team1.removeAlly(team2);
 	team2.removeAlly(team1);
-}
+};
 
-Teams["neutral"] = new Team("neutral");
-Teams["heroParty"] = new Team("heroParty");
-Teams["empire"] = new Team("empire");
+SLVDEngine.Teams["neutral"] = new SLVDEngine.Team("neutral");
+SLVDEngine.Teams["heroParty"] = new SLVDEngine.Team("heroParty");
+SLVDEngine.Teams["empire"] = new SLVDEngine.Team("empire");
