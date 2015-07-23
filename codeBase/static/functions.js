@@ -104,6 +104,8 @@ SLVDEngine.enterLevelByName = function(nam) {
 	console.log(SLVDEngine.currentPlayer);
 	console.log(SLVDEngine.player[SLVDEngine.currentPlayer].name);
 	
+	//********Leave current board
+	
 	//Finish all paths
 	for(var i = 0; i < SLVDEngine.boardSprite.length; i++)
 	{
@@ -115,7 +117,14 @@ SLVDEngine.enterLevelByName = function(nam) {
 	}
 
 	SLVDEngine.boardAgent.length = 0;
+
+	if(SLVDEngine.currentLevel)
+	{
+		eval(SLVDEngine.currentLevel.filedata.getElementsByTagName("exitPrg")[0].textContent);
+	}
 	
+	//********Enter new board
+		
 	for(var index = 0; index < SLVDEngine.level.length; index++)
 	{
 		if(SLVDEngine.level[index].name == nam)
@@ -158,6 +167,8 @@ SLVDEngine.enterLevelByName = function(nam) {
 		SLVDEngine.insertBoardC(SLVDEngine.evalObj(template, objCode));
 		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
 	}
+
+	eval(SLVDEngine.currentLevel.filedata.getElementsByTagName("enterPrg")[0].textContent);
 };
 
 SLVDEngine.evalObj = function(template, code) {

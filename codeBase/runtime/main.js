@@ -555,7 +555,7 @@ SLVDEngine.renderBoardState = function() {
 
 		//XOR lights placed with black overlay (the result being holes in the black)
 		SLVDEngine.bufferCtx.globalCompositeOperation = "xor";
-		SLVDEngine.bufferCtx.fillStyle = "rgba(0, 0, 0, " + dark + ")";//"#000000";
+		SLVDEngine.bufferCtx.fillStyle = "rgba(0, 0, 0, " + SLVDEngine.weather.dark + ")";//"#000000";
 		SLVDEngine.bufferCtx.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
 
 		//Render SLVDEngine.buffer

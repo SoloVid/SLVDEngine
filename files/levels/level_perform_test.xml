@@ -2,6 +2,10 @@
 <level>
 	<name>perform_test</name>
 	<type>zelda</type>
+	<enterPrg>SLVDEngine.weather.clouds = true;
+SLVDEngine.weather.rain = true;
+SLVDEngine.weather.dark = .5;</enterPrg>
+	<exitPrg/>
 	<layers>
 		<layer>
 			<background>Castle_Outer.jpg</background>
@@ -9,7 +13,6 @@
 		</layer>
 	</layers>
 	<NPCs>
-	
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -20,7 +23,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -31,7 +33,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -42,7 +43,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -53,7 +53,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -74,7 +73,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -85,7 +83,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -96,7 +93,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -107,7 +103,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -118,7 +113,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -129,7 +123,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -140,7 +133,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -151,7 +143,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -162,7 +153,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -173,7 +163,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -184,7 +173,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -195,7 +183,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -206,7 +193,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -217,7 +203,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -228,7 +213,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -239,7 +223,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -250,7 +233,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -261,7 +243,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -272,7 +253,6 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
@@ -283,8 +263,7 @@
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
 		<NPC template="Base_Soldier">obj.x = 664; obj.y = 326; obj.layer = 0; obj.dir = 3;</NPC>
-		
-		</NPCs>
+	</NPCs>
 	<boardObjs>
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -306,7 +285,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -327,7 +305,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -348,7 +325,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -369,7 +345,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -390,7 +365,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -411,7 +385,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -432,7 +405,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -453,7 +425,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -474,7 +445,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -495,7 +465,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -516,7 +485,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -537,7 +505,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -558,7 +525,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -579,7 +545,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -600,7 +565,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -621,7 +585,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -642,7 +605,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -663,7 +625,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -684,7 +645,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -705,7 +665,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -726,7 +685,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -747,7 +705,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -768,7 +725,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -789,7 +745,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -810,7 +765,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -831,7 +785,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -852,7 +805,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -873,7 +825,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -894,7 +845,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -915,7 +865,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -936,7 +885,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -957,7 +905,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -978,7 +925,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -999,7 +945,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1020,7 +965,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1041,7 +985,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1062,7 +1005,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1083,7 +1025,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1104,7 +1045,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1125,7 +1065,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1146,7 +1085,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1167,7 +1105,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1188,7 +1125,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1209,7 +1145,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1230,7 +1165,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1251,7 +1185,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1272,7 +1205,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1293,7 +1225,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1314,7 +1245,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1335,7 +1265,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1356,7 +1285,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1377,7 +1305,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1398,7 +1325,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1419,7 +1345,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1440,7 +1365,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1461,7 +1385,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1482,7 +1405,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1503,7 +1425,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1524,7 +1445,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1545,7 +1465,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1566,7 +1485,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1587,7 +1505,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1608,7 +1525,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1629,7 +1545,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1650,7 +1565,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1671,7 +1585,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1692,7 +1605,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1713,7 +1625,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1734,7 +1645,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1755,7 +1665,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1776,7 +1685,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
 		<boardObj template="Big_Tents">obj.x = 407; obj.y = 530; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 152; obj.y = 625; obj.layer = 0; obj.dir = 1;</boardObj>
 		<boardObj template="Big_Tents">obj.x = 771; obj.y = 814; obj.layer = 0; obj.dir = 1;</boardObj>
@@ -1797,7 +1705,6 @@
 		<boardObj template="Hexagon_Tents">obj.x = 186; obj.y = 412; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 564; obj.y = 558; obj.layer = 0; obj.dir = 3;</boardObj>
 		<boardObj template="Hexagon_Tents">obj.x = 177; obj.y = 704; obj.layer = 0; obj.dir = 3;</boardObj>
-
-		</boardObjs>
+	</boardObjs>
 	<boardPrgs/>
 </level>

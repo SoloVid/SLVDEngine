@@ -156,6 +156,8 @@
 			<div class="option color" style="background-color:rgb(255, 255, 0);">Open Air</div>
 			<div class="option color" style="background-color:rgb(100, 0, 0);">Board Program</div>
 			<br>
+			<div class="option" id="btnEnterPrg">Board Enter Program</div>
+			<div class="option" id="btnExitPrg">Board Exit Program</div>
 		</div>
 		<div id="layerMenu" class="menu" style="right:0px;">
 			<br>
@@ -163,6 +165,14 @@
 			<div class="option" onclick="createProgram()">Add Program</div>
 		</div>	
 
+		<div id="TextEditorDlg" style="background-color:rgb(255, 255, 255); border:1px solid black; left: 150px; top:50px; right:150px; bottom: 50px; padding: 10px; position:fixed;">
+			<h3 id="TEDTitle"></h3>
+			<br>
+			<textarea id="TEDCode" style="width:100%; height:80%;"></textarea>
+			<br>
+			<button id="TEDSaveChanges" style="right:0;">Save Changes</button>
+		</div>
+		
 		<div id="XMLEditor" style="background-color:rgb(255, 255, 255); border:1px solid black; left: 150px; top:50px; right:150px; bottom: 50px; padding: 10px; position:fixed;">
 			Template: <input id="template"></input> <a href="javascript: helpXML();">(Help)</a>
 			<br>
