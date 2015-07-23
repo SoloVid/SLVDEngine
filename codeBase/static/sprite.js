@@ -160,7 +160,7 @@ SLVDEngine.Sprite.prototype.requestAction = function(action) {
 SLVDEngine.Sprite.prototype.seeAction = function() {
 	for(var i = 0; i < this.act.length; i++)
 	{
-		this.act[i].SLVDEngine.see(this);
+		this.act[i].see(this);
 	}	
 };
 
@@ -183,7 +183,7 @@ SLVDEngine.Sprite.prototype.handleStatus = function() {
 SLVDEngine.Sprite.prototype.seeStatus = function() {
 	for(var i = 0; i < this.status.length; i++)
 	{
-		this.status[i].SLVDEngine.see(this);
+		this.status[i].see(this);
 	}
 };
 
@@ -553,7 +553,7 @@ SLVDEngine.Sprite.prototype.updateFrame = function() {
 
 //(x1, y1, x2, y2, ...)
 SLVDEngine.Sprite.prototype.walkPath = function() {
-	if(SLVDEngine.currentLevel == this.SLVDEngine.level)
+	if(SLVDEngine.currentLevel == this.level)
 	{
 		var spd = this.spd;
 		for(var i = 0; i < arguments.length; i += 2)
@@ -590,8 +590,8 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 	for(var i = -this.baseLength/2; i < this.baseLength/2; i++)
 	{
 		coords[altAxis] = this[altAxis] + i;
-		if(pixel[0] == 255) //If pixel on func map has R=255
 		pixel = SLVDEngine.getPixel(coords.x, coords.y, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+		if(pixel[0] == 255) //If pixel on func map has R=255
 		{
 			//Don't worry if Y=255 (open air) and person is inAir
 			if(this.inAir == 1 && pixel[1] == 255) { }

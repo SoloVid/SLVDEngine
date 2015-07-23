@@ -28,13 +28,13 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 	
 	for(var index = 0; index < master.getElementsByTagName("music").length; index++) //Load all SLVDEngine.audio
 	{
-		SLVDEngine.audio[index] = SLVDEngine.audioCreate("files/SLVDEngine.audio/music/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
+		SLVDEngine.audio[index] = SLVDEngine.audioCreate("files/audio/music/" + master.getElementsByTagName("music")[index].childNodes[0].nodeValue, index);
 		SLVDEngine.audio[index].loop = true
 		SLVDEngine.audio[master.getElementsByTagName("music")[index].childNodes[0].nodeValue] = SLVDEngine.audio[index];
 	}
 	for(var second = index; second < master.getElementsByTagName("soundeffect") + index; second++)
 	{
-		SLVDEngine.audio[second] = SLVDEngine.audioCreate("files/SLVDEngine.audio/soundeffects/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
+		SLVDEngine.audio[second] = SLVDEngine.audioCreate("files/audio/soundeffects/" + master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue, second);
 		SLVDEngine.audio[second].loop = false;
 		SLVDEngine.audio[master.getElementsByTagName("soundeffect")[second].childNodes[0].nodeValue] = SLVDEngine.audio[second];
 	}

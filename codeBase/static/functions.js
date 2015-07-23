@@ -1,7 +1,7 @@
 
 //Create an SLVDEngine.audio element
 SLVDEngine.audioCreate = function(source, iden) {
-	var aud = document.createElement("SLVDEngine.audio");
+	var aud = document.createElement("audio");
 	aud.setAttribute("src", source);
 	aud.setAttribute("id", iden);
 	return aud;
@@ -18,7 +18,7 @@ SLVDEngine.audioPause = function() {
 SLVDEngine.audioPlay = function(audi, boolContinue) {
 	var audiovar = SLVDEngine.audio[audi]; //added var
 	//Set SLVDEngine.volume to current SLVDEngine.volume
-	audiovar.SLVDEngine.volume = SLVDEngine.volume;
+	audiovar.volume = SLVDEngine.volume;
 	if(boolContinue != 1)
 	{
 		audiovar.currentTime = 0;

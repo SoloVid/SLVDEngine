@@ -17,7 +17,7 @@ SLVDEngine.main = function() {
 	var a = new Date(); //for speed checking
 	switch(SLVDEngine.process)
 	{
-		case "SLVDEngine.loading":
+		case "loading":
 		{
 			SLVDEngine.loadUpdate(); //in load.js
 			break;
@@ -178,10 +178,10 @@ SLVDEngine.main = function() {
 			*/
 			break;
 		}
-		case "SLVDEngine.menu":
+		case "menu":
 		{
 			//alert("start SLVDEngine.menu");
-			SLVDEngine.currentMenu.SLVDEngine.handleMenu(); //in menuFunctions.js
+			SLVDEngine.currentMenu.handleMenu(); //in menuFunctions.js
 			//alert("handled SLVDEngine.menu");
 			SLVDEngine.currentMenu.update(); //in SLVDEngine.menu object declaration
 			//alert("ran update check");
@@ -197,7 +197,7 @@ SLVDEngine.main = function() {
 			}			
 			break;
 		}
-		case "SLVDEngine.delay":
+		case "delay":
 		{
 			if(SLVDEngine.countdown <= 0)
 			{
@@ -498,8 +498,8 @@ SLVDEngine.renderBoardState = function() {
 			var cSprite = SLVDEngine.boardSprite[second];
 			if(cSprite.layer == index) //ensure proper layering
 			{
-				cSprite.SLVDEngine.see(SLVDEngine.snapShotCtx);
-				//SpriteF.SLVDEngine.see.call(cSprite, SLVDEngine.snapShotCtx);
+				cSprite.see(SLVDEngine.snapShotCtx);
+				//SpriteF.see.call(cSprite, SLVDEngine.snapShotCtx);
 				
 				//Determine if SLVDEngine.boardSprite is lighted
 				if(cSprite.isLight)

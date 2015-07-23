@@ -18,7 +18,7 @@ SLVDEngine.boardAgent = []; //NPCs and players, for functional interaction
 SLVDEngine.boardSprite = []; //NPCs, players, and boardObjs, for drawing purposes
 SLVDEngine.Teams = {};
 
-SLVDEngine.process = "SLVDEngine.loading"; //Input of master setInterval switch-case
+SLVDEngine.process = "loading"; //Input of master setInterval switch-case
 
 SLVDEngine.currentAudio;
 SLVDEngine.volume = 1;
