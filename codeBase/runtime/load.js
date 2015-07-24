@@ -56,24 +56,24 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 			//Get the images for SLVDEngine.level
 			SLVDEngine.level[index].layerImg = [];
 			SLVDEngine.level[index].layerFuncData = [];
-			SLVDEngine.level[index].type = data.getElementsByTagName("type")[0].childNodes[0].nodeValue; //SLVDEngine.level type
+			SLVDEngine.level[index].type = data.getElementsByTagName("type")[0].textContent; //SLVDEngine.level type
 			for(var second = 0; second < data.getElementsByTagName("background").length; second++)
 			{
-				if(data.getElementsByTagName("background")[second].childNodes[0].nodeValue == "level_General_Blank.png")
+				if(data.getElementsByTagName("background")[second].textContent == "level_General_Blank.png")
 				{
 					SLVDEngine.level[index].layerImg[second] = SLVDEngine.image["level_General_Blank.png"];
 				}
 				else
 				{
 					SLVDEngine.level[index].layerImg[second] = new Image();
-					SLVDEngine.level[index].layerImg[second].src = "files/images/" + data.getElementsByTagName("background")[second].childNodes[0].nodeValue;
+					SLVDEngine.level[index].layerImg[second].src = "files/images/" + data.getElementsByTagName("background")[second].textContent;
 				}
 			}
 			//Initialize board programs. These programs are stored in <boardProgram> nodes which are placed into a generated script to declare functions for the SLVDEngine.level objects.
 			SLVDEngine.level[index].boardProgram = [];
 			for(var second = 0; second < data.getElementsByTagName("boardProgram").length; second++)
 			{
-				var content = data.getElementsByTagName("boardProgram")[second].childNodes[0].nodeValue;
+				var content = data.getElementsByTagName("boardProgram")[second].textContent;
 				SLVDEngine.level[index].boardProgram[second] = new Function(content);
 			}
 			for(var second = 0; second < data.getElementsByTagName("NPC").length; second++)
