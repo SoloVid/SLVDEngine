@@ -44,6 +44,37 @@ SLVDEngine.unallyTeams = function(team1, team2) {
 	team2.removeAlly(team1);
 };
 
+SLVDEngine.loopThroughAllies = function(person, callback) {
+	for(var i = 0; i < SLVDEngine.boardAgent.length; i++)
+	{
+		var currentAgent = SLVDEngine.boardAgent[i];
+		if(currentAgent.getTeam().isAllied(person.getTeam()))
+		{
+			callback(currentAgent);
+		}
+	}
+};
+SLVDEngine.loopThroughEnemies = function(person, callback) {
+	for(var i = 0; i < SLVDEngine.boardAgent.length; i++)
+	{
+		var currentAgent = SLVDEngine.boardAgent[i];
+		if(currentAgent.getTeam() != SLVDEngine.Teams["neutral"] && !currentAgent.getTeam().isAllied(person.getTeam()))
+		{
+			callback(currentAgent);
+		}
+	}
+};
+SLVDEngine.loopThroughTeam = function(person, callback) {
+	for(var i = 0; i < SLVDEngine.boardAgent.length; i++)
+	{
+		var currentAgent = SLVDEngine.boardAgent[i];
+		if(currentAgent.getTeam() == person.getTeam())
+		{
+			callback(currentAgent);
+		}
+	}
+};
+
 SLVDEngine.Teams["neutral"] = new SLVDEngine.Team("neutral");
 SLVDEngine.Teams["heroParty"] = new SLVDEngine.Team("heroParty");
 SLVDEngine.Teams["empire"] = new SLVDEngine.Team("empire");
