@@ -35,13 +35,13 @@ function drawVectors(highlightIndex)
 			ctx.fillStyle = ctx.strokeStyle;
 			
 			var regex = /\([^\)]+\)/g;
-			var xRegex = /\(([\d]*),/;
-			var yRegex = /,[\s]*([\d]*)\)/;
+			var xRegex = /\((-?[\d]*),/;
+			var yRegex = /,[\s]*(-?[\d]*)\)/;
 			var newX, newY;
 			
 			var pointStr = layerVectors[j].textContent;//.getElementsByTagName("path")[0].textContent;
 			var points = pointStr.match(regex);
-			console.log(points.length + "|" + points + "|");
+			//console.log(points.length + "|" + points + "|");
 			
 			ctx.beginPath();
 
@@ -75,6 +75,81 @@ function drawVectors(highlightIndex)
 		}
 		ctx.translate(-.5, -.5);
 	}
+}
+
+function findVector(x, y) {
+	var XMLLayers = levelXML.getElementsByTagName("layer");
+	
+	var cnvLayers = document.getElementsByClassName("whiteboard");
+	
+	var absoluteVectorIndex = 0;
+	
+	for(var i = 0; i < XMLLayers.length; i++)
+	{
+		var layerVectors = XMLLayers[i].getElementsByTagName("vector");
+		
+		var ctx = cnvLayers[i].getContext("2d");
+		
+		ctx.clearRect(0, 0, cnvLayers[i].width, cnvLayers[i].height);
+		
+		ctx.translate(.5, .5);
+		
+		for(var j = 0; j < layerVectors.length; j++)
+		{
+			ctx.strokeStyle = layerVectors[j].getAttribute("template");//.getElementsByTagName("color")[0].textContent;
+			ctx.fillStyle = ctx.strokeStyle;
+			
+			var regex = /\([^\)]+\)/g;
+			var xRegex = /\((-?[\d]*),/;
+			var yRegex = /,[\s]*(-?[\d]*)\)/;
+			var newX, newY;
+			
+			var pointStr = layerVectors[j].textContent;//.getElementsByTagName("path")[0].textContent;
+			var points = pointStr.match(regex);
+			//console.log(points.length + "|" + points + "|");
+			
+			ctx.beginPath();
+
+			newX = points[0].match(xRegex)[1];
+			newY = points[0].match(yRegex)[1];
+			
+			ctx.moveTo(newX, newY);
+			
+			ctx.fillRect(newX - .5, newY - .5, 1, 1);
+			
+			for(var k = 1; k < points.length; k++)
+			{
+				if(points[k] == "(close)")
+				{
+					ctx.closePath();
+					ctx.stroke();
+					ctx.fill();
+				}
+				else
+				{			
+					newX = points[k].match(xRegex)[1];
+					newY = points[k].match(yRegex)[1];
+			
+					ctx.lineTo(newX, newY);
+					ctx.stroke();
+					ctx.fillRect(newX - .5, newY - .5, 1, 1);
+				}
+			}
+			
+			var imgData = ctx.getImageData(x, y, 1, 1);
+			
+			if(imgData.data[3] != 0)
+			{
+				ctx.translate(-.5, -.5);
+				return absoluteVectorIndex;
+			}
+			
+			absoluteVectorIndex++;
+		}
+		ctx.translate(-.5, -.5);
+	}
+	
+	return -1;
 }
 
 function clickFileChooser() {

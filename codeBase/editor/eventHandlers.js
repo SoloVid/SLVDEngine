@@ -122,35 +122,59 @@ $("#TEDSaveChanges").click(function(event) {
 $(document).mousemove(function(event) {
 	if(follower != null)
 	{
-		var pos = $(follower).position();
-		var x = pos.left + (event.pageX - mouseX);
-		var y = pos.top + (event.pageY - mouseY);
-		follower.style.left = x + "px";
-		follower.style.top = y + "px";
+		if(mode == "vector")
+		{
+			var dx = event.pageX - mouseX;
+			var dy = event.pageY - mouseY;
+			
+			//console.log("moved (" + dx + ", " + dy + ")");
 		
-		//Locate index of element
-		var thisType = follower.className;
-		var regex = /[\s]*draggable[\s]*/;
-		thisType = thisType.replace(regex, "");
-		
-		var i = /[\d]+/.exec(follower.id)[0];
-		
-		var XMLNode = levelXML.getElementsByTagName(thisType)[i];
-		
-		var template = XMLNode.getAttribute("template");
-		
-		var t = loadSpriteFromTemplate(template);
+			XMLNode = levelXML.getElementsByTagName("vector")[follower];
+			
+			var regex = /\((-?[\d]+), (-?[\d]+)\)/g;
+			var pointString = XMLNode.textContent;
+			//console.log("started with pointstring: " + pointString);
+			XMLNode.textContent = pointString.replace(regex, function(match, p1, p2) {
+				var newX = Number(p1) + dx;
+				var newY = Number(p2) + dy;
+				return "(" + newX + ", " + newY + ")";
+			});
+			//console.log("ended with pointstring: " + XMLNode.textContent);
+			
+			drawVectors(follower);
+		}
+		else
+		{
+			var pos = $(follower).position();
+			var x = pos.left + (event.pageX - mouseX);
+			var y = pos.top + (event.pageY - mouseY);
+			follower.style.left = x + "px";
+			follower.style.top = y + "px";
+			
+			//Locate index of element
+			var thisType = follower.className;
+			var regex = /[\s]*draggable[\s]*/;
+			thisType = thisType.replace(regex, "");
+			
+			var i = /[\d]+/.exec(follower.id)[0];
+			
+			var XMLNode = levelXML.getElementsByTagName(thisType)[i];
+			
+			var template = XMLNode.getAttribute("template");
+			
+			var t = loadSpriteFromTemplate(template);
 
-		engineX = x + t.xres/2 + t.baseOffX + t.offX;
-		engineY = y + t.yres - t.baseLength/2 + t.baseOffY + t.offY;
-		
-		//Update XML
-		var oldXML = XMLNode.textContent;
-		regex = /obj\.x[\s]*=[\s]*[\d]+;/;
-		var newXML = oldXML.replace(regex, "obj.x = " + engineX + ";");
-		regex = /obj\.y[\s]*=[\s]*[\d]+;/;
-		newXML = newXML.replace(regex, "obj.y = " + engineY + ";");
-		levelXML.getElementsByTagName(thisType)[i].textContent = newXML;
+			engineX = x + t.xres/2 + t.baseOffX + t.offX;
+			engineY = y + t.yres - t.baseLength/2 + t.baseOffY + t.offY;
+			
+			//Update XML
+			var oldXML = XMLNode.textContent;
+			regex = /obj\.x[\s]*=[\s]*-?[\d]+;/;
+			var newXML = oldXML.replace(regex, "obj.x = " + engineX + ";");
+			regex = /obj\.y[\s]*=[\s]*-?[\d]+;/;
+			newXML = newXML.replace(regex, "obj.y = " + engineY + ";");
+			levelXML.getElementsByTagName(thisType)[i].textContent = newXML;
+		}
 	}
 
 	mouseX = event.pageX;
@@ -218,8 +242,7 @@ $(document.body).on("mouseup", ".draggable", function(event) {
 	follower = null;
 });
 
-$(document.body).on("mousedown", "#layers", function(event)
-{
+$(document.body).on("mousedown", "#layers", function(event) {
 	mouseDown = true;
 	
 	var pos = $(this).position();
@@ -230,18 +253,41 @@ $(document.body).on("mousedown", "#layers", function(event)
 		{
 			if(!pathInProgress)
 			{
+				var vectorIndexClicked = findVector(mouseX - pos.left, mouseY - pos.top);
+				//console.log("clicked vector: " + vectorIndexClicked);
+				
+				if(vectorIndexClicked < 0) return;
+				
+				if(ctrlDown)
+				{
+					var vectorList = levelXML.getElementsByTagName("vector");
+					follower = vectorList.length;
+					var vectorClicked = vectorList[vectorIndexClicked];
+					var vectorClone = vectorClicked.cloneNode(true);
+					vectorClicked.parentNode.appendChild(vectorClone);
+					generateLayerMenu();
+				}
+				else
+				{
+					follower = vectorIndexClicked;
+				}
+				drawVectors(follower);
+			}
+			else
+			{
+				pathInProgress.textContent += " (" + Math.floor((mouseX - pos.left)/getPixelsPerPixel()) + ", " + Math.floor((mouseY - pos.top)/getPixelsPerPixel()) + ")";
+			}
+		}
+		else if(event.which == 3)
+		{
+			if(!pathInProgress)
+			{
 				var vector = levelXML.createElement("vector");
 				
 				vector.setAttribute("template", color);
-				/*var vColor = levelXML.createElement("color");
-				vColor.textContent = color;
-				vector.appendChild(vColor);*/
 				
 				vector.textContent = "(" + Math.floor((mouseX - pos.left)/getPixelsPerPixel()) + ", " + Math.floor((mouseY - pos.top)/getPixelsPerPixel()) + ")";
 				pathInProgress = vector;
-				/*pathInProgress = levelXML.createElement("path");
-				pathInProgress.textContent = "(" + (mouseX - pos.left) + ", " + (mouseY - pos.top) + ")";
-				vector.appendChild(pathInProgress);*/
 				
 				var activeLayer = document.getElementById("activeLayer").value;
 				
@@ -251,16 +297,12 @@ $(document.body).on("mousedown", "#layers", function(event)
 			}
 			else
 			{
-				pathInProgress.textContent += " (" + Math.floor((mouseX - pos.left)/getPixelsPerPixel()) + ", " + Math.floor((mouseY - pos.top)/getPixelsPerPixel()) + ")";
+				if(!ctrlDown)
+				{
+					pathInProgress.textContent += " (close)";
+				}
+				pathInProgress = false;
 			}
-		}
-		else if(pathInProgress && event.which == 3)
-		{
-			if(!ctrlDown)
-			{
-				pathInProgress.textContent += " (close)";
-			}
-			pathInProgress = false;
 		}
 		
 		drawVectors();
@@ -277,6 +319,23 @@ $(document.body).on("mousedown", "#layers", function(event)
 		}
 	}
 });
+$(document.body).on("dblclick", "#layers", function(event) {
+	var pos = $(this).position();
+
+	if(mode == "vector")
+	{
+		var vectorIndexClicked = findVector(mouseX - pos.left, mouseY - pos.top);
+		
+		if(vectorIndexClicked >= 0)
+		{
+			openXMLEditor(levelXML.getElementsByTagName("vector")[vectorIndexClicked]);
+		}
+	}
+	
+	event.preventDefault();
+});
+
+$(document).mouseup(function() { follower = null; mouseDown = false; });
 
 /*$("#layerMenu").on("click", ".layerLabel", function(event) {
 	$(this).effect( "highlight", {color:"rgba(255, 255, 0)"}, 3000 );
@@ -506,8 +565,6 @@ $("#closeXMLEditor").click(function(event)
 	
 	generateLayerMenu();
 });
-
-$(document).mouseup(function() { follower = null; mouseDown = false; });
 
 //$("#whiteboard").mouseleave(function() { mouseDown = false; });
 

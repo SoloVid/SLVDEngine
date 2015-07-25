@@ -124,9 +124,9 @@
 			<li><a href="javascript:clickFileChooser();">Load Level</a>
 				<input name="fileChooser" id="fileChooser" type="file" style="display:none">
 			</li>
-			<li><a href="javascript:downloadFile();">Download File</a>
+			<li><a href="javascript:downloadFile();" title="After downloading the level, relocate it to use it in the engine.">Download File (Save)</a>
 			</li>
-			<li><a href="javascript:resizeBoard();">Resize Board</a></li>
+			<li><a href="javascript:resizeBoard();" title="This function is a manual resize if the editor fails to auto-size the board.&#013;Resizing the board here will have no effect on the level in the engine.">Resize Board</a></li>
 		</ul>
 		<script>
 		$("li").hover(function() {
@@ -143,11 +143,20 @@
 	
 		<div class="menu" style="left:0px;width:100px">
 			Tools:
-			<div class="option" onclick="setMode('NPC')">NPC</div>
-			<div class="option" onclick="setMode('boardObj')">Board Object</div>
+			<div class="option" onclick="setMode('NPC')" 
+				title="NPCs are generally people or things that have dynamic properties.&#013;NPCs are loaded at game start and transcend the board (i.e. they are not in any way actually tied to the board and may be moved to other boards).
+				&#013;Right-click to create new.&#013;Left-click to drag.&#013;Shift+left-click to clone.&#013;Double-click to open properties."
+				>NPC</div>
+			<div class="option" onclick="setMode('boardObj')"
+				title="Board Objects are loaded on level entrance and are destroyed on level exit. They are used in few processes, and slow down performance less than NPCs&#013;Board Objects are generally static (or animated) graphical elements Sprites can walk behind or in front of.
+				&#013;Right-click to create new.&#013;Left-click to drag.&#013;Shift+left-click to clone&#013;Double-click to open properties."
+				>Board Object</div>
 <!--			<div class="option" onclick="setMode('copySprite')">Copy Sprite</div>
 			<div class="option" onclick="setMode('editSprite')">Edit Sprite</div>-->
-			<div class="option" onclick="setMode('vector')">Vector</div>
+			<div class="option" onclick="setMode('vector')"
+				title="Vectors are the define Sprites' (actually just NPCs and players) interaction with the board.&#013;Vectors come in three primary colors as shown below.&#013;Red is used for completely inpenetrable areas/objects.&#013;Yellow is used for areas where walking is disabled, but things (e.g. arrows, jumping people) may fly through.&#013;The last color is used for board events.
+				&#013;Right-click to create new.&#013;Left-click to add points to started vector.&#013;Right-click to close vector (and fill in), or shift+right-click to end vector without filling in.&#013;Left-click to drag.&#013;Shift+left-click to clone.&#013;Double-click to open properties."
+			>Vector</div>
 			<br>
 			Active Layer:
 			<select id="activeLayer"></select>
@@ -156,8 +165,8 @@
 			<div class="option color" style="background-color:rgb(255, 255, 0);">Open Air</div>
 			<div class="option color" style="background-color:rgb(100, 0, 0);">Board Program</div>
 			<br>
-			<div class="option" id="btnEnterPrg">Board Enter Program</div>
-			<div class="option" id="btnExitPrg">Board Exit Program</div>
+			<div class="option" id="btnEnterPrg" title="Program to run on entrance to board">Board Enter Program</div>
+			<div class="option" id="btnExitPrg" title="Program to run on exit from board">Board Exit Program</div>
 		</div>
 		<div id="layerMenu" class="menu" style="right:0px;">
 			<br>
