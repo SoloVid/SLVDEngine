@@ -315,7 +315,7 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 		{
 			if((Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.y - (boardNPC[index].y - 24)) < 32) && (Math.abs(SLVDEngine.player[SLVDEngine.currentPlayer].dart.x - boardNPC[index].x) < 16))
 			{
-				SLVDEngine.damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //SLVDEngine.damage hit opponent
+				SLVDEngine.damage(SLVDEngine.player[SLVDEngine.currentPlayer].dart, boardNPC[index]); //damage hit opponent
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.layer = null; //remove SLVDEngine.image
 				SLVDEngine.player[SLVDEngine.currentPlayer].dart.frame = 0; //reset frame
 				SLVDEngine.deleteBoardC(SLVDEngine.player[SLVDEngine.currentPlayer].dart);

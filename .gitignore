@@ -5,8 +5,11 @@ planning/
 codeBase/hold/
 
 **/Thumbs.db
-**/*.nppp
 
 #grunt dependencies
 node_modules/
+
+#WebStorm
+.idea/
+
 dist/
