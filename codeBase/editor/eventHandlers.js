@@ -141,7 +141,7 @@ $(document).mousemove(function(event) {
 			});
 			//console.log("ended with pointstring: " + XMLNode.textContent);
 			
-			drawVectors(follower);
+			drawVectorsFromBackup(follower);
 		}
 		else
 		{
@@ -271,11 +271,13 @@ $(document.body).on("mousedown", "#layers", function(event) {
 				{
 					follower = vectorIndexClicked;
 				}
-				drawVectors(follower);
+				drawVectors(follower, "backupCanv");
+				drawVectorsFromBackup(follower);
 			}
 			else
 			{
 				pathInProgress.textContent += " (" + Math.floor((mouseX - pos.left)/getPixelsPerPixel()) + ", " + Math.floor((mouseY - pos.top)/getPixelsPerPixel()) + ")";
+				drawVectors();
 			}
 		}
 		else if(event.which == 3)
@@ -294,6 +296,7 @@ $(document.body).on("mousedown", "#layers", function(event) {
 				levelXML.getElementsByTagName("vectors")[activeLayer].appendChild(vector);
 				
 				generateLayerMenu();
+				drawVectors();
 			}
 			else
 			{
@@ -302,10 +305,11 @@ $(document.body).on("mousedown", "#layers", function(event) {
 					pathInProgress.textContent += " (close)";
 				}
 				pathInProgress = false;
+				drawVectors();
 			}
 		}
 		
-		drawVectors();
+		//drawVectors();
 	}
 	else if(mode == "NPC" || mode == "boardObj")
 	{

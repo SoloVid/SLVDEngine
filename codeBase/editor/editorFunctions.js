@@ -4,11 +4,21 @@ function toBoardObj() { mode = "boardObj"; }
 
 function setMode(name) { mode = name; }
 
-function drawVectors(highlightIndex)
+function drawVectors(highlightIndex, drawTo)
 {
+	var ignoreHighlighted = false;
+	if(!drawTo)
+	{
+		drawTo = "whiteboard";
+	}
+	else
+	{
+		ignoreHighlighted = true;
+	}
+
 	var XMLLayers = levelXML.getElementsByTagName("layer");
 	
-	var cnvLayers = document.getElementsByClassName("whiteboard");
+	var cnvLayers = document.getElementsByClassName(drawTo);
 	
 	var absoluteVectorIndex = 0;
 	
@@ -18,7 +28,8 @@ function drawVectors(highlightIndex)
 		
 		var ctx = cnvLayers[i].getContext("2d");
 		
-		ctx.clearRect(0, 0, cnvLayers[i].width, cnvLayers[i].height);
+		ctx.clearRect(window.pageXOffset - 120, window.pageYOffset - 10, window.innerWidth + 20, window.innerHeight + 20);
+		//ctx.clearRect(0, 0, cnvLayers[i].width, cnvLayers[i].height);
 		
 		ctx.translate(.5, .5);
 		
@@ -26,6 +37,11 @@ function drawVectors(highlightIndex)
 		{
 			if(highlightIndex !== undefined && highlightIndex == absoluteVectorIndex)
 			{
+				if(ignoreHighlighted)
+				{
+					absoluteVectorIndex++;
+					continue;
+				}
 				ctx.strokeStyle = "#0000FF";
 			}
 			else
@@ -77,6 +93,74 @@ function drawVectors(highlightIndex)
 	}
 }
 
+function drawVectorsFromBackup(highlightIndex) {
+	var XMLLayers = levelXML.getElementsByTagName("layer");
+	
+	var cnvLayers = document.getElementsByClassName("whiteboard");
+	var backupLayers = document.getElementsByClassName("backupCanv");
+	
+	var i;
+	
+	for(i = 0; i < XMLLayers.length; i++)
+	{		
+		var ctx = cnvLayers[i].getContext("2d");
+		
+		ctx.clearRect(window.pageXOffset - 120, window.pageYOffset - 10, window.innerWidth + 20, window.innerHeight + 20);
+		
+		ctx.drawImage(backupLayers[i], window.pageXOffset - 120, window.pageYOffset - 10, window.innerWidth + 20, window.innerHeight + 20, window.pageXOffset - 120, window.pageYOffset - 10, window.innerWidth + 20, window.innerHeight + 20);		
+	}
+	
+	i--;
+	
+	var highlightVector = levelXML.getElementsByTagName("vector")[highlightIndex];
+	
+	var ctx = cnvLayers[i].getContext("2d");
+	
+	ctx.translate(.5, .5);
+	
+	ctx.strokeStyle = "#0000FF";
+
+	ctx.fillStyle = ctx.strokeStyle;
+	
+	var regex = /\([^\)]+\)/g;
+	var xRegex = /\((-?[\d]*),/;
+	var yRegex = /,[\s]*(-?[\d]*)\)/;
+	var newX, newY;
+	
+	var pointStr = highlightVector.textContent;//.getElementsByTagName("path")[0].textContent;
+	var points = pointStr.match(regex);
+	//console.log(points.length + "|" + points + "|");
+	
+	ctx.beginPath();
+
+	newX = points[0].match(xRegex)[1];
+	newY = points[0].match(yRegex)[1];
+	
+	ctx.moveTo(newX, newY);
+	
+	ctx.fillRect(newX - .5, newY - .5, 1, 1);
+	
+	for(var k = 1; k < points.length; k++)
+	{
+		if(points[k] == "(close)")
+		{
+			ctx.closePath();
+			ctx.stroke();
+			ctx.fill();
+		}
+		else
+		{			
+			newX = points[k].match(xRegex)[1];
+			newY = points[k].match(yRegex)[1];
+	
+			ctx.lineTo(newX, newY);
+			ctx.stroke();
+			ctx.fillRect(newX - .5, newY - .5, 1, 1);
+		}
+	}
+	ctx.translate(-.5, -.5);
+}
+
 function findVector(x, y) {
 	var XMLLayers = levelXML.getElementsByTagName("layer");
 	
@@ -90,7 +174,8 @@ function findVector(x, y) {
 		
 		var ctx = cnvLayers[i].getContext("2d");
 		
-		ctx.clearRect(0, 0, cnvLayers[i].width, cnvLayers[i].height);
+		ctx.clearRect(window.pageXOffset - 120, window.pageYOffset - 10, window.innerWidth + 20, window.innerHeight + 20);
+		//ctx.clearRect(0, 0, cnvLayers[i].width, cnvLayers[i].height);
 		
 		ctx.translate(.5, .5);
 		
@@ -245,6 +330,17 @@ function resizeBoard(x, y)
 	var c = $(".whiteboard").get();
 	
 	c.forEach(function(canv)
+	{
+		ctx = canv.getContext("2d");
+		ctx.canvas.width = BOARDX/getPixelsPerPixel();
+		ctx.canvas.height = BOARDY/getPixelsPerPixel();
+		canv.style.width = BOARDX + "px";
+		canv.style.height = BOARDY + "px";
+	});
+	
+	var c2 = $(".backupCanv").get();
+	
+	c2.forEach(function(canv)
 	{
 		ctx = canv.getContext("2d");
 		ctx.canvas.width = BOARDX/getPixelsPerPixel();
@@ -570,6 +666,13 @@ function createLayer(back, skipXML)
 	layerDisplay.style.height = BOARDY + "px";
 	layerDisplay.style.width = BOARDX + "px";
 	layerDisplay.innerHTML = '<img class="background" src="' + back + '"></img><canvas class="whiteboard" onContextMenu="return false;" width="' + BOARDX/getPixelsPerPixel() + '" height="' + BOARDY/getPixelsPerPixel() + '" style="width:' + BOARDX + 'px; height:' + BOARDY + 'px"></canvas>';
+	
+	var backupCanv = document.createElement("canvas");
+	backupCanv.width = BOARDX/getPixelsPerPixel();
+	backupCanv.height = BOARDY/getPixelsPerPixel();
+	backupCanv.className = "backupCanv";
+	
+	layerDisplay.appendChild(backupCanv);
 	
 	document.getElementById("layers").appendChild(layerDisplay);
 	
