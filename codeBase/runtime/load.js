@@ -57,17 +57,11 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 			SLVDEngine.level[index].layerImg = [];
 			SLVDEngine.level[index].layerFuncData = [];
 			SLVDEngine.level[index].type = data.getElementsByTagName("type")[0].textContent; //SLVDEngine.level type
+			SLVDEngine.level[index].width = 0;
+			SLVDEngine.level[index].height = 0;
 			for(var second = 0; second < data.getElementsByTagName("background").length; second++)
 			{
-				if(data.getElementsByTagName("background")[second].textContent == "level_General_Blank.png")
-				{
-					SLVDEngine.level[index].layerImg[second] = SLVDEngine.image["level_General_Blank.png"];
-				}
-				else
-				{
-					SLVDEngine.level[index].layerImg[second] = new Image();
-					SLVDEngine.level[index].layerImg[second].src = "files/images/" + data.getElementsByTagName("background")[second].textContent;
-				}
+				SLVDEngine.level[index].layerImg[second] = data.getElementsByTagName("background")[second].textContent;
 			}
 			//Initialize board programs. These programs are stored in <boardProgram> nodes which are placed into a generated script to declare functions for the SLVDEngine.level objects.
 			SLVDEngine.level[index].boardProgram = [];
@@ -105,7 +99,7 @@ SLVD.getXML("files/main/master.xml").then(function(master) {
 });
 
 SLVDEngine.loadUpdate = function() { //Used in main interval of engine
-	var holder = document.getElementById("holderCanvas")
+	var holder = document.getElementById("holderCanvas");
 
 	//var SLVDEngine.loading is the index of both SLVDEngine.image and SLVDEngine.level being checked
 	if(SLVDEngine.loading >= SLVDEngine.image.length && SLVDEngine.loading >= SLVDEngine.level.length)
@@ -119,65 +113,19 @@ SLVDEngine.loadUpdate = function() { //Used in main interval of engine
 	{
 		for(var index = 0; index < SLVDEngine.level[SLVDEngine.loading].layerImg.length; index++)
 		{
+			var layerImg = SLVDEngine.getImage(SLVDEngine.level[SLVDEngine.loading].layerImg[index]);
 			//If SLVDEngine.level's layer's images have loaded, get the functional layer SLVDEngine.image data and mark load check as done
-			if(SLVDEngine.level[SLVDEngine.loading].layerImg[index].complete == true /*&& SLVDEngine.level[SLVDEngine.loading].layerFunc[index].complete == true*/ && SLVDEngine.loadCheck[index + 1] == null)
+			if(layerImg.complete == true /*&& SLVDEngine.level[SLVDEngine.loading].layerFunc[index].complete == true*/ && SLVDEngine.loadCheck[index + 1] == null)
 			{
-				holder.width = SLVDEngine.level[SLVDEngine.loading].layerImg[index].width/(SLVDEngine.level[SLVDEngine.loading].type == "TRPG" ? 32 : 1);
-				holder.height = SLVDEngine.level[SLVDEngine.loading].layerImg[index].height/(SLVDEngine.level[SLVDEngine.loading].type == "TRPG" ? 32 : 1);
-				var holderCtx = holder.getContext("2d");
-				holderCtx.clearRect(0, 0, holder.width, holder.height);
-				
-				//Draw vectors
-				var layerVectors = SLVDEngine.level[SLVDEngine.loading].filedata.getElementsByTagName("layer")[index].getElementsByTagName("vector");
-				
-				holderCtx.translate(.5, .5);
-				
-				for(var j = 0; j < layerVectors.length; j++)
+				if(layerImg.height > SLVDEngine.level[SLVDEngine.loading].height)
 				{
-					holderCtx.strokeStyle = layerVectors[j].getAttribute("template");//.getElementsByTagName("color")[0].textContent;
-					holderCtx.fillStyle = holderCtx.strokeStyle;
-					
-					var regex = /\([^\)]+\)/g;
-					var xRegex = /\(([\d]*),/;
-					var yRegex = /,[\s]*([\d]*)\)/;
-					var newX, newY;
-					
-					var pointStr = layerVectors[j].textContent;//.getElementsByTagName("path")[0].textContent;
-					var points = pointStr.match(regex);
-					console.log(points.length + "|" + points + "|");
-					
-					holderCtx.beginPath();
-
-					newX = points[0].match(xRegex)[1];
-					newY = points[0].match(yRegex)[1];
-					
-					holderCtx.moveTo(newX, newY);
-					
-					holderCtx.fillRect(newX - .5, newY - .5, 1, 1);
-					
-					for(var k = 1; k < points.length; k++)
-					{
-						if(points[k] == "(close)")
-						{
-							holderCtx.closePath();
-							holderCtx.stroke();
-							holderCtx.fill();
-						}
-						else
-						{			
-							newX = points[k].match(xRegex)[1];
-							newY = points[k].match(yRegex)[1];
-					
-							holderCtx.lineTo(newX, newY);
-							holderCtx.stroke();
-							holderCtx.fillRect(newX - .5, newY - .5, 1, 1);
-						}
-					}
+					SLVDEngine.level[SLVDEngine.loading].height = layerImg.height;
 				}
-				holderCtx.translate(-.5, -.5);
-		
-				//holderCtx.drawImage(SLVDEngine.level[SLVDEngine.loading].layerFunc[index], 0, 0);
-				SLVDEngine.level[SLVDEngine.loading].layerFuncData[index] = holderCtx.getImageData(0, 0, SLVDEngine.level[SLVDEngine.loading].layerImg[index].width, SLVDEngine.level[SLVDEngine.loading].layerImg[index].height);
+				if(layerImg.width > SLVDEngine.level[SLVDEngine.loading].width)
+				{
+					SLVDEngine.level[SLVDEngine.loading].width = layerImg.width;
+				}
+				
 				SLVDEngine.loadCheck[index + 1] = 1;
 			}
 		}

@@ -123,6 +123,9 @@ SLVDEngine.enterLevelByName = function(nam) {
 		eval(SLVDEngine.currentLevel.filedata.getElementsByTagName("exitPrg")[0].textContent);
 	}
 	
+	//Clear out all functional maps
+	SLVDEngine.currentLevel.layerFuncData.length = 0;
+	
 	//********Enter new board
 		
 	for(var index = 0; index < SLVDEngine.level.length; index++)
@@ -166,6 +169,68 @@ SLVDEngine.enterLevelByName = function(nam) {
 		
 		SLVDEngine.insertBoardC(SLVDEngine.evalObj(template, objCode));
 		//boardObj[current].lvl = SLVDEngine.currentLevel.name;
+	}
+	
+	//Initialize functional map
+	for(var index = 0; index < SLVDEngine.currentLevel.filedata.getElementsByTagName("layer").length; index++)
+	{
+		var holder = document.getElementById("holderCanvas");
+		holder.width = SLVDEngine.currentLevel.width/(SLVDEngine.currentLevel.type == "TRPG" ? 32 : 1);
+		holder.height = SLVDEngine.currentLevel.height/(SLVDEngine.currentLevel.type == "TRPG" ? 32 : 1);
+		var holderCtx = holder.getContext("2d");
+		holderCtx.clearRect(0, 0, holder.width, holder.height);
+		
+		//Draw vectors
+		var layerVectors = SLVDEngine.currentLevel.filedata.getElementsByTagName("layer")[index].getElementsByTagName("vector");
+		
+		holderCtx.translate(.5, .5);
+		
+		for(var j = 0; j < layerVectors.length; j++)
+		{
+			holderCtx.strokeStyle = layerVectors[j].getAttribute("template");//.getElementsByTagName("color")[0].textContent;
+			holderCtx.fillStyle = holderCtx.strokeStyle;
+			
+			var regex = /\([^\)]+\)/g;
+			var xRegex = /\(([\d]*),/;
+			var yRegex = /,[\s]*([\d]*)\)/;
+			var newX, newY;
+			
+			var pointStr = layerVectors[j].textContent;//.getElementsByTagName("path")[0].textContent;
+			var points = pointStr.match(regex);
+			console.log(points.length + "|" + points + "|");
+			
+			holderCtx.beginPath();
+
+			newX = points[0].match(xRegex)[1];
+			newY = points[0].match(yRegex)[1];
+			
+			holderCtx.moveTo(newX, newY);
+			
+			holderCtx.fillRect(newX - .5, newY - .5, 1, 1);
+			
+			for(var k = 1; k < points.length; k++)
+			{
+				if(points[k] == "(close)")
+				{
+					holderCtx.closePath();
+					holderCtx.stroke();
+					holderCtx.fill();
+				}
+				else
+				{			
+					newX = points[k].match(xRegex)[1];
+					newY = points[k].match(yRegex)[1];
+			
+					holderCtx.lineTo(newX, newY);
+					holderCtx.stroke();
+					holderCtx.fillRect(newX - .5, newY - .5, 1, 1);
+				}
+			}
+		}
+		holderCtx.translate(-.5, -.5);
+
+		//holderCtx.drawImage(SLVDEngine.currentLevel.layerFunc[index], 0, 0);
+		SLVDEngine.currentLevel.layerFuncData[index] = holderCtx.getImageData(0, 0, SLVDEngine.currentLevel.width, SLVDEngine.currentLevel.height);
 	}
 
 	eval(SLVDEngine.currentLevel.filedata.getElementsByTagName("enterPrg")[0].textContent);

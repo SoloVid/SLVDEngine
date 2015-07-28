@@ -410,7 +410,8 @@ SLVDEngine.renderBoardState = function() {
 		SLVDEngine.snapShotCtx.globalCompositeOperation = "destination-over";
 		
 		//Draw layer based on values found in SLVDEngine.orientScreen() and altered above
-		SLVDEngine.snapShotCtx.drawImage(SLVDEngine.currentLevel.layerImg[index], SLVDEngine.wX + xDif, SLVDEngine.wY + yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif, xDif, yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif);
+		var tImg = SLVDEngine.getImage(SLVDEngine.currentLevel.layerImg[index]);
+		SLVDEngine.snapShotCtx.drawImage(tImg, SLVDEngine.wX + xDif, SLVDEngine.wY + yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif, xDif, yDif, SLVDEngine.SCREENX - 2*xDif, SLVDEngine.SCREENY - 2*yDif);
 
 		SLVDEngine.snapShotCtx.globalCompositeOperation = "source-over";
 		
