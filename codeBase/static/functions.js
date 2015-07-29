@@ -121,11 +121,11 @@ SLVDEngine.enterLevelByName = function(nam) {
 	if(SLVDEngine.currentLevel)
 	{
 		eval(SLVDEngine.currentLevel.filedata.getElementsByTagName("exitPrg")[0].textContent);
+
+		//Clear out all functional maps
+		SLVDEngine.currentLevel.layerFuncData.length = 0;
 	}
-	
-	//Clear out all functional maps
-	SLVDEngine.currentLevel.layerFuncData.length = 0;
-	
+		
 	//********Enter new board
 		
 	for(var index = 0; index < SLVDEngine.level.length; index++)
