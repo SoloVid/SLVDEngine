@@ -439,8 +439,24 @@ SLVDEngine.renderBoardState = function(forceCalculate) {
 	}
 	
 	//Weather
-	if(SLVDEngine.weather.rain) SLVDEngine.see.drawImage(SLVDEngine.image["rain.png"], -((SLVDEngine.counter%100)/100)*SLVDEngine.SCREENX, ((SLVDEngine.counter%25)/25)*SLVDEngine.SCREENY - SLVDEngine.SCREENY);
-	if(SLVDEngine.weather.clouds) SLVDEngine.see.drawImage(SLVDEngine.image["stormClouds.png"], SLVDEngine.counter%1280 - 1280, 0);
+	if(SLVDEngine.weather.rain) 
+	{
+		SLVDEngine.see.drawImage(SLVDEngine.image["rain.png"], -((SLVDEngine.counter%100)/100)*SLVDEngine.SCREENX, ((SLVDEngine.counter%25)/25)*SLVDEngine.SCREENY - SLVDEngine.SCREENY);
+	}
+	if(SLVDEngine.weather.clouds)
+	{	
+		SLVDEngine.see.drawImage(SLVDEngine.image["stormClouds.png"], 2560 - SLVDEngine.counter%2560, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
+		SLVDEngine.see.drawImage(SLVDEngine.image["stormClouds.png"], 0 - SLVDEngine.counter%2560, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY, 0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
+	}
+	if(SLVDEngine.weather.lightning > 0)
+	{
+		//SLVDEngine.weather.lightning is the number of lightning strikes per minute
+		if(SLVD.randomInt(SLVDEngine.FPS*60) <= SLVDEngine.weather.lightning)
+		{
+			SLVDEngine.see.fillStyle = "rgba(255, 255, 255, .75)";
+			SLVDEngine.see.fillRect(0, 0, SLVDEngine.SCREENX, SLVDEngine.SCREENY);
+		}
+	}
 	//Light in dark
 	if(SLVDEngine.weather.dark > 0)
 	{
