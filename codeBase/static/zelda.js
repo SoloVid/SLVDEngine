@@ -44,10 +44,10 @@ SLVDEngine.zeldaPlayerMotion = function() //Function for current SLVDEngine.play
 	{
 		for(var index = 0; index < SLVDEngine.boardAgent.length; index++)
 		{
-			if(Math.abs(person.x - SLVDEngine.boardAgent[index].x) < 20 && Math.abs(person.y - SLVDEngine.boardAgent[index].y) < 12 && SLVDEngine.boardAgent[index].program != null)
+			var otherAgent = SLVDEngine.boardAgent[index];
+			if(Math.abs(person.x - otherAgent.x) < 32 && Math.abs(person.y - otherAgent.y) < 32)
 			{
-				resumeFunc = SLVDEngine.boardAgent[index].program;
-				resumeCue = SLVDEngine.boardAgent[index].program(0);
+				otherAgent.interact();
 			}
 		}
 		delete SLVDEngine.keyFirstDown;

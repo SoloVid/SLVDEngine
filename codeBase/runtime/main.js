@@ -80,6 +80,10 @@ SLVDEngine.main = function() {
 			if(SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space") //Select
 			{
 				SLVDEngine.currentMenu.chosenPoint = SLVDEngine.currentMenu.currentPoint;
+				if(SLVDEngine.currentLevel)
+				{
+					SLVDEngine.process = SLVDEngine.currentLevel.type;
+				}
 				SLVDEngine.mainPromise.resolve(SLVDEngine.currentMenu.chosenPoint);
 			}	
 			delete SLVDEngine.keyFirstDown;
@@ -89,13 +93,13 @@ SLVDEngine.main = function() {
 		{
 			if(SLVDEngine.countdown <= 0)
 			{
+				if(SLVDEngine.currentLevel)
+				{
+					SLVDEngine.process = SLVDEngine.currentLevel.type;
+				}
 				if(SLVDEngine.mainPromise) 
 				{
 					SLVDEngine.mainPromise.resolve();
-				}
-				else 
-				{
-					SLVDEngine.process = SLVDEngine.currentLevel.type;
 				}
 			}
 			else SLVDEngine.countdown--;
@@ -182,10 +186,18 @@ document.onkeydown = function(e) {
 	
 	if(SLVDEngine.process == "wait" && SLVDEngine.mainPromise)
 	{
+		if(SLVDEngine.currentLevel)
+		{
+			SLVDEngine.process = SLVDEngine.currentLevel.type;
+		}
 		SLVDEngine.mainPromise.resolve(key);
 	}
-	else if(SLVDEngine.process == "SLVDEngine.waitForEnterOrSpace" && (key == "enter" || key == "space"))
+	else if(SLVDEngine.process == "waitForEnterOrSpace" && (key == "enter" || key == "space"))
 	{
+		if(SLVDEngine.currentLevel)
+		{
+			SLVDEngine.process = SLVDEngine.currentLevel.type;
+		}
 		SLVDEngine.mainPromise.resolve(key);
 	}
 }
@@ -353,7 +365,13 @@ SLVDEngine.figurePlayerDirection = function() {
 	return false;
 };
 
-SLVDEngine.renderBoardState = function() {
+SLVDEngine.renderBoardState = function(forceCalculate) {
+	if(!forceCalculate)
+	{
+		SLVDEngine.see.drawImage(SLVDEngine.snapShot, 0, 0);
+		return;
+	}
+
 	SLVDEngine.orientScreen();
 	var lightedThing = [];
 	

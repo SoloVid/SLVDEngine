@@ -1,11 +1,4 @@
-SLVDEngine.Sprite = function(name, spriteSheet, team)
-{
-	this.name = name;
-	this.img = spriteSheet;
-	
-//	this.dart = {};
-//	this.dart.prototype = this;
-};
+SLVDEngine.Sprite = function() {};
 SLVDEngine.SpriteTemplate = {};
 
 SLVDEngine.Sprite.prototype.xres = 32;
@@ -190,6 +183,8 @@ SLVDEngine.Sprite.prototype.seeStatus = function() {
 //SLVDEngine.Sprite.prototype.moveSet = [];
 
 SLVDEngine.Sprite.prototype.keyFunc = {};
+//Function run on ENTER or SPACE
+SLVDEngine.Sprite.prototype.interact = function() {};
 
 SLVDEngine.Sprite.prototype.pushy = true;
 
@@ -493,6 +488,9 @@ SLVDEngine.Sprite.prototype.registerWalkEvent = function(eventA, isDaily, day, h
 	}
 };;
 
+SLVDEngine.Sprite.prototype.say = function(message, overrideName) {
+	SLVDEngine.personSays(this, message, overrideName);
+};
 SLVDEngine.Sprite.prototype.see = function(ctx) {
 	if(!ctx)
 	{
@@ -579,7 +577,6 @@ SLVDEngine.Sprite.prototype.zeldaBump = function(distance, direction) {
 	//Revert direction;
 	this.dir = tDir;
 };
-
 SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive) {
 	var pixel;
 	var coords = {};	
@@ -614,7 +611,7 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 		var currentAgent = SLVDEngine.boardAgent[i];
 		if(this.team != currentAgent.team && currentAgent.baseLength > 0)
 		{
-			var collisionDist = this.baseLength + currentAgent.baseLength;
+			var collisionDist = (this.baseLength + currentAgent.baseLength)/2;
 //			if(Math.abs(this.y - currentAgent.y) < collisionDist)
 			if(SLVDEngine.distanceTrue(this.x, this.y, currentAgent.x, currentAgent.y) < collisionDist)
 			{
@@ -635,11 +632,9 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 	
 	return false;
 }
-
 SLVDEngine.Sprite.prototype.zeldaLockOnPlayer = function() {
 	this.zeldaLockOnPoint(SLVDEngine.player[SLVDEngine.currentPlayer].x, SLVDEngine.player[SLVDEngine.currentPlayer].y);
 };
-	
 SLVDEngine.Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 	this.dir = SLVDEngine.dirFromTo(this.x, this.y, qx, qy);
 /*	this.dir = Math.atan(-(this.y - qy)/(this.x - qx))/(Math.PI/2);
@@ -656,7 +651,6 @@ SLVDEngine.Sprite.prototype.zeldaLockOnPoint = function(qx, qy) {
 		this.dir += 4;
 	}*/
 };
-
 //*********Advances SLVDEngine.Sprite person up to distance distance as far as is legal. Includes pushing other Sprites out of the way? Returns -1 if stopped before distance?
 SLVDEngine.Sprite.prototype.zeldaStep = function(distance) {
 	var stopped = false;

@@ -308,10 +308,11 @@ SLVDEngine.personSays = function(persOb, message, overrideName) {
 
 	var tSpkr = overrideName || persOb.name;
 	
-	var py = persOb.y - SLVDEngine.wY - persOb.yres + 5;
+	var px = persOb.x - SLVDEngine.wX;
+	var py = persOb.y - SLVDEngine.wY - persOb.yres + persOb.baseY - 5;
 	//if(persOb.y - SLVDEngine.wY < 220) py = persOb.y - SLVDEngine.wY - persOb.yres + 40;
 	
-	SLVDEngine.speechBubble(message, tSpkr, persOb.x - SLVDEngine.wX + 8, py); 
+	SLVDEngine.speechBubble(message, tSpkr, px, py); 
 };
 
 SLVDEngine.say = function(message) {
@@ -320,27 +321,47 @@ SLVDEngine.say = function(message) {
 };
 
 SLVDEngine.speechBubble = function(msg, spkr, px, py) {
-	var line = [];
-	if(msg.length > 0)
-	{			
-		var linNum = 0;
-		
-		do
+	//Used in message case of engine to grab single line of text
+	function getLine(str, leng) {
+		SLVDEngine.see.font = "18px Verdana";
+		if(!str)
 		{
-			line[linNum] = getLine(msg, 560);
-			//alert("'" + line[linNum] + "'");
-			msg = msg.substr(line[linNum].length, msg.length - line[linNum].length);
-			linNum++;
-		} while(line[linNum - 1] != -1);
-
+			return null;
+		}
+		var word = str.split(" ");
+		var lin = "";
+		var wid = SLVDEngine.see.measureText(lin).width;
+		for(var index = 0; wid < leng; index++)
+		{
+			if(word[index] != null)
+			{
+				lin += word[index] + " ";
+				wid = SLVDEngine.see.measureText(lin).width;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(wid > leng)
+		{
+			lin = lin.substr(0, -word[index - 1].length - 1);
+		}
+		return lin;
 	}
-	else
+
+	var line = [];
+			
+	while(msg.length > 0)
 	{
-		line.length = 0;
+		var linNum = line.length;
+		line[linNum] = getLine(msg, 560);
+		//alert("'" + line[linNum] + "'");
+		msg = msg.substr(line[linNum].length, msg.length - line[linNum].length);
 	}
 
-	var yShift = py - ((linNum - 1)*20 + 70);
-	if((linNum - 1)*20 + 50 > py)
+	var yShift = py - ((line.length)*20 + 70);
+	if((line.length)*20 + 50 > py)
 	{
 		yShift = py + 40;
 		py += 35;
@@ -348,14 +369,14 @@ SLVDEngine.speechBubble = function(msg, spkr, px, py) {
 	if(!py) yShift = 0;
 	
 	//Text box
-	SLVDEngine.drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (linNum - 1)*20 + 40, SLVDEngine.see, px, py, (linNum - 1)*20 + 50 > py);
+	SLVDEngine.drawAwesomeRect(SLVDEngine.SCREENX/2 - 300, yShift + 30, SLVDEngine.SCREENX/2 + 300, yShift + (line.length)*20 + 40, SLVDEngine.see, px, py, (line.length)*20 + 50 > py);
 
 	SLVDEngine.see.fillStyle="#FFFFFF";
 	SLVDEngine.see.font="18px Verdana";
-	if(line[0] != null)
+	//Lines
+	for(var index = 0; index < line.length; index++)
 	{
-		//Lines
-		for(var index = 0; index < linNum - 1; index++) SLVDEngine.see.fillText(line[index], SLVDEngine.SCREENX/2 - 290, yShift + 20*index + 50);
+		SLVDEngine.see.fillText(line[index], SLVDEngine.SCREENX/2 - 290, yShift + 20*index + 50);
 	}
 	
 	if(spkr)
@@ -365,7 +386,7 @@ SLVDEngine.speechBubble = function(msg, spkr, px, py) {
 
 		SLVDEngine.see.fillStyle="#FFFFFF";
 		SLVDEngine.see.font="18px Verdana";
-		
+
 		//Name
 		SLVDEngine.see.fillText(spkr, SLVDEngine.SCREENX/2 - 280, yShift + 20);
 	}
