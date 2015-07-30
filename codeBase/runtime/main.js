@@ -192,8 +192,10 @@ document.onkeydown = function(e) {
 		}
 		SLVDEngine.mainPromise.resolve(key);
 	}
-	else if(SLVDEngine.process == "waitForEnterOrSpace" && (key == "enter" || key == "space"))
+	else if(SLVDEngine.process == "waitForEnterOrSpace" && (SLVDEngine.keyFirstDown == "enter" || SLVDEngine.keyFirstDown == "space"))
 	{
+		delete SLVDEngine.keyFirstDown;
+	
 		if(SLVDEngine.currentLevel)
 		{
 			SLVDEngine.process = SLVDEngine.currentLevel.type;
