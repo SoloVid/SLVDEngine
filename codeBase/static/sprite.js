@@ -615,8 +615,10 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 //			if(Math.abs(this.y - currentAgent.y) < collisionDist)
 			if(SLVDEngine.distanceTrue(this.x, this.y, currentAgent.x, currentAgent.y) < collisionDist)
 			{
+				var dDir = Math.abs(SLVDEngine.dirFromTo(this.x, this.y, currentAgent.x, currentAgent.y) - this.dir);
+				if(dDir < 1 || dDir > 3)
 //				if(Math.abs(this.x - currentAgent.x) < collisionDist)
-//				{
+				{
 					//The .pushing here ensures that there is no infinite loop of pushing back and forth
 					if(this.pushy && currentAgent.pushy && currentAgent.pushing != this)
 					{
@@ -625,7 +627,7 @@ SLVDEngine.Sprite.prototype.zeldaCheckStep = function(axis, altAxis, isPositive)
 						delete this.pushing;
 					}
 					return true;
-//				}
+				}
 			}
 		}
 	}
@@ -676,7 +678,7 @@ SLVDEngine.Sprite.prototype.zeldaStep = function(distance) {
 		if(stoppedTemp || out)
 		{
 			this.y -= (dy/Math.abs(dy));
-			i = Math.abs(dy);
+			break;
 		}
 	}
 	stopped = stoppedTemp;
@@ -708,31 +710,33 @@ SLVDEngine.Sprite.prototype.zeldaStep = function(distance) {
 		for(var i = 0; i < 1; i++)
 		{
 		
+		var halfBase = Math.round(this.baseLength/2);
+		
 		if(dir < 1 || dir > 3) //case 0:
 		{
-			var j = SLVDEngine.pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x + halfBase, this.y - halfBase - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + halfBase, this.y + halfBase, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 0 && dir < 2) //case 1:
 		{
-			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - halfBase - 1, this.y - halfBase - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + halfBase, this.y - halfBase - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}
 		if(dir > 1 && dir < 3) //case 2:
 		{
-			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = SLVDEngine.pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - halfBase - 1, this.y - halfBase - 1, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x - halfBase - 1, this.y + halfBase, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.y -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.y += 1; }
 		}
 		if(dir > 2 && dir < 4) //case 3:
 		{
-			var j = SLVDEngine.pixCoordToIndex(this.x - 1, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
-			var k = SLVDEngine.pixCoordToIndex(this.x + 16, this.y + 8, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var j = SLVDEngine.pixCoordToIndex(this.x - halfBase - 1, this.y + halfBase, SLVDEngine.currentLevel.layerFuncData[this.layer]);
+			var k = SLVDEngine.pixCoordToIndex(this.x + halfBase, this.y + halfBase, SLVDEngine.currentLevel.layerFuncData[this.layer]);
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[j] != 255) { this.x -= 1; }
 			if(SLVDEngine.currentLevel.layerFuncData[this.layer].data[k] != 255) { this.x += 1; }
 		}
