@@ -1,6 +1,9 @@
 # SLVDEngine
 JavaScript Engine for SoloVid's Maven
 
+## Note
+This project is obsolete as it has been superseded by the [SplitTime Engine](https://github.com/SoloVid/SplitTime).
+
 ## Quick Start
 To get a project running, download the project files. Make sure you have [Nodejs](http://nodejs.org/download/).
 
